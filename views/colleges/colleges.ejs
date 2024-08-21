@@ -9,6 +9,15 @@
 
 <body>
     <h3>All Colleges</h3>
+    <ul>
+        <% for(let college of allColleges) { %>
+            <li>
+                <a href="/colleges/<%= college._id %>">
+                    <%= college.name %>
+                </a>
+            </li>
+            <% } %>
+    </ul>
 </body>
 
 </html>
