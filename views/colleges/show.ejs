@@ -11,18 +11,22 @@
     <h3>College Detail</h3>
     <ul>
         <li>
-            <%= college.name %>
+            Name: <%= college.name %>
         </li>
         <li>
-            <%= college.description %>
+            Description: <%= college.description %>
         </li>
         <li>
-            <%= college.location %>
+            Location: <%= college.location %>
         </li>
         <li>
-            <%= college.status %>
+            Status: <%= college.status %>
         </li>
     </ul>
-</body>
+    <br>
+    <a href="/colleges/<%= college._id %>/edit">Edit</a><br><br>
+    <form action="/colleges/<%= college._id %>?_method=DELETE" method="POST">
+        <button type="submit">Delete</button>
+    </form>
 
 </html>
