@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Colleges = require('./models/Colleges.js');
 const path = require('path');
 const methodOverride = require('method-override');
+const ejsMate = require('ejs-mate');
 
 const Mongo_URL = 'mongodb://127.0.0.1:27017/CollegeResources';
 
@@ -21,6 +22,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.engine('ejs', ejsMate);
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/', (req, res) => {
     res.send('Backend is running');
@@ -75,6 +78,10 @@ app.delete('/colleges/:id', async (req, res) => {
     let deleteCollege = await Colleges.findByIdAndDelete(id);
     console.log(deleteCollege);
     res.redirect('/colleges');
+});
+
+app.use((err, req, res, next) => {
+    res.send('something Went Wrong');
 });
 
 app.listen(8080, () => {

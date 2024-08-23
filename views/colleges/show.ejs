@@ -1,32 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout("/layouts/boilerplate.ejs") %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>colllege</title>
-</head>
+    <body>
+        <div class="container my-5">
+            <h3 class="mb-4 text-center">College Detail</h3>
 
-<body>
-    <h3>College Detail</h3>
-    <ul>
-        <li>
-            Name: <%= college.name %>
-        </li>
-        <li>
-            Description: <%= college.description %>
-        </li>
-        <li>
-            Location: <%= college.location %>
-        </li>
-        <li>
-            Status: <%= college.status %>
-        </li>
-    </ul>
-    <br>
-    <a href="/colleges/<%= college._id %>/edit">Edit</a><br><br>
-    <form action="/colleges/<%= college._id %>?_method=DELETE" method="POST">
-        <button type="submit">Delete</button>
-    </form>
+            <ul class="list-group mb-4">
+                <li class="list-group-item">
+                    <strong>Name:</strong>
+                    <%= college.name %>
+                </li>
+                <li class="list-group-item">
+                    <strong>Description:</strong>
+                    <%= college.description %>
+                </li>
+                <li class="list-group-item">
+                    <strong>Location:</strong>
+                    <%= college.location %>
+                </li>
+                <li class="list-group-item">
+                    <strong>Status:</strong>
+                    <%= college.status %>
+                </li>
+            </ul>
 
-</html>
+            <div class="d-flex justify-content-between">
+                <a href="/colleges/<%= college._id %>/edit" class="btn btn-warning">Edit</a>
+                <form action="/colleges/<%= college._id %>?_method=DELETE" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </body>

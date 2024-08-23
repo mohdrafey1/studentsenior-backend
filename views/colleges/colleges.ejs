@@ -1,23 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout("/layouts/boilerplate.ejs") %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Senior</title>
-</head>
+    <body>
+        <div class="container">
+            <h3 class="my-4 text-center">All Colleges</h3>
 
-<body>
-    <h3>All Colleges</h3>
-    <ul>
-        <% for(let college of allColleges) { %>
-            <li>
-                <a href="/colleges/<%= college._id %>">
-                    <%= college.name %>
-                </a>
-            </li>
-            <% } %>
-    </ul>
-</body>
-
-</html>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                <% for(let college of allColleges) { %>
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <%= college.name %>
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    <%= college.status %>
+                                </h6>
+                                <p class="card-text">
+                                    <%= college.description %>
+                                </p>
+                                <a href="/colleges/<%= college._id %>" class="btn btn-primary">Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+    </body>

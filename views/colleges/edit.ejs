@@ -1,29 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout("/layouts/boilerplate.ejs") %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <body>
+        <div class="container my-5">
+            <h3 class="mb-4 text-center">Edit The College</h3>
+            <form method="POST" action="/colleges/<%= college._id %>?_method=PUT">
+                <div class="mb-3">
+                    <label for="collegeName" class="form-label">College Name</label>
+                    <input type="text" class="form-control" id="collegeName" name="college[name]"
+                        value="<%= college.name %>" required>
+                </div>
 
-<body>
-    <h3>Edit The college</h3>
-    <form method="POST" action="/colleges/<%= college._id %>?_method=PUT">
-        <input type="text" name="college[name]" value="<%= college.name %>">
-        <br><br>
-        <textarea type="text" name="college[description]"><%= college.description %></textarea>
-        <br><br>
-        <input type="text" name="college[location]" value="<%= college.location %>">
-        <br><br>
-        <label for="status">Status:</label>
-        <select id="status" name="college[status]">
-            <option value="true">true</option>
-            <option value="false">false</option>
-        </select>
-        <br><br>
-        <button>Add</button>
-    </form>
-</body>
+                <div class="mb-3">
+                    <label for="collegeDescription" class="form-label">College Description</label>
+                    <textarea class="form-control" id="collegeDescription" name="college[description]" rows="3"
+                        required><%= college.description %></textarea>
+                </div>
 
-</html>
+                <div class="mb-3">
+                    <label for="collegeLocation" class="form-label">College Location</label>
+                    <input type="text" class="form-control" id="collegeLocation" name="college[location]"
+                        value="<%= college.location %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="college[status]" required>
+                        <option value="true" <%=college.status==='true' ? 'selected' : '' %>>True</option>
+                        <option value="false" <%=college.status==='false' ? 'selected' : '' %>>False</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update College</button>
+            </form>
+        </div>
+    </body>
