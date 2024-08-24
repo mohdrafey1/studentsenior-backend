@@ -10,6 +10,9 @@ const ExpressError = require('./utils/ExpressError.js');
 const { collegeSchema } = require('./schema.js');
 const cors = require('cors');
 
+const colleges = require('./routes/college');
+const apicollege = require('./routes/apicollege.js');
+
 const Mongo_URL = 'mongodb://127.0.0.1:27017/CollegeResources';
 
 async function main() {
@@ -41,118 +44,9 @@ app.get('/', (req, res) => {
     res.render('index.ejs');
 });
 
-const validateListing = (req, res, next) => {
-    let { error } = collegeSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(',');
-        throw new ExpressError(400, errMsg);
-    } else {
-        next();
-    }
-};
-
 //college routes
-//index
-app.get(
-    '/colleges',
-    wrapAsync(async (req, res) => {
-        try {
-            const allColleges = await Colleges.find({});
-            res.render('colleges/colleges', { allColleges });
-        } catch (err) {
-            console.error('Error fetching colleges:', err);
-            res.status(500).send('Error fetching colleges');
-        }
-    })
-);
-//new
-app.get('/colleges/new', (req, res) => {
-    res.render('colleges/new.ejs');
-});
-
-//show
-app.get(
-    '/colleges/:id',
-    wrapAsync(async (req, res) => {
-        let { id } = req.params;
-        const college = await Colleges.findById(id);
-        res.render('colleges/show.ejs', { college });
-    })
-);
-
-//create
-app.post(
-    '/colleges',
-    validateListing,
-    wrapAsync(async (req, res) => {
-        // console.log(req.body);
-
-        const newCollege = new Colleges(req.body.college);
-        await newCollege.save();
-        res.redirect('/colleges');
-        console.log('New college added:', newCollege);
-    })
-);
-
-//edit
-app.get(
-    '/colleges/:id/edit',
-    wrapAsync(async (req, res) => {
-        let { id } = req.params;
-        const college = await Colleges.findById(id);
-        res.render('colleges/edit.ejs', { college });
-    })
-);
-//update
-app.put(
-    '/colleges/:id',
-    validateListing,
-    wrapAsync(async (req, res) => {
-        if (!req.body.college) {
-            throw new ExpressError(400, 'send valid data');
-        }
-        let { id } = req.params;
-        await Colleges.findByIdAndUpdate(id, { ...req.body.college });
-        res.redirect(`/colleges/${id}`);
-    })
-);
-
-//delete
-app.delete(
-    '/colleges/:id',
-    wrapAsync(async (req, res) => {
-        let { id } = req.params;
-        let deleteCollege = await Colleges.findByIdAndDelete(id);
-        console.log(deleteCollege);
-        res.redirect('/colleges');
-    })
-);
-
-//api routes
-// Fetch all colleges and send as JSON
-app.get('/api/colleges', async (req, res) => {
-    try {
-        const allColleges = await Colleges.find({ status: true });
-        res.json(allColleges);
-    } catch (err) {
-        console.error('Error fetching colleges:', err);
-        res.status(500).send('Error fetching colleges');
-    }
-});
-
-app.post(
-    '/api/colleges',
-    wrapAsync(async (req, res) => {
-        const { name, location, description } = req.body;
-        const newCollege = new Colleges({
-            name,
-            location,
-            description,
-        });
-        await newCollege.save();
-        res.json({ message: 'College submitted successfully.' });
-    })
-);
+app.use('/colleges', colleges);
+app.use('/api/colleges', apicollege);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
