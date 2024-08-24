@@ -140,6 +140,20 @@ app.get('/api/colleges', async (req, res) => {
     }
 });
 
+app.post(
+    '/api/colleges',
+    wrapAsync(async (req, res) => {
+        const { name, location, description } = req.body;
+        const newCollege = new Colleges({
+            name,
+            location,
+            description,
+        });
+        await newCollege.save();
+        res.json({ message: 'College submitted successfully.' });
+    })
+);
+
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
 });
