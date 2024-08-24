@@ -6,7 +6,7 @@ const CollegeSchema = new Schema(
         name: { type: String, required: true },
         description: { type: String },
         location: { type: String, required: true },
-        status: { type: Boolean, default: true },
+        status: { type: Boolean, default: false },
     },
     {
         timestamps: true,
