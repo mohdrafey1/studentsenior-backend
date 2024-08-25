@@ -37,7 +37,7 @@ main();
 
 app.use(
     cors({
-        origin: 'http://studentsenior.com', // your frontend's URL
+        origin: 'https://www.studentsenior.com/', // your frontend's URL
         credentials: true,
     })
 );
