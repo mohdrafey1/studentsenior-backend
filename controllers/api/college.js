@@ -16,7 +16,7 @@ module.exports.createCollege = async (req, res) => {
         name,
         location,
         description,
-        owner: '66ca376e67648a43129603b1',
+        owner: '66cb98fca9c088fc1180070e',
     });
     await newCollege.save();
     res.json({
