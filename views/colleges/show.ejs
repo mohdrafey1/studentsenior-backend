@@ -6,6 +6,10 @@
 
             <ul class="list-group mb-4">
                 <li class="list-group-item">
+                    <strong>Added by :</strong>
+                    <%=college.owner.username %>
+                </li>
+                <li class="list-group-item">
                     <strong>Name:</strong>
                     <%= college.name %>
                 </li>
@@ -22,12 +26,13 @@
                     <%= college.status %>
                 </li>
             </ul>
-
-            <div class="d-flex justify-content-between">
-                <a href="/colleges/<%= college._id %>/edit" class="btn btn-warning">Edit</a>
-                <form action="/colleges/<%= college._id %>?_method=DELETE" method="POST" class="d-inline">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </div>
+            <% if(currUser && currUser._id.equals(college.owner._id)) { %>
+                <div class="d-flex justify-content-between">
+                    <a href="/colleges/<%= college._id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/colleges/<%= college._id %>?_method=DELETE" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+                <% } %>
         </div>
     </body>

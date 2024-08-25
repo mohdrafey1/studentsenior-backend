@@ -7,6 +7,10 @@ const CollegeSchema = new Schema(
         description: { type: String },
         location: { type: String, required: true },
         status: { type: Boolean, default: false },
+        owner: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        },
     },
     {
         timestamps: true,
