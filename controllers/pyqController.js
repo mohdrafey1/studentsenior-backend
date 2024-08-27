@@ -3,11 +3,25 @@ const PYQ = require('../models/PYQ');
 
 // Index - List all approved PYQs for a specific college
 exports.index = async (req, res) => {
+    const perPage = 10;
+    const page = parseInt(req.query.page) || 1;
+
     try {
-        const pyqs = await PYQ.find().populate('college');
-        res.render('pyqs/index', { pyqs });
+        const totalPYQs = await PYQ.countDocuments({});
+        const pyqs = await PYQ.find({})
+            .populate('college')
+            .sort({ createdAt: -1 }) // Newest first
+            .skip(perPage * page - perPage)
+            .limit(perPage);
+
+        res.render('pyqs/index', {
+            pyqs: pyqs,
+            currentPage: page,
+            totalPages: Math.ceil(totalPYQs / perPage),
+        });
     } catch (err) {
-        res.status(500).send('Server Error');
+        console.error(err);
+        res.redirect('/');
     }
 };
 

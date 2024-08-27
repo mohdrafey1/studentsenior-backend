@@ -2,54 +2,127 @@
 
     <div class="container mt-4">
         <h1 class="mb-4">Previous Year Questions</h1>
-        <a href="/pyqs/new" class="btn btn-primary mb-3">Add New
-            PYQ</a>
+        <a href="/pyqs/new" class="btn btn-primary mb-3">Add New PYQ</a>
 
-        <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Subject Name</th>
-                    <th>College Name</th>
-                    <th>Semester</th>
-                    <th>Year</th>
-                    <th>Course</th>
-                    <th>Exam Type</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% pyqs.forEach(pyq=> { %>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
                     <tr>
-                        <td>
-                            <%= pyq.subjectName %>
-                        </td>
-                        <td>
-                            <%= pyq.college.name %>
-                        </td>
-                        <td>
-                            <%= pyq.semester %>
-                        </td>
-                        <td>
-                            <%= pyq.year %>
-                        </td>
-                        <td>
-                            <%= pyq.course %>
-                        </td>
-                        <td>
-                            <%= pyq.examType %>
-                        </td>
-                        <td>
-                            <%= pyq.status %>
-                        </td>
-                        <td>
-                            <a href="/pyqs/<%= pyq._id %> %>" class="btn btn-info btn-sm">View</a>
-                            <form action="/pyqs/<%= pyq._id %>?_method=DELETE" method="POST" style="display:inline;">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </td>
+                        <th>Subject Name</th>
+                        <th>College Name</th>
+                        <th>Semester</th>
+                        <th>Year</th>
+                        <th>Course</th>
+                        <th>Exam Type</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                     </tr>
-                    <% }) %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="pyq-list">
+                    <% pyqs.forEach(pyq=> { %>
+                        <tr>
+                            <td data-label="Subject Name">
+                                <%= pyq.subjectName %>
+                            </td>
+                            <td data-label="College Name">
+                                <%= pyq.college.name %>
+                            </td>
+                            <td data-label="Semester">
+                                <%= pyq.semester %>
+                            </td>
+                            <td data-label="Year">
+                                <%= pyq.year %>
+                            </td>
+                            <td data-label="Course">
+                                <%= pyq.course %>
+                            </td>
+                            <td data-label="Exam Type">
+                                <%= pyq.examType %>
+                            </td>
+                            <td data-label="Status">
+                                <%= pyq.status %>
+                            </td>
+                            <td data-label="Actions">
+                                <a href="/pyqs/<%= pyq._id %>" class="btn btn-info btn-sm">View</a>
+                                <form action="/pyqs/<%= pyq._id %>?_method=DELETE" method="POST"
+                                    style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <nav aria-label="PYQ pagination">
+            <ul class="pagination justify-content-center flex-wrap">
+                <% if (currentPage> 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="pyqs?page=<%= currentPage - 1 %>">Previous</a>
+                    </li>
+                    <% } %>
+                        <% for (let i=1; i <=totalPages; i++) { %>
+                            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                <a class="page-link" href="pyqs?page=<%= i %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                            <% } %>
+                                <% if (currentPage < totalPages) { %>
+                                    <li class="page-item">
+                                        <a class="page-link" href="pyqs?page=<%= currentPage + 1 %>">Next</a>
+                                    </li>
+                                    <% } %>
+            </ul>
+        </nav>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ensure newly added PYQ is shown at the top
+            const pyqList = document.getElementById('pyq-list');
+            if (pyqList.children.length > 0) {
+                pyqList.insertBefore(pyqList.lastChild, pyqList.firstChild);
+            }
+        });
+    </script>
+
+    <style>
+        @media screen and (max-width: 800px) {
+            .table thead {
+                display: none;
+            }
+
+            .table,
+            .table tbody,
+            .table tr,
+            .table td {
+                display: block;
+                width: 100%;
+            }
+
+            .table tr {
+                margin-bottom: 15px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .table td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+            }
+
+            .table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 15px;
+                font-weight: bold;
+                text-align: left;
+                white-space: nowrap;
+            }
+        }
+    </style>
