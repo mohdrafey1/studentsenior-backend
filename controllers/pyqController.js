@@ -6,18 +6,55 @@ exports.index = async (req, res) => {
     const perPage = 10;
     const page = parseInt(req.query.page) || 1;
 
+    // Extract filter criteria from query params
+    const { collegeName, year, course, semester, status, examType } = req.query;
+
+    // Build a query object based on the filters provided
+    const query = {};
+
+    //something wrong here will correct it
+    if (collegeName) {
+        const college = await PYQ.findOne({
+            name: new RegExp(collegeName, 'i'),
+        });
+        if (college) {
+            query.college = college.name;
+        }
+    }
+
+    if (year) {
+        query.year = year;
+    }
+
+    if (course) {
+        query.course = new RegExp(course, 'i');
+    }
+
+    if (semester) {
+        query.semester = semester;
+    }
+
+    if (status) {
+        query.status = status === 'true';
+    }
+
+    if (examType) {
+        query.examType = new RegExp(examType, 'i');
+    }
+
     try {
-        const totalPYQs = await PYQ.countDocuments({});
-        const pyqs = await PYQ.find({})
+        const totalPYQs = await PYQ.countDocuments(query);
+        const pyqs = await PYQ.find(query)
             .populate('college')
             .sort({ createdAt: -1 }) // Newest first
-            .skip(perPage * page - perPage)
+            .skip(perPage * (page - 1))
             .limit(perPage);
 
         res.render('pyqs/index', {
             pyqs: pyqs,
             currentPage: page,
             totalPages: Math.ceil(totalPYQs / perPage),
+            filters: req.query, // Pass the current filters to the view
         });
     } catch (err) {
         console.error(err);

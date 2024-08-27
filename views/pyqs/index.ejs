@@ -2,7 +2,92 @@
 
     <div class="container mt-4">
         <h1 class="mb-4">Previous Year Questions</h1>
-        <a href="/pyqs/new" class="btn btn-primary mb-3">Add New PYQ</a>
+
+        <!-- Filter Form -->
+        <form method="GET" action="/pyqs" class="mb-4">
+            <div class="d-flex flex-wrap gap-3 align-items-end">
+                <div class="form-group col-lg-2 col-md-3 col-sm-4 col-12">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Search by name"
+                        value="<%=filters.name || '' %>">
+                </div>
+                <!-- College Dropdown -->
+                <div class="form-group col-lg-2 col-md-3 col-sm-4 col-12">
+                    <label for="college">College</label>
+                    <select id="college" name="college" class="form-control">
+                        <option value="">Select College</option>
+                        <!-- Dynamically populate options -->
+                    </select>
+                </div>
+                <!-- Year Dropdown -->
+                <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <label for="year">Year</label>
+                    <select name="year" class="form-control">
+                        <option value="">Select Year</option>
+                        <option value="2020-2021" <%=filters.year==='2020-2021' ? 'selected' : '' %>>2020-2021</option>
+                        <option value="2021-2022" <%=filters.year==='2021-2022' ? 'selected' : '' %>>2021-2022</option>
+                        <option value="2022-2023" <%=filters.year==='2022-2023' ? 'selected' : '' %>>2022-2023</option>
+                        <option value="2023-2024" <%=filters.year==='2023-2024' ? 'selected' : '' %>>2023-2024</option>
+                        <option value="2024-2025" <%=filters.year==='2024-2025' ? 'selected' : '' %>>2024-2025</option>
+                    </select>
+                </div>
+                <!-- Course Dropdown -->
+                <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <label for="course">Course</label>
+                    <select name="course" class="form-control">
+                        <option value="">Select Course</option>
+                        <option value="BTech" <%=filters.course==='BTech' ? 'selected' : '' %>>BTech</option>
+                        <option value="BCA" <%=filters.course==='BCA' ? 'selected' : '' %>>BCA</option>
+                        <option value="BBA" <%=filters.course==='BBA' ? 'selected' : '' %>>BBA</option>
+                        <option value="Other" <%=filters.course==='Other' ? 'selected' : '' %>>Other</option>
+                    </select>
+                </div>
+                <!-- Semester Dropdown -->
+                <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <label for="semester">Semester</label>
+                    <select name="semester" class="form-control">
+                        <option value="">Select Semester</option>
+                        <% for (let i=1; i <=7; i++) { %>
+                            <option value="<%= i %>" <%=filters.semester==i ? 'selected' : '' %>>Semester <%= i %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+                <!-- Status Dropdown -->
+                <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <label for="status">Status</label>
+                    <select name="status" class="form-control">
+                        <option value="">Select Status</option>
+                        <option value="true" <%=filters.status==='true' ? 'selected' : '' %>>Approved</option>
+                        <option value="false" <%=filters.status==='false' ? 'selected' : '' %>>Pending</option>
+                    </select>
+                </div>
+                <!-- Exam Type Dropdown -->
+                <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <label for="examType">Exam Type</label>
+                    <select name="examType" class="form-control">
+                        <option value="">Select Exam Type</option>
+                        <option value="Midsem 1" <%=filters.examType==='Midsem 1' ? 'selected' : '' %>>Midsem 1</option>
+                        <option value="Midsem 2" <%=filters.examType==='Midsem 2' ? 'selected' : '' %>>Midsem 2</option>
+                        <option value="Endsem" <%=filters.examType==='Endsem' ? 'selected' : '' %>>Endsem</option>
+                    </select>
+                </div>
+                <!-- Filter Button -->
+                <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <button type="submit" class="btn btn-primary btn-block">Filter</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Remove Filter Button -->
+        <div class="d-flex gap-2">
+            <form method="GET" action="/pyqs" class="mb-4">
+                <button type="submit" class="btn btn-secondary">Remove Filter</button>
+            </form>
+
+            <div> <a href="/pyqs/new" class="btn btn-primary mb-3">Add New PYQ</a></div>
+        </div>
+
 
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -18,7 +103,7 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="pyq-list">
+                <tbody>
                     <% pyqs.forEach(pyq=> { %>
                         <tr>
                             <td>
@@ -40,7 +125,7 @@
                                 <%= pyq.examType %>
                             </td>
                             <td>
-                                <%= pyq.status %>
+                                <%= pyq.status ? 'Approved' : 'Pending' %>
                             </td>
                             <td>
                                 <a href="/pyqs/<%= pyq._id %>" class="btn btn-info btn-sm">View</a>
@@ -56,27 +141,32 @@
         </div>
 
         <!-- Pagination Controls -->
+        <!-- Pagination Controls -->
         <nav aria-label="PYQ pagination">
             <ul class="pagination justify-content-center flex-wrap">
                 <% if (currentPage> 1) { %>
                     <li class="page-item">
-                        <a class="page-link" href="pyqs?page=<%= currentPage - 1 %>">Previous</a>
+                        <a class="page-link"
+                            href="/pyqs?<%= Object.keys(filters).filter(key => key !== 'page').map(key => `${key}=${filters[key]}`).join('&') %>&page=<%= currentPage - 1 %>">Previous</a>
                     </li>
                     <% } %>
                         <% for (let i=1; i <=totalPages; i++) { %>
                             <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                                <a class="page-link" href="pyqs?page=<%= i %>">
+                                <a class="page-link"
+                                    href="/pyqs?<%= Object.keys(filters).filter(key => key !== 'page').map(key => `${key}=${filters[key]}`).join('&') %>&page=<%= i %>">
                                     <%= i %>
                                 </a>
                             </li>
                             <% } %>
                                 <% if (currentPage < totalPages) { %>
                                     <li class="page-item">
-                                        <a class="page-link" href="pyqs?page=<%= currentPage + 1 %>">Next</a>
+                                        <a class="page-link"
+                                            href="/pyqs?<%= Object.keys(filters).filter(key => key !== 'page').map(key => `${key}=${filters[key]}`).join('&') %>&page=<%= currentPage + 1 %>">Next</a>
                                     </li>
                                     <% } %>
             </ul>
         </nav>
+
     </div>
 
     <!-- Custom CSS for mobile-friendly table with smaller font size -->
@@ -89,25 +179,20 @@
 
             table {
                 font-size: 0.85rem;
-                /* Reduce table font size */
             }
 
             .table td,
             .table th {
                 padding: 0.35rem;
-                /* Reduce cell padding */
             }
 
             .btn {
                 font-size: 0.75rem;
-                /* Reduce button font size */
                 padding: 0.25rem 0.5rem;
-                /* Reduce button padding */
             }
 
             .pagination .page-link {
                 font-size: 0.75rem;
-                /* Reduce pagination link font size */
             }
         }
 
@@ -115,26 +200,20 @@
         @media (max-width: 480px) {
             table {
                 font-size: 0.5rem;
-                /* Further reduce table font size */
             }
 
             .table td,
             .table th {
                 padding: 0.1rem;
-                /* Further reduce cell padding */
             }
 
-            .btn {
-                font-size: 0.4rem;
-                padding: 0.1rem 0.2rem;
-            }
+
 
             .pagination .page-link {
                 font-size: 0.4rem;
             }
         }
     </style>
-
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Ensure newly added PYQ is shown at the top
@@ -142,5 +221,22 @@
             if (pyqList.children.length > 0) {
                 pyqList.insertBefore(pyqList.lastChild, pyqList.firstChild);
             }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Fetch colleges and populate the dropdown
+            fetch('/api/colleges')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('college');
+                    data.forEach(college => {
+                        const option = document.createElement('option');
+                        // option.value = college._id;
+                        option.textContent = college.name;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching colleges:', error));
         });
     </script>
