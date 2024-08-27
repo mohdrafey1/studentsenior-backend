@@ -1,0 +1,117 @@
+<% layout("/layouts/boilerplate.ejs") %>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add New PYQ</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    </head>
+
+    <body>
+        <div class="container mt-4">
+            <h1>Add New PYQ</h1>
+            <form action="/pyqs" method="POST">
+                <div class="form-group">
+                    <label for="college">Select College</label>
+                    <select id="college" name="college" class="form-control" required>
+                        <option value="">Select College</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subjectName">Subject Name</label>
+                    <input type="text" id="subjectName" name="subjectName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="subjectCode">Subject Code</label>
+                    <input type="text" id="subjectCode" name="subjectCode" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="semester">Semester</label>
+                    <select id="semester" name="semester" class="form-control" required>
+                        <option value="">Select Semester</option>
+                        <option value="1">1st</option>
+                        <option value="2">2nd</option>
+                        <option value="3">3rd</option>
+                        <option value="4">4th</option>
+                        <option value="5">5th</option>
+                        <option value="6">6th</option>
+                        <option value="7">7th</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <select id="year" name="year" class="form-control" required>
+                        <option value="">Select Year</option>
+                        <!-- Options for years -->
+                        <script>
+                            const startYear = 2020;
+                            const endYear = 2025;
+                            const yearSelect = document.getElementById('year');
+                            for (let year = startYear; year <= endYear; year++) {
+                                const nextYear = year + 1;
+                                const option = document.createElement('option');
+                                option.value = `${year}-${nextYear}`;
+                                option.textContent = `${year}-${nextYear}`;
+                                yearSelect.appendChild(option);
+                            }
+                        </script>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="course">Course</label>
+                    <select id="course" name="course" class="form-control" required>
+                        <option value="">Select Course</option>
+                        <option value="BTech">BTech</option>
+                        <option value="BBA">BBA</option>
+                        <option value="BCA">BCA</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="branch">Branch</label>
+                    <input type="text" id="branch" name="branch" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="examType">Exam Type</label>
+                    <select id="examType" name="examType" class="form-control" required>
+                        <option value="">Select Exam Type</option>
+                        <option value="Midsem 1">Midsem 1</option>
+                        <option value="Midsem 2">Midsem 2</option>
+                        <option value="Endsem">Endsem</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="link">Link</label>
+                    <input type="text" id="link" name="link" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status" required>
+                        <option value="">Select</option>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add PYQ</button>
+            </form>
+        </div>
+
+        <script>
+            // Fetch colleges and populate the dropdown
+            fetch('/api/colleges')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('college');
+                    data.forEach(college => {
+                        const option = document.createElement('option');
+                        option.value = college._id;
+                        option.textContent = college.name;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching colleges:', error));
+        </script>

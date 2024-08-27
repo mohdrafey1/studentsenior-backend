@@ -1,0 +1,76 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container mt-4">
+        <h1 class="mb-4">Edit PYQ</h1>
+        <form action="/pyqs/<%= pyq._id %>?_method=PUT" method="POST">
+            <div class="mb-3">
+                <label for="subjectName" class="form-label">Subject Name</label>
+                <input type="text" id="subjectName" name="subjectName" class="form-control"
+                    value="<%= pyq.subjectName %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="subjectCode" class="form-label">Subject Code</label>
+                <input type="text" id="subjectCode" name="subjectCode" class="form-control"
+                    value="<%= pyq.subjectCode %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="semester" class="form-label">Semester</label>
+                <select id="semester" name="semester" class="form-select" required>
+                    <option value="" disabled>Select Semester</option>
+                    <% for (let i=1; i <=7; i++) { %>
+                        <option value="<%= i %>" <%=pyq.semester==i ? 'selected' : '' %>> <%= i %>th </option>
+                        <% } %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="year" class="form-label">Year</label>
+                <select id="year" name="year" class="form-select" required>
+                    <option value="" disabled>Select Year</option>
+                    <% for (let year=2020; year <=2025; year++) { %>
+                        <% let nextYear=year + 1; %>
+                            <option value="<%= year %>-<%= nextYear %>" <%=pyq.year==`${year}-${nextYear}` ? 'selected'
+                                : '' %>>
+                                <%= year %>-<%= nextYear %>
+                            </option>
+                            <% } %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="course" class="form-label">Course</label>
+                <select id="course" name="course" class="form-select" required>
+                    <option value="" disabled>Select Course</option>
+                    <option value="BTech" <%=pyq.course=='BTech' ? 'selected' : '' %>>BTech</option>
+                    <option value="BBA" <%=pyq.course=='BBA' ? 'selected' : '' %>>BBA</option>
+                    <option value="BCA" <%=pyq.course=='BCA' ? 'selected' : '' %>>BCA</option>
+                    <option value="Other" <%=pyq.course=='Other' ? 'selected' : '' %>>Other</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="branch" class="form-label">Branch</label>
+                <input type="text" id="branch" name="branch" class="form-control" value="<%= pyq.branch %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="examType" class="form-label">Exam Type</label>
+                <select id="examType" name="examType" class="form-select" required>
+                    <option value="" disabled>Select Exam Type</option>
+                    <option value="Midsem 1" <%=pyq.examType=='Midsem 1' ? 'selected' : '' %>>Midsem 1</option>
+                    <option value="Midsem 2" <%=pyq.examType=='Midsem 2' ? 'selected' : '' %>>Midsem 2</option>
+                    <option value="Endsem" <%=pyq.examType=='Endsem' ? 'selected' : '' %>>Endsem</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="pdfLink" class="form-label">PDF Link</label>
+                <input type="url" id="pdfLink" name="link" class="form-control" value="<%= pyq.link %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" name="status" class="form-select" required>
+                    <option value="true" <%=pyq.status==='true' ? 'selected' : '' %>>True</option>
+                    <option value="false" <%=pyq.status==='false' ? 'selected' : '' %>>False</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update PYQ</button>
+            <a href="/pyqs/<%= pyq._id %>" class="btn btn-secondary ms-2">Cancel</a>
+        </form>
+    </div>

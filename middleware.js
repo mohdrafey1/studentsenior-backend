@@ -1,6 +1,6 @@
 const Colleges = require('./models/Colleges');
 const ExpressError = require('./utils/ExpressError.js');
-const { collegeSchema } = require('./schema.js');
+const { collegeSchema, pyqSchema } = require('./schema.js');
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -31,6 +31,16 @@ module.exports.isOwner = async (req, res, next) => {
 
 module.exports.validateColleges = (req, res, next) => {
     let { error } = collegeSchema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(',');
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+};
+
+module.exports.validatePyq = (req, res, next) => {
+    let { error } = pyqSchema.validate(req.body);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(',');
         throw new ExpressError(400, errMsg);

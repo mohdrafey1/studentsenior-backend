@@ -19,8 +19,10 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/User.js');
 
 const collegeRouter = require('./routes/college');
-const apicollegeRouter = require('./routes/apicollege.js');
+const apicollegeRouter = require('./routes/api/apicollege.js');
+const apiPyqRouter = require('./routes/api/apiPyq.js');
 const userRouter = require('./routes/user.js');
+const pyqRouter = require('./routes/pyqRoutes.js');
 
 // const Mongo_URL = 'mongodb://127.0.0.1:27017/CollegeResources';
 const DB_URL = process.env.ATLAS_URL;
@@ -99,6 +101,8 @@ app.get('/', (req, res) => {
 app.use('/colleges', collegeRouter);
 app.use('/api/colleges', apicollegeRouter);
 app.use('/', userRouter);
+app.use('/pyqs', pyqRouter);
+app.use('/api/pyqs', apiPyqRouter);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
