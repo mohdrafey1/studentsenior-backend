@@ -95,9 +95,40 @@ module.exports.edit = async (req, res) => {
 module.exports.editPyq = async (req, res) => {
     try {
         const { id } = req.params;
-        // console.log(id);
+        let {
+            college,
+            subjectName,
+            subjectCode,
+            semester,
+            year,
+            course,
+            branch,
+            examType,
+            link,
+            status,
+        } = req.body;
 
-        const updatedPYQ = await PYQ.findByIdAndUpdate(id, req.body, {
+        // Convert the branch field from a comma-separated string to an array
+        if (branch) {
+            branch = branch.split(',').map((item) => item.trim());
+        }
+
+        // Create an object to update
+        const updateData = {
+            college,
+            subjectName,
+            subjectCode,
+            semester,
+            year,
+            course,
+            branch,
+            examType,
+            link,
+            status: status === 'true',
+        };
+
+        // Update the PYQ document
+        const updatedPYQ = await PYQ.findByIdAndUpdate(id, updateData, {
             new: true,
         });
 

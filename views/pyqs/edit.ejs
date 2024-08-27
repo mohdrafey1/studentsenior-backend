@@ -54,7 +54,9 @@
             </div>
             <div class="mb-3">
                 <label for="branch" class="form-label">Branch</label>
-                <input type="text" id="branch" name="branch" class="form-control" value="<%= pyq.branch %>" required>
+                <input type="text" id="branch" name="branch" class="form-control" value="<%= pyq.branch.join(', ') %>"
+                    required>
+                <small class="form-text text-muted">Enter branches separated by commas</small>
             </div>
 
             <div class="mb-3">
@@ -73,8 +75,8 @@
             <div class="mb-3">
                 <label for="status" class="form-label">Status</label>
                 <select id="status" name="status" class="form-select" required>
-                    <option value="true" <%=pyq.status==='true' ? 'selected' : '' %>>True</option>
-                    <option value="false" <%=pyq.status==='false' ? 'selected' : '' %>>False</option>
+                    <option value="true" <%=pyq.status ? 'selected' : '' %>>True</option>
+                    <option value="false" <%=pyq.status ? '' : 'selected' %>>False</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Update PYQ</button>
@@ -92,6 +94,9 @@
                     const option = document.createElement('option');
                     option.value = college._id;
                     option.textContent = college.name;
+                    if (college._id === '<%= pyq.college %>') {
+                        option.selected = true;
+                    }
                     select.appendChild(option);
                 });
             })
