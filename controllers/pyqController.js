@@ -95,7 +95,7 @@ module.exports.edit = async (req, res) => {
 module.exports.editPyq = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id);
+        // console.log(id);
 
         const updatedPYQ = await PYQ.findByIdAndUpdate(id, req.body, {
             new: true,

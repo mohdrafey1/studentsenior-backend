@@ -21,28 +21,28 @@
                 <tbody id="pyq-list">
                     <% pyqs.forEach(pyq=> { %>
                         <tr>
-                            <td data-label="Subject Name">
+                            <td>
                                 <%= pyq.subjectName %>
                             </td>
-                            <td data-label="College Name">
+                            <td>
                                 <%= pyq.college.name %>
                             </td>
-                            <td data-label="Semester">
+                            <td>
                                 <%= pyq.semester %>
                             </td>
-                            <td data-label="Year">
+                            <td>
                                 <%= pyq.year %>
                             </td>
-                            <td data-label="Course">
+                            <td>
                                 <%= pyq.course %>
                             </td>
-                            <td data-label="Exam Type">
+                            <td>
                                 <%= pyq.examType %>
                             </td>
-                            <td data-label="Status">
+                            <td>
                                 <%= pyq.status %>
                             </td>
-                            <td data-label="Actions">
+                            <td>
                                 <a href="/pyqs/<%= pyq._id %>" class="btn btn-info btn-sm">View</a>
                                 <form action="/pyqs/<%= pyq._id %>?_method=DELETE" method="POST"
                                     style="display:inline;">
@@ -79,6 +79,62 @@
         </nav>
     </div>
 
+    <!-- Custom CSS for mobile-friendly table with smaller font size -->
+    <style>
+        /* Reduce font size and padding for mobile */
+        @media (max-width: 767px) {
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+                /* Reduce table font size */
+            }
+
+            .table td,
+            .table th {
+                padding: 0.35rem;
+                /* Reduce cell padding */
+            }
+
+            .btn {
+                font-size: 0.75rem;
+                /* Reduce button font size */
+                padding: 0.25rem 0.5rem;
+                /* Reduce button padding */
+            }
+
+            .pagination .page-link {
+                font-size: 0.75rem;
+                /* Reduce pagination link font size */
+            }
+        }
+
+        /* Further adjustments for very small screens */
+        @media (max-width: 480px) {
+            table {
+                font-size: 0.5rem;
+                /* Further reduce table font size */
+            }
+
+            .table td,
+            .table th {
+                padding: 0.1rem;
+                /* Further reduce cell padding */
+            }
+
+            .btn {
+                font-size: 0.4rem;
+                padding: 0.1rem 0.2rem;
+            }
+
+            .pagination .page-link {
+                font-size: 0.4rem;
+            }
+        }
+    </style>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Ensure newly added PYQ is shown at the top
@@ -88,41 +144,3 @@
             }
         });
     </script>
-
-    <!-- <style>
-        @media screen and (max-width: 800px) {
-            .table thead {
-                display: none;
-            }
-
-            .table,
-            .table tbody,
-            .table tr,
-            .table td {
-                display: block;
-                width: 100%;
-            }
-
-            .table tr {
-                margin-bottom: 15px;
-                border-bottom: 1px solid #ddd;
-            }
-
-            .table td {
-                text-align: right;
-                padding-left: 50%;
-                position: relative;
-            }
-
-            .table td::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 0;
-                width: 50%;
-                padding-left: 15px;
-                font-weight: bold;
-                text-align: left;
-                white-space: nowrap;
-            }
-        }
-    </style> -->
