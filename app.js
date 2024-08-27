@@ -24,6 +24,13 @@ const apiPyqRouter = require('./routes/api/apiPyq.js');
 const userRouter = require('./routes/user.js');
 const pyqRouter = require('./routes/pyqRoutes.js');
 
+app.use(
+    cors({
+        origin: '*', // Allow all origins
+        credentials: true, // Allow credentials
+    })
+);
+
 // const Mongo_URL = 'mongodb://127.0.0.1:27017/CollegeResources';
 const DB_URL = process.env.ATLAS_URL;
 
@@ -36,13 +43,6 @@ async function main() {
     }
 }
 main();
-
-app.use(
-    cors({
-        origin: 'https://www.studentsenior.com', // your frontend's URL
-        credentials: true,
-    })
-);
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
