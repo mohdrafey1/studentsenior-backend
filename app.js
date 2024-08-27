@@ -37,20 +37,9 @@ async function main() {
 }
 main();
 
-const allowedOrigins = [
-    'https://www.studentsenior.com', // production URL
-    'http://localhost:5173', //local development URL
-];
-
 app.use(
     cors({
-        origin: (origin, callback) => {
-            if (!origin || allowedOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                callback(new Error('Not allowed by CORS'));
-            }
-        },
+        origin: 'http://localhost:5173', // your frontend's URL
         credentials: true,
     })
 );
