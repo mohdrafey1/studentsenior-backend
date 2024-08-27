@@ -39,7 +39,7 @@ main();
 
 app.use(
     cors({
-        origin: 'http://localhost:5173', // your frontend's URL
+        origin: 'https://www.studentsenior.com', // your frontend's URL
         credentials: true,
     })
 );
