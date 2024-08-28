@@ -1,0 +1,43 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div> <a href="/whatsappgroup/new" class="btn btn-primary mb-3">Add New Group</a></div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>College Name</th>
+                    <th>Info</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% Groups.forEach(group=> { %>
+                    <tr>
+                        <td>
+                            <%= group.title %>
+                        </td>
+                        <td>
+                            <%= group.college.name %>
+                        </td>
+                        <td>
+                            <%= group.info %>
+                        </td>
+                        <td>
+                            <%= group.status ? 'Approved' : 'Pending' %>
+                        </td>
+                        <td>
+                            <a target="_blank" href="<%= group.link %>" class="btn btn-success btn-sm">View</a>
+                            <a href="/whatsappgroup/<%= group._id %>/edit" class="btn btn-info btn-sm">Edit</a>
+                            <form action="/whatsappgroup/<%= group._id %>?_method=DELETE" method="POST"
+                                style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>

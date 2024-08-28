@@ -1,0 +1,54 @@
+<% layout("/layouts/boilerplate.ejs") %>
+    <div class="container mt-4">
+        <h1>Add New Group</h1>
+        <form action="/whatsappgroup" method="POST">
+            <div class="form-group">
+                <label for="college">Select College</label>
+                <select id="college" name="college" class="form-control" required>
+                    <option value="">Select College</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="info">Info</label>
+                <input type="text" id="info" name="info" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="domain">Domain </label>
+                <input type="text" id="domain" name="domain" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="link">Link</label>
+                <input type="text" id="link" name="link" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" id="status" name="status" required>
+                    <option value="">Select</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Group</button>
+        </form>
+    </div>
+
+    <script>
+        // Fetch colleges and populate the dropdown
+        fetch('/api/colleges')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('college');
+                data.forEach(college => {
+                    const option = document.createElement('option');
+                    option.value = college._id;
+                    option.textContent = college.name;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching colleges:', error));
+    </script>

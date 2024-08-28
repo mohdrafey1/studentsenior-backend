@@ -1,0 +1,56 @@
+<% layout("/layouts/boilerplate.ejs") %>
+    <div class="container mt-4">
+        <h1>Add New Group</h1>
+        <form action="/whatsappgroup/<%= group._id %>" method="POST">
+            <div class="form-group">
+                <label for="college">Select College</label>
+                <select id="college" name="college" class="form-control" required>
+                    <option value="">Select College</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" class="form-control" value="<%= group.title %>" required>
+            </div>
+            <div class="form-group">
+                <label for="info">Info</label>
+                <input type="text" id="info" name="info" class="form-control" value="<%= group.info %>" required>
+            </div>
+            <div class="form-group">
+                <label for="domain">Domain </label>
+                <input type="text" id="domain" name="domain" class="form-control" value="<%= group.domain %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="pdfLink" class="form-label">PDF Link</label>
+                <input type="url" id="pdfLink" name="link" class="form-control" value="<%= group.link %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" name="status" class="form-select" required>
+                    <option value="true" <%=group.status ? 'selected' : '' %>>True</option>
+                    <option value="false" <%=group.status ? '' : 'selected' %>>False</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success">Update Group</button>
+        </form>
+    </div>
+
+    <script>
+        // Fetch colleges and populate the dropdown
+        fetch('/api/colleges')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('college');
+                data.forEach(college => {
+                    const option = document.createElement('option');
+                    option.value = college._id;
+                    option.textContent = college.name;
+                    if (college._id === '<%= group.college %>') {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching colleges:', error));
+    </script>

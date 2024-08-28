@@ -31,6 +31,10 @@ module.exports.login = async (req, res) => {
     res.redirect(redirectUrl);
 };
 
+module.exports.profile = async (req, res) => {
+    res.render('users/profile.ejs');
+};
+
 module.exports.logout = (req, res) => {
     req.logout((err) => {
         if (err) {

@@ -23,11 +23,13 @@ const apicollegeRouter = require('./routes/api/apicollege.js');
 const apiPyqRouter = require('./routes/api/apiPyq.js');
 const userRouter = require('./routes/user.js');
 const pyqRouter = require('./routes/pyqRoutes.js');
+const groupRouter = require('./routes/whatsappGroup.js');
+const apiGroupRouter = require('./routes/api/apigroup.js');
 
 app.use(
     cors({
         origin: '*', // Allow all origins
-        credentials: true, // Allow credentials
+        credentials: true,
     })
 );
 
@@ -103,6 +105,8 @@ app.use('/api/colleges', apicollegeRouter);
 app.use('/', userRouter);
 app.use('/pyqs', pyqRouter);
 app.use('/api/pyqs', apiPyqRouter);
+app.use('/whatsappgroup', groupRouter);
+app.use('/api/whatsappgroup', apiGroupRouter);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

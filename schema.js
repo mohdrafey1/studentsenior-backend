@@ -22,3 +22,12 @@ module.exports.pyqSchema = Joi.object({
     college: Joi.string().required(),
     status: Joi.boolean().default(true),
 });
+
+module.exports.groupSchema = Joi.object({
+    title: Joi.string().required(),
+    info: Joi.string().required(),
+    domain: Joi.string().required(),
+    link: Joi.string().uri().required(),
+    college: Joi.string().required(),
+    status: Joi.boolean().default(true),
+});
