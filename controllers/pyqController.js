@@ -1,4 +1,3 @@
-const Colleges = require('../models/Colleges');
 const PYQ = require('../models/PYQ');
 
 // Index - List all approved PYQs for a specific college

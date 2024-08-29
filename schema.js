@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const Colleges = require('./models/Colleges');
 
 module.exports.collegeSchema = Joi.object({
     college: Joi.object({
@@ -20,7 +19,7 @@ module.exports.pyqSchema = Joi.object({
     examType: Joi.string().required(),
     link: Joi.string().uri().required(),
     college: Joi.string().required(),
-    status: Joi.boolean().default(true),
+    status: Joi.boolean().default(false),
 });
 
 module.exports.groupSchema = Joi.object({
@@ -29,5 +28,14 @@ module.exports.groupSchema = Joi.object({
     domain: Joi.string().required(),
     link: Joi.string().uri().required(),
     college: Joi.string().required(),
-    status: Joi.boolean().default(true),
+    status: Joi.boolean().default(false),
+});
+
+module.exports.notesSchema = Joi.object({
+    subjectName: Joi.string().required(),
+    description: Joi.string().required(),
+    link: Joi.string().uri().required(),
+    target: Joi.string().required(),
+    college: Joi.string().required(),
+    status: Joi.boolean().default(false),
 });

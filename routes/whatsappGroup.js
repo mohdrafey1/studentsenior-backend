@@ -16,7 +16,7 @@ router.get('/:id/edit', isLoggedIn, wrapAsync(groupController.editGroupForm));
 
 router
     .route('/:id')
-    .post(isLoggedIn, validateGroup, wrapAsync(groupController.editGroup))
+    .put(isLoggedIn, validateGroup, wrapAsync(groupController.editGroup))
     .delete(isLoggedIn, wrapAsync(groupController.deleteGroup));
 
 module.exports = router;

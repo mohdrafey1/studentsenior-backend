@@ -1,0 +1,42 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div> <a href="/notes/new" class="btn btn-primary mb-3">Add New Notes</a></div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Suject Name</th>
+                    <th>College Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% notes.forEach(note=> { %>
+                    <tr>
+                        <td>
+                            <%= note.subjectName %>
+                        </td>
+                        <td>
+                            <%= note.college.name %>
+                        </td>
+                        <td>
+                            <%= note.description %>
+                        </td>
+                        <td>
+                            <%= note.status ? 'Approved' : 'Pending' %>
+                        </td>
+                        <td>
+                            <a target="_blank" href="<%= note.link %>" class="btn btn-success btn-sm">View</a>
+                            <a href="/notes/<%= note._id %>/edit" class="btn btn-info btn-sm">Edit</a>
+                            <form action="/notes/<%= note._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>

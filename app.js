@@ -25,6 +25,7 @@ const userRouter = require('./routes/user.js');
 const pyqRouter = require('./routes/pyqRoutes.js');
 const groupRouter = require('./routes/whatsappGroup.js');
 const apiGroupRouter = require('./routes/api/apigroup.js');
+const notesRouter = require('./routes/notes.js');
 
 app.use(
     cors({
@@ -72,8 +73,8 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: true,
     cookie: {
-        expires: Date.now() + 3 * 24 * 60 * 60 * 1000,
-        max: 3 * 24 * 60 * 60 * 1000,
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
     },
 };
@@ -107,6 +108,7 @@ app.use('/pyqs', pyqRouter);
 app.use('/api/pyqs', apiPyqRouter);
 app.use('/whatsappgroup', groupRouter);
 app.use('/api/whatsappgroup', apiGroupRouter);
+app.use('/notes', notesRouter);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
