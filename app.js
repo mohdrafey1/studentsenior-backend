@@ -26,6 +26,7 @@ const pyqRouter = require('./routes/pyqRoutes.js');
 const groupRouter = require('./routes/whatsappGroup.js');
 const apiGroupRouter = require('./routes/api/apigroup.js');
 const notesRouter = require('./routes/notes.js');
+const apiNotesRouter = require('./routes/api/apinotes.js');
 
 app.use(
     cors({
@@ -109,6 +110,7 @@ app.use('/api/pyqs', apiPyqRouter);
 app.use('/whatsappgroup', groupRouter);
 app.use('/api/whatsappgroup', apiGroupRouter);
 app.use('/notes', notesRouter);
+app.use('/api/notes', apiNotesRouter);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

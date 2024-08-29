@@ -12,39 +12,39 @@ module.exports.fetchPyq = async (req, res) => {
 };
 
 // Create a new PYQ
-module.exports.createPyq = async (req, res) => {
-    const {
-        subjectName,
-        subjectCode,
-        semester,
-        year,
-        branch,
-        course,
-        examType,
-        link,
-        college,
-    } = req.body;
+// module.exports.createPyq = async (req, res) => {
+//     const {
+//         subjectName,
+//         subjectCode,
+//         semester,
+//         year,
+//         branch,
+//         course,
+//         examType,
+//         link,
+//         college,
+//     } = req.body;
 
-    try {
-        const newPYQ = new PYQ({
-            subjectName,
-            subjectCode,
-            semester,
-            year,
-            branch,
-            course,
-            examType,
-            link,
-            college,
-        });
+//     try {
+//         const newPYQ = new PYQ({
+//             subjectName,
+//             subjectCode,
+//             semester,
+//             year,
+//             branch,
+//             course,
+//             examType,
+//             link,
+//             college,
+//         });
 
-        await newPYQ.save();
+//         await newPYQ.save();
 
-        res.json({
-            description: 'PYQ submitted successfully and is pending approval.',
-        });
-    } catch (err) {
-        console.error('Error creating PYQ:', err);
-        res.status(500).json({ description: 'Error creating PYQ' });
-    }
-};
+//         res.json({
+//             description: 'PYQ submitted successfully and is pending approval.',
+//         });
+//     } catch (err) {
+//         console.error('Error creating PYQ:', err);
+//         res.status(500).json({ description: 'Error creating PYQ' });
+//     }
+// };
