@@ -3,7 +3,7 @@ const Notes = require('../../models/Notes');
 // Fetch all Notes with status true
 module.exports.fetchNotes = async (req, res) => {
     try {
-        const notes = await Notes.find({ status: true });
+        const notes = await Notes.find({ status: true }).populate('by');
         res.json(notes);
     } catch (err) {
         console.error('Error fetching Notes:', err);
