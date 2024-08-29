@@ -1,9 +1,9 @@
-const Groups = require('../../models/WhatsappGroup');
+const WhatsappGroup = require('../../models/WhatsappGroup');
 
 // Fetch all PYQs with status true
 module.exports.fetchGroups = async (req, res) => {
     try {
-        const groups = await Groups.find({ status: true });
+        const groups = await WhatsappGroup.find({ status: true });
         res.json(groups);
     } catch (err) {
         console.error('Error fetching Groups:', err);
@@ -12,10 +12,11 @@ module.exports.fetchGroups = async (req, res) => {
 };
 
 module.exports.createGroup = async (req, res) => {
-    const { title, domain, info, link, college } = req.body;
+    const { title, info, domain, link, college, status } = req.body;
+    console.log(req.body);
 
     try {
-        const newGroup = new Groups({
+        const newGroup = new WhatsappGroup({
             title,
             domain,
             info,

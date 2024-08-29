@@ -4,10 +4,10 @@ const wrapAsync = require('../../utils/wrapAsync.js');
 
 const apiGroupController = require('../../controllers/api/group.js');
 
-// Fetch all group and send as JSON
+// Fetch all pyq and send as JSON
 router.get('/', apiGroupController.fetchGroups);
 
-// Create a new group
+// Create a new pyq
 router.post('/', wrapAsync(apiGroupController.createGroup));
 
 module.exports = router;
