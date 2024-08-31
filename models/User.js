@@ -6,6 +6,15 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
+    },
+    phone: {
+        type: String,
+        match: [/^\d{10}$/, 'Please enter a valid 10-digit phone number'],
+    },
+    college: {
+        type: String,
+        required: true,
     },
 });
 

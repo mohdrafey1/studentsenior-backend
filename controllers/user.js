@@ -6,8 +6,8 @@ module.exports.signupForm = (req, res) => {
 
 module.exports.signup = async (req, res) => {
     try {
-        let { username, email, password } = req.body;
-        let newUser = new User({ email, username });
+        let { username, email, password, college } = req.body;
+        let newUser = new User({ email, username, college });
         const registererdUser = await User.register(newUser, password);
         req.login(registererdUser, (err) => {
             if (err) {
@@ -18,7 +18,7 @@ module.exports.signup = async (req, res) => {
         });
     } catch (e) {
         req.flash('error', e.message);
-        res.redirect('/signup');
+        res.redirect('/secret/signup');
     }
 };
 
