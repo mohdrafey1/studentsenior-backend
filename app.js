@@ -17,6 +17,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/User.js');
+const cookieParser = require('cookie-parser');
 
 const collegeRouter = require('./routes/college');
 const apicollegeRouter = require('./routes/api/apicollege.js');
@@ -27,11 +28,15 @@ const groupRouter = require('./routes/whatsappGroup.js');
 const apiGroupRouter = require('./routes/api/apigroup.js');
 const notesRouter = require('./routes/notes.js');
 const apiNotesRouter = require('./routes/api/apinotes.js');
+const userRoutes = require('./routes/api/apiuser.js');
+const authRoutes = require('./routes/api/apiauth.js');
 
 app.use(
     cors({
-        origin: '*', // Allow all origins
+        origin: ['http://localhost:5173', 'https://studentsenior.com'],
         credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
     })
 );
 
@@ -52,6 +57,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, '/public')));
@@ -111,6 +117,8 @@ app.use('/whatsappgroup', groupRouter);
 app.use('/api/whatsappgroup', apiGroupRouter);
 app.use('/notes', notesRouter);
 app.use('/api/notes', apiNotesRouter);
+app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
