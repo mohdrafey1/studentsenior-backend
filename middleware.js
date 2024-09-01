@@ -16,6 +16,14 @@ module.exports.isLoggedIn = (req, res, next) => {
     next();
 };
 
+module.exports.isRafey = (req, res, next) => {
+    if (!req.isAuthenticated() || req.user.username !== 'rafey') {
+        req.flash('error', 'Access restricted to Rafey only');
+        return res.redirect('/');
+    }
+    next();
+};
+
 module.exports.saveRedirectUrl = (req, res, next) => {
     if (req.session.redirectUrl) {
         res.locals.redirectUrl = req.session.redirectUrl;

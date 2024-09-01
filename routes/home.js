@@ -6,7 +6,7 @@ const PYQ = require('../models/PYQ');
 const College = require('../models/Colleges');
 const Group = require('../models/WhatsappGroup');
 const Note = require('../models/Notes');
-const { isLoggedIn } = require('../middleware.js');
+const { isLoggedIn, isRafey } = require('../middleware.js');
 
 router.get('/', async (req, res) => {
     try {
@@ -31,12 +31,12 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/user', isLoggedIn, async (req, res) => {
+router.get('/user', isRafey, async (req, res) => {
     let allUsers = await User.find({});
     res.render('home/user.ejs', { allUsers });
 });
 
-router.get('/client', isLoggedIn, async (req, res) => {
+router.get('/client', isRafey, async (req, res) => {
     let allClient = await Client.find({});
     res.render('home/client.ejs', { allClient });
 });
