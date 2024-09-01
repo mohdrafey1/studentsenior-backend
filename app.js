@@ -31,9 +31,18 @@ const apiNotesRouter = require('./routes/api/apinotes.js');
 const userRoutes = require('./routes/api/apiuser.js');
 const authRoutes = require('./routes/api/apiauth.js');
 
+const allowedOrigins = ['http://localhost:5173', 'https://studentsenior.com'];
+
 app.use(
     cors({
-        origin: '*', // Allow all origins
+        origin: (origin, callback) => {
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            } else {
+                return callback(new Error('Not allowed by CORS'));
+            }
+        },
         credentials: true,
     })
 );

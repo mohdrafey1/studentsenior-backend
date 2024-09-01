@@ -25,6 +25,8 @@ module.exports.updateUser = async (req, res, next) => {
                 $set: {
                     username: req.body.username,
                     email: req.body.email,
+                    phone: req.body.phone,
+                    college: req.body.phone,
                     password: req.body.password,
                     profilePicture: req.body.profilePicture,
                 },

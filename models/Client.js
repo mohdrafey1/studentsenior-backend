@@ -21,6 +21,13 @@ const clientSchema = new mongoose.Schema(
             default:
                 'https://res.cloudinary.com/dqlugeoxg/image/upload/v1/student_senior/o75dfiierdwluartngkm',
         },
+        phone: {
+            type: String,
+            match: [/^\d{10}$/, 'Please enter a valid 10-digit phone number'],
+        },
+        college: {
+            type: String,
+        },
     },
     { timestamps: true }
 );
