@@ -1,0 +1,32 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>User Name</th>
+                    <th>College Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% allClient.forEach(client=> { %>
+                    <tr>
+                        <td>
+                            <%= client.username %>
+                        </td>
+                        <td>
+                            <%= client.college %>
+                        </td>
+                        <td>
+                            <%= client.phone %>
+                        </td>
+                        <td>
+                            <%= client.email %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>

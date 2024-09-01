@@ -8,6 +8,8 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <h5 class="card-title">All Colleges</h5>
+                            <p>Total: <%= totalColleges %>
+                            </p>
                             <a href="/colleges" class="btn btn-primary">View Colleges</a>
                         </div>
                     </div>
@@ -18,17 +20,9 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <h5 class="card-title">All PYQs</h5>
+                            <p>Total: <%= totalPYQs %>
+                            </p>
                             <a href="/pyqs" class="btn btn-primary">View PYQs</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card for Communities -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Communities</h5>
-                            <a href="/communities" class="btn btn-primary">View Communities</a>
                         </div>
                     </div>
                 </div>
@@ -38,6 +32,8 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <h5 class="card-title">Notes</h5>
+                            <p>Total: <%= totalNotes %>
+                            </p>
                             <a href="/notes" class="btn btn-primary">View Notes</a>
                         </div>
                     </div>
@@ -48,6 +44,8 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <h5 class="card-title">Groups</h5>
+                            <p>Total Groups: <%= totalGroups %>
+                            </p>
                             <a href="/whatsappgroup" class="btn btn-primary">View Groups</a>
                         </div>
                     </div>
@@ -58,7 +56,19 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <h5 class="card-title">Seniors</h5>
+                            <p>Total senior: 0</p>
                             <a href="/seniors" class="btn btn-primary">View Seniors</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card for Communities -->
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Communities</h5>
+                            <p>Total community: 0</p>
+                            <a href="/communities" class="btn btn-primary">View Communities</a>
                         </div>
                     </div>
                 </div>
@@ -68,7 +78,31 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <h5 class="card-title">Store</h5>
+                            <p>Total store: 0</p>
                             <a href="/store" class="btn btn-primary">View Store</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- card for users -->
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">User</h5>
+                            <p>Total Users: <%= totalUsers %>
+                            </p>
+                            <a href="/user" class="btn btn-primary">View All Users</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- card for Client -->
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Clients</h5>
+                            <p>Total Clients: <%= totalClients %>
+                            </p>
+                            <a href="/client" class="btn btn-primary">View All Client </a>
                         </div>
                     </div>
                 </div>

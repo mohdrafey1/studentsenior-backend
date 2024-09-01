@@ -19,6 +19,7 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/User.js');
 const cookieParser = require('cookie-parser');
 
+const home = require('./routes/home.js');
 const collegeRouter = require('./routes/college');
 const apicollegeRouter = require('./routes/api/apicollege.js');
 const apiPyqRouter = require('./routes/api/apiPyq.js');
@@ -117,9 +118,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', (req, res) => {
-    res.render('index.ejs');
-});
+app.use('/', home);
 
 //college routes
 app.use('/colleges', collegeRouter);
