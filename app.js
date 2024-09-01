@@ -33,7 +33,9 @@ const authRoutes = require('./routes/api/apiauth.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
-    'https://www.studentsenior.com',
+    'https://studentsenior.com',
+    'http://localhost:8080',
+    'https://panel.studentsenior.com',
 ];
 
 app.use(
@@ -43,7 +45,8 @@ app.use(
             if (allowedOrigins.includes(origin)) {
                 return callback(null, true);
             } else {
-                return callback(new Error('Not allowed by CORS'));
+                console.error(`Blocked by CORS: ${origin}`);
+                return callback(null, false);
             }
         },
         credentials: true,
