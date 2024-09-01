@@ -33,10 +33,8 @@ const authRoutes = require('./routes/api/apiauth.js');
 
 app.use(
     cors({
-        origin: ['http://localhost:5173', 'https://studentsenior.com'],
+        origin: '*', // Allow all origins
         credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        allowedHeaders: ['Content-Type', 'Authorization'],
     })
 );
 
