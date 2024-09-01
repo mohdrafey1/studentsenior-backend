@@ -13,7 +13,7 @@ module.exports.fetchGroups = async (req, res) => {
 
 module.exports.createGroup = async (req, res) => {
     const { title, info, domain, link, college, status } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     try {
         const newGroup = new WhatsappGroup({

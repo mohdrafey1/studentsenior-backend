@@ -56,6 +56,6 @@ module.exports.deleteCollege = async (req, res) => {
     let { id } = req.params;
     let deleteCollege = await Colleges.findByIdAndDelete(id);
     req.flash('success', 'Delete Successfully');
-    console.log(deleteCollege);
+    // console.log(deleteCollege);
     res.redirect('/colleges');
 };

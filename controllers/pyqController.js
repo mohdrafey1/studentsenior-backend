@@ -63,7 +63,7 @@ exports.index = async (req, res) => {
 
 // Show form to add new PYQ
 exports.new = (req, res) => {
-    console.log('Rendering new PYQ form');
+    // console.log('Rendering new PYQ form');
     res.render('pyqs/new');
 };
 
