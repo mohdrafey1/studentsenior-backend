@@ -31,7 +31,10 @@ const apiNotesRouter = require('./routes/api/apinotes.js');
 const userRoutes = require('./routes/api/apiuser.js');
 const authRoutes = require('./routes/api/apiauth.js');
 
-const allowedOrigins = ['http://localhost:5173', 'https://studentsenior.com'];
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://www.studentsenior.com',
+];
 
 app.use(
     cors({
