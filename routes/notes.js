@@ -6,11 +6,11 @@ const { isLoggedIn, validateNotes } = require('../middleware.js');
 
 router
     .route('/')
-    .get(wrapAsync(notesController.index))
+    .get(isLoggedIn, wrapAsync(notesController.index))
     .post(isLoggedIn, validateNotes, wrapAsync(notesController.createNotes));
 
 // Show form to add new PYQ
-router.get('/new', wrapAsync(notesController.createNotesForm));
+router.get('/new', isLoggedIn, wrapAsync(notesController.createNotesForm));
 
 router
     .route('/:id')

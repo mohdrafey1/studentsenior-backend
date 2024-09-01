@@ -2,19 +2,19 @@ const pyqController = require('../controllers/pyqController');
 const express = require('express');
 const router = express.Router();
 const wrapAsync = require('../utils/wrapAsync');
-const { isLoggedIn, isOwner, validatePyq } = require('../middleware.js');
+const { isLoggedIn, validatePyq } = require('../middleware.js');
 
 router
     .route('/')
-    .get(wrapAsync(pyqController.index))
+    .get(isLoggedIn, wrapAsync(pyqController.index))
     .post(isLoggedIn, validatePyq, wrapAsync(pyqController.create));
 
 // Show form to add new PYQ
-router.get('/new', wrapAsync(pyqController.new));
+router.get('/new', isLoggedIn, wrapAsync(pyqController.new));
 
 router
     .route('/:id')
-    .get(wrapAsync(pyqController.show))
+    .get(isLoggedIn, wrapAsync(pyqController.show))
     .put(isLoggedIn, validatePyq, wrapAsync(pyqController.editPyq))
     .delete(isLoggedIn, wrapAsync(pyqController.delete));
 

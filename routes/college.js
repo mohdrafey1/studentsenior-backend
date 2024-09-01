@@ -8,7 +8,7 @@ const collegeController = require('../controllers/college.js');
 
 router
     .route('/')
-    .get(wrapAsync(collegeController.index))
+    .get(isLoggedIn, wrapAsync(collegeController.index))
     .post(
         isLoggedIn,
         validateColleges,

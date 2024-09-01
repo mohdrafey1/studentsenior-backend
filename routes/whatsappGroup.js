@@ -7,7 +7,7 @@ const groupController = require('../controllers/whatsappGroup.js');
 
 router
     .route('/')
-    .get(wrapAsync(groupController.index))
+    .get(isLoggedIn, wrapAsync(groupController.index))
     .post(isLoggedIn, validateGroup, wrapAsync(groupController.createGroup));
 
 router.get('/new', isLoggedIn, wrapAsync(groupController.createGroupForm));
