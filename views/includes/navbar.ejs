@@ -9,7 +9,7 @@
             <div class="navbar-nav">
                 <a class="nav-link" href="#">Home</a>
                 <a class="nav-link" href="/colleges">Colleges</a>
-                <a class="nav-link" href="/colleges/new">Add College</a>
+                <a class="nav-link" href="/pyqs/new">Add PYQs</a>
                 <a class="nav-link" href="/pyqs">pyqs</a>
 
             </div>
@@ -19,7 +19,8 @@
                     <% } %>
                         <% if(currUser){ %>
                             <a class="nav-link usericon ihover" href="/profile"><i class="fa-solid fa-user"></i>&nbsp;
-                                <%= currUser.username %></a>
+                                <%= currUser.username %>
+                            </a>
                             <a class="nav-link" href="/logout">Logout</a>
                             <% } %>
             </div>
