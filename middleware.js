@@ -17,7 +17,7 @@ module.exports.isLoggedIn = (req, res, next) => {
 };
 
 module.exports.isRafey = (req, res, next) => {
-    if (!req.isAuthenticated() || req.user.username !== 'rafey') {
+    if (!req.isAuthenticated() || req.user.username !== 'rafey1') {
         req.flash('error', 'Access restricted to Rafey only');
         return res.redirect('/');
     }
