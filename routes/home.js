@@ -37,8 +37,29 @@ router.get('/user', isRafey, async (req, res) => {
 });
 
 router.get('/client', isRafey, async (req, res) => {
-    let allClient = await Client.find({});
-    res.render('home/client.ejs', { allClient });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 15;
+
+    const startIndex = (page - 1) * limit;
+
+    try {
+        const totalClients = await Client.countDocuments();
+
+        const allClient = await Client.find({})
+            .sort({ createdAt: -1 })
+            .skip(startIndex)
+            .limit(limit);
+
+        const totalPages = Math.ceil(totalClients / limit);
+
+        res.render('home/client.ejs', {
+            allClient,
+            currentPage: page,
+            totalPages,
+        });
+    } catch (error) {
+        res.status(500).send('Error fetching clients');
+    }
 });
 
 module.exports = router;
