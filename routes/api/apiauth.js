@@ -5,12 +5,13 @@ const {
     google,
     signout,
 } = require('../../controllers/api/auth');
+const { validateApiKey } = require('../../middleware.js');
 
 const router = express.Router();
 
-router.post('/signup', signup);
-router.post('/signin', signin);
-router.post('/google', google);
+router.post('/signup', validateApiKey, signup);
+router.post('/signin', validateApiKey, signin);
+router.post('/google', validateApiKey, google);
 router.get('/signout', signout);
 
 module.exports = router;
