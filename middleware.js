@@ -81,3 +81,15 @@ module.exports.validateNotes = (req, res, next) => {
         next();
     }
 };
+
+// validateApiKey.js
+module.exports.validateApiKey = (req, res, next) => {
+    const apiKey = req.headers['x-api-key'];
+    const validApiKey = process.env.API_KEY;
+
+    if (apiKey === validApiKey) {
+        next();
+    } else {
+        res.status(403).json({ error: 'Forbidden: Invalid API Key' });
+    }
+};
