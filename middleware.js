@@ -5,6 +5,7 @@ const {
     pyqSchema,
     groupSchema,
     notesSchema,
+    seniorSchema,
 } = require('./schema.js');
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -74,6 +75,16 @@ module.exports.validateGroup = (req, res, next) => {
 
 module.exports.validateNotes = (req, res, next) => {
     let { error } = notesSchema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(',');
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+};
+
+module.exports.validateSenior = (req, res, next) => {
+    let { error } = seniorSchema.validate(req.body);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(',');
         throw new ExpressError(400, errMsg);
