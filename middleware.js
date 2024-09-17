@@ -6,6 +6,7 @@ const {
     groupSchema,
     notesSchema,
     seniorSchema,
+    storeSchema,
 } = require('./schema.js');
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -85,6 +86,16 @@ module.exports.validateNotes = (req, res, next) => {
 
 module.exports.validateSenior = (req, res, next) => {
     let { error } = seniorSchema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(',');
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+};
+
+module.exports.validateStore = (req, res, next) => {
+    let { error } = storeSchema.validate(req.body);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(',');
         throw new ExpressError(400, errMsg);

@@ -50,3 +50,15 @@ module.exports.seniorSchema = Joi.object({
     college: Joi.string().required(),
     status: Joi.boolean().default(false),
 });
+
+module.exports.storeSchema = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    price: Joi.number().required(),
+    available: Joi.boolean().default(true),
+    whatsapp: Joi.string(),
+    telegram: Joi.string(),
+    college: Joi.string().required(),
+    status: Joi.boolean().default(false),
+    image: Joi.string().allow('', null),
+});

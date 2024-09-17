@@ -8,6 +8,7 @@ const Group = require('../models/WhatsappGroup');
 const Note = require('../models/Notes');
 const { isLoggedIn, isRafey } = require('../middleware.js');
 const Senior = require('../models/Senior.js');
+const Store = require('../models/Store.js');
 
 router.get('/', async (req, res) => {
     try {
@@ -18,6 +19,7 @@ router.get('/', async (req, res) => {
         const totalGroups = await Group.countDocuments();
         const totalNotes = await Note.countDocuments();
         const totalSeniors = await Senior.countDocuments();
+        const totalProduct = await Store.countDocuments();
 
         res.render('index', {
             totalUsers,
@@ -27,6 +29,7 @@ router.get('/', async (req, res) => {
             totalGroups,
             totalNotes,
             totalSeniors,
+            totalProduct,
         });
     } catch (error) {
         console.error('Error fetching totals:', error);

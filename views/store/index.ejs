@@ -1,0 +1,44 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container py-5">
+        <h3 class="my-4 text-center">All Products</h3>
+        <a href="/store/new" class="btn btn-primary mb-3">Add New Product</a>
+
+        <!-- Grid layout for displaying seniors -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            <% if (store.length> 0) { %>
+                <% store.forEach(item=> { %>
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <img src="<%= item.image.url %>" class="card-img-top"
+                                alt="<%= item.name %>'s Profile Picture"
+                                onerror="this.onerror=null; this.src='/path-to-default-image.jpg';">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <%= item.name %>
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    Price: ₹ <%= item.price %>
+                                </h6>
+                                <p class="card-text">
+                                    Description: <%= item.description || 'Not specified' %>
+                                </p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/store/<%= item._id %>/edit" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="/store/<%= item._id %>?_method=DELETE" method="POST"
+                                    class="d-inline-block">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                        <% } else { %>
+                            <!-- Message when no seniors are available -->
+                            <div class="col-12">
+                                <p class="text-center">No seniors available at the moment.</p>
+                            </div>
+                            <% } %>
+        </div>
+    </div>

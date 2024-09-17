@@ -1,0 +1,98 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container mt-4">
+        <h1>Edit Product</h1>
+        <form action="/store/<%= store._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+            <!-- College Selection -->
+            <div class="form-group">
+                <label for="college">Select College</label>
+                <select id="college" name="college" class="form-control" required>
+                    <option value="">Select College</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+
+            <!-- Product Name -->
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" value="<%= store.name %>" required>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control"
+                    required><%= store.description %></textarea>
+            </div>
+
+            <!-- Previous Image -->
+            <div class="mb-3">
+                Previous Image <br>
+                <img src="<%= previousImageUrl %>" alt="product_image">
+            </div>
+
+            <!-- New Image -->
+            <div class="form-group">
+                <label for="image">Image ( Max 2 Mb )</label>
+                <input type="file" id="image" name="image" class="form-control">
+            </div>
+
+            <!-- Price -->
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" class="form-control" value="<%= store.price %>" required>
+            </div>
+
+            <!-- WhatsApp Number -->
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp Number</label>
+                <input type="text" id="whatsapp" name="whatsapp" class="form-control" value="<%= store.whatsapp %>">
+            </div>
+
+            <!-- Telegram Username -->
+            <div class="form-group">
+                <label for="telegram">Telegram Username</label>
+                <input type="text" id="telegram" name="telegram" class="form-control" value="<%= store.telegram %>">
+            </div>
+
+            <!-- Available -->
+            <div class="form-group">
+                <label for="available">Available</label>
+                <select class="form-control" id="available" name="available" required>
+                    <option value="true" <%=store.available ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%=!store.available ? 'selected' : '' %>>No</option>
+                </select>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status" required>
+                    <option value="true" <%=store.status ? 'selected' : '' %>>Active</option>
+                    <option value="false" <%=!store.status ? 'selected' : '' %>>Inactive</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary mt-3">Update Product</button>
+        </form>
+    </div>
+
+    <script>
+        // Fetch colleges and populate the college dropdown
+        fetch('/api/colleges')
+            .then(response => response.json())
+            .then(data => {
+                const collegeSelect = document.getElementById('college');
+                data.forEach(college => {
+                    const option = document.createElement('option');
+                    option.value = college._id;
+                    option.textContent = college.name;
+                    if (college._id === '<%= store.college._id %>') {
+                        option.selected = true;
+                    }
+                    collegeSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching colleges:', error));
+    </script>

@@ -33,6 +33,8 @@ const userRoutes = require('./routes/api/apiuser.js');
 const authRoutes = require('./routes/api/apiauth.js');
 const seniorRouter = require('./routes/senior.js');
 const apiSeniorRouter = require('./routes/api/apisenior.js');
+const storeRouter = require('./routes/store.js');
+const apiStoreRouter = require('./routes/api/apistore.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -136,6 +138,8 @@ app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/seniors', seniorRouter);
 app.use('/api/seniors', apiSeniorRouter);
+app.use('/store', storeRouter);
+app.use('/api/store', apiStoreRouter);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
