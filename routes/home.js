@@ -7,6 +7,7 @@ const College = require('../models/Colleges');
 const Group = require('../models/WhatsappGroup');
 const Note = require('../models/Notes');
 const { isLoggedIn, isRafey } = require('../middleware.js');
+const Senior = require('../models/Senior.js');
 
 router.get('/', async (req, res) => {
     try {
@@ -16,6 +17,7 @@ router.get('/', async (req, res) => {
         const totalColleges = await College.countDocuments();
         const totalGroups = await Group.countDocuments();
         const totalNotes = await Note.countDocuments();
+        const totalSeniors = await Senior.countDocuments();
 
         res.render('index', {
             totalUsers,
@@ -24,6 +26,7 @@ router.get('/', async (req, res) => {
             totalColleges,
             totalGroups,
             totalNotes,
+            totalSeniors,
         });
     } catch (error) {
         console.error('Error fetching totals:', error);

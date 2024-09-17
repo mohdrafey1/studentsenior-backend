@@ -1,0 +1,87 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container mt-4">
+        <h1>Add New Senior</h1>
+        <form action="/seniors" method="POST">
+            <!-- College Selection -->
+            <div class="form-group">
+                <label for="college">Select College</label>
+                <select id="college" name="college" class="form-control" required>
+                    <option value="">Select College</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+
+            <!-- Senior Name -->
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+
+            <!-- Branch -->
+            <div class="form-group">
+                <label for="branch">Branch</label>
+                <input type="text" id="branch" name="branch" class="form-control" required>
+            </div>
+
+            <!-- Year -->
+            <div class="form-group">
+                <label for="year">Year</label>
+                <select id="year" name="year" class="form-control" required>
+                    <option value="">Select Year</option>
+                    <option value="1st">1st Year</option>
+                    <option value="2nd">2nd Year</option>
+                    <option value="3rd">3rd Year</option>
+                    <option value="4th">4th Year</option>
+                </select>
+            </div>
+
+
+            <!-- Domain -->
+            <div class="form-group">
+                <label for="domain">Expertise</label>
+                <input type="text" id="domain" name="domain" class="form-control">
+            </div>
+
+            <!-- WhatsApp Number -->
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp Number</label>
+                <input type="text" id="whatsapp" name="whatsapp" class="form-control">
+            </div>
+
+            <!-- Telegram Username -->
+            <div class="form-group">
+                <label for="telegram">Telegram Username</label>
+                <input type="text" id="telegram" name="telegram" class="form-control">
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status" required>
+                    <option value="">Select</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary mt-3">Add Senior</button>
+        </form>
+    </div>
+
+    <script>
+        // Fetch colleges and populate the college dropdown
+        fetch('/api/colleges')
+            .then(response => response.json())
+            .then(data => {
+                const collegeSelect = document.getElementById('college');
+                data.forEach(college => {
+                    const option = document.createElement('option');
+                    option.value = college._id;
+                    option.textContent = college.name;
+                    collegeSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching colleges:', error));
+    </script>

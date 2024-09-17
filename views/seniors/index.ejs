@@ -1,0 +1,38 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container py-5">
+        <h3 class="my-4 text-center">All Seniors</h3>
+        <a href="/seniors/new" class="btn btn-primary mb-3">Add New
+            Senior</a>
+        <!-- Grid layout for displaying seniors -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            <% if (allSenior.length> 0) { %>
+                <% allSenior.forEach(senior=> { %>
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <img src="<%= senior.profilePicture %>" class="card-img-top"
+                                alt="<%= senior.name %>'s Profile Picture"
+                                onerror="this.onerror=null; this.src='default-image-url.jpg';">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <%= senior.name %>
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    <%= senior.branch %> - Year <%= senior.year %>
+                                </h6>
+                                <p class="card-text">
+                                    Expertise: <%= senior.domain || 'Not specified' %>
+                                </p>
+                                <a href="/seniors/<%= senior._id %>" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                        <% } else { %>
+                            <!-- Message when no seniors are available -->
+                            <div class="col-12">
+                                <p class="text-center">No seniors available at the moment.</p>
+                            </div>
+                            <% } %>
+        </div>
+    </div>

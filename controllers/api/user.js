@@ -2,12 +2,6 @@ const Client = require('../../models/Client.js');
 const { errorHandler } = require('../../utils/error.js');
 const bcryptjs = require('bcryptjs');
 
-module.exports.test = (req, res) => {
-    res.json({
-        message: 'API is working!',
-    });
-};
-
 // update user
 
 module.exports.updateUser = async (req, res, next) => {

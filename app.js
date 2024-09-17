@@ -31,6 +31,8 @@ const notesRouter = require('./routes/notes.js');
 const apiNotesRouter = require('./routes/api/apinotes.js');
 const userRoutes = require('./routes/api/apiuser.js');
 const authRoutes = require('./routes/api/apiauth.js');
+const seniorRouter = require('./routes/senior.js');
+const apiSeniorRouter = require('./routes/api/apisenior.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -55,7 +57,7 @@ app.use(
     })
 );
 
-// const Mongo_URL = 'mongodb://127.0.0.1:27017/CollegeResources';
+// const DB_URL = 'mongodb://127.0.0.1:27017/CollegeResources';
 const DB_URL = process.env.ATLAS_URL;
 
 async function main() {
@@ -132,6 +134,8 @@ app.use('/notes', notesRouter);
 app.use('/api/notes', apiNotesRouter);
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/seniors', seniorRouter);
+app.use('/api/seniors', apiSeniorRouter);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

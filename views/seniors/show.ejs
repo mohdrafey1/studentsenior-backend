@@ -1,0 +1,80 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <body>
+        <div class="container my-5">
+            <h3 class="mb-4 text-center">Senior Detail</h3>
+
+            <ul class="list-group mb-4">
+                <!-- Profile Picture -->
+                <li class="list-group-item text-center">
+                    <strong>Profile Picture:</strong>
+                    <br>
+                    <img src="<%= senior.profilePicture %>" alt="Senior's Profile Picture"
+                        class="img-fluid rounded mt-2" style="max-width: 150px;">
+                </li>
+
+                <!-- Owner Information -->
+                <li class="list-group-item">
+                    <strong>Added by:</strong>
+                    <%= senior.owner.username %>
+                </li>
+
+                <!-- Senior Name -->
+                <li class="list-group-item">
+                    <strong>Name:</strong>
+                    <%= senior.name %>
+                </li>
+
+                <!-- Branch -->
+                <li class="list-group-item">
+                    <strong>Branch:</strong>
+                    <%= senior.branch %>
+                </li>
+
+                <!-- Year -->
+                <li class="list-group-item">
+                    <strong>Year:</strong>
+                    <%= senior.year %>
+                </li>
+
+                <!-- Domain -->
+                <li class="list-group-item">
+                    <strong>Domain:</strong>
+                    <%= senior.domain || 'Not specified' %>
+                </li>
+
+                <!-- WhatsApp Number -->
+                <li class="list-group-item">
+                    <strong>WhatsApp:</strong>
+                    <%= senior.whatsapp ? senior.whatsapp : 'Not provided' %>
+                </li>
+
+                <!-- Telegram Username -->
+                <li class="list-group-item">
+                    <strong>Telegram:</strong>
+                    <%= senior.telegram ? senior.telegram : 'Not provided' %>
+                </li>
+
+                <!-- College Information -->
+                <li class="list-group-item">
+                    <strong>College:</strong>
+                    <%= senior.college ? senior.college.name : 'Not linked to any college' %>
+                </li>
+
+                <!-- Status -->
+                <li class="list-group-item">
+                    <strong>Status:</strong>
+                    <%= senior.status ? 'Active' : 'Inactive' %>
+                </li>
+            </ul>
+
+            <!-- Edit and Delete Buttons -->
+            <div class="d-flex justify-content-between">
+                <a href="/seniors/<%= senior._id %>/edit" class="btn btn-warning">Edit</a>
+                <form action="/seniors/<%= senior._id %>?_method=DELETE" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+
+        </div>
+    </body>

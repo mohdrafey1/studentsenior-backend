@@ -39,3 +39,14 @@ module.exports.notesSchema = Joi.object({
     college: Joi.string().required(),
     status: Joi.boolean().default(false),
 });
+
+module.exports.seniorSchema = Joi.object({
+    name: Joi.string().required(),
+    domain: Joi.string().required(),
+    branch: Joi.string(),
+    whatsapp: Joi.string(),
+    telegram: Joi.string(),
+    year: Joi.string().required(),
+    college: Joi.string().required(),
+    status: Joi.boolean().default(false),
+});
