@@ -1,0 +1,21 @@
+{
+    "name": "Dashboard Student Senior",
+    "short_name": "Dashboard",
+    "description": "Student Senior Admin Dashboard",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": [
+        {
+            "src": "/assets/image192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/image520.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
