@@ -1,0 +1,76 @@
+<nav class="nav flex-column bg-dark h-100">
+    <h3 class="text-white my-3"><img src="/assets/image520.png" alt=""
+            style="width: 50px; height: 50px; margin-right: 10px;">Student Senior
+    </h3>
+    <a class="nav-link text-white" href="/">Home</a>
+
+    <!-- Colleges Dropdown -->
+    <a class="nav-link dropdown-toggle text-white" data-bs-toggle="collapse" href="#collegesMenu" role="button"
+        aria-expanded="false" aria-controls="collegesMenu">
+        Colleges
+    </a>
+    <div class="collapse ps-3" id="collegesMenu">
+        <a class="nav-link text-white" href="/colleges">All Colleges</a>
+        <a class="nav-link text-white" href="/colleges/new">Add College</a>
+    </div>
+
+    <!-- PYQs Dropdown -->
+    <a class="nav-link dropdown-toggle text-white" data-bs-toggle="collapse" href="#pyqsMenu" role="button"
+        aria-expanded="false" aria-controls="pyqsMenu">
+        PYQs
+    </a>
+    <div class="collapse ps-3" id="pyqsMenu">
+        <a class="nav-link text-white" href="/pyqs">All PYQs</a>
+        <a class="nav-link text-white" href="/pyqs/new">Add PYQ</a>
+    </div>
+
+    <!-- Senior Dropdown -->
+    <a class="nav-link dropdown-toggle text-white" data-bs-toggle="collapse" href="#seniorMenu" role="button"
+        aria-expanded="false" aria-controls="seniorMenu">
+        Senior
+    </a>
+    <div class="collapse ps-3" id="seniorMenu">
+        <a class="nav-link text-white" href="/seniors">All Seniors</a>
+        <a class="nav-link text-white" href="/seniors/new">Add Senior</a>
+    </div>
+
+    <!-- Store Dropdown -->
+    <a class="nav-link dropdown-toggle text-white" data-bs-toggle="collapse" href="#storeMenu" role="button"
+        aria-expanded="false" aria-controls="storeMenu">
+        Store
+    </a>
+    <div class="collapse ps-3" id="storeMenu">
+        <a class="nav-link text-white" href="/store">All Products</a>
+        <a class="nav-link text-white" href="/store/new">Add Product</a>
+    </div>
+
+    <!-- Groups Dropdown -->
+    <a class="nav-link dropdown-toggle text-white" data-bs-toggle="collapse" href="#groupsMenu" role="button"
+        aria-expanded="false" aria-controls="groupsMenu">
+        Groups
+    </a>
+    <div class="collapse ps-3" id="groupsMenu">
+        <a class="nav-link text-white" href="/whatsappgroup">All Groups</a>
+        <a class="nav-link text-white" href="/whatsappgroup/new">Add Group</a>
+    </div>
+
+    <!-- Notes Dropdown -->
+    <a class="nav-link dropdown-toggle text-white" data-bs-toggle="collapse" href="#notesMenu" role="button"
+        aria-expanded="false" aria-controls="notesMenu">
+        Notes
+    </a>
+    <div class="collapse ps-3" id="notesMenu">
+        <a class="nav-link text-white" href="/notes">All Notes</a>
+        <a class="nav-link text-white" href="/notes/new">Add Notes</a>
+    </div>
+
+    <!-- User Login/Logout Section -->
+    <% if (!currUser) { %>
+        <a class="nav-link text-white" href="/login">Login</a>
+        <% } else { %>
+            <a class="nav-link text-white" href="/profile">
+                <i class="fa-solid fa-user"></i> &nbsp; <%= currUser.username %>
+            </a>
+            <a class="nav-link text-white" href="/logout">Logout</a>
+            <% } %>
+</nav>
