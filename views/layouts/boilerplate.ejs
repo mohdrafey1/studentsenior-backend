@@ -26,9 +26,27 @@
             position: fixed;
             top: 0;
             left: -250px;
-            background-color: #fff;
+            background-color: #343a40;
             transition: 0.3s;
             z-index: 1000;
+        }
+
+        /* Close button inside sidebar */
+        .close-btn {
+            font-size: 30px;
+            cursor: pointer;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: #fff;
+            /* White color for visibility */
+            display: none;
+            /* Hide by default */
+        }
+
+        .sidebar.active .close-btn {
+            display: block;
+            /* Show when sidebar is active */
         }
 
         .sidebar.active {
@@ -63,6 +81,12 @@
             left: 10px;
             z-index: 1001;
             color: #343a40;
+            transition: transform 0.3s;
+        }
+
+        /* Hide hamburger */
+        .hamburger.hide {
+            display: none;
         }
 
         /* Hide sidebar on larger screens */
@@ -89,6 +113,8 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
+        <!-- Close button inside sidebar -->
+        <div class="close-btn" id="closeSidebar">&times;</div>
         <%- include('../includes/sidebar.ejs') %>
     </div>
 
@@ -108,12 +134,21 @@
             document.addEventListener('DOMContentLoaded', () => {
                 const hamburger = document.getElementById('hamburger');
                 const sidebar = document.getElementById('sidebar');
+                const closeSidebar = document.getElementById('closeSidebar');
 
                 // Toggle sidebar on hamburger click
                 hamburger.addEventListener('click', () => {
                     sidebar.classList.toggle('active');
+                    hamburger.classList.toggle('hide'); // Hide hamburger when sidebar is active
+                });
+
+                // Close sidebar on close button click
+                closeSidebar.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    hamburger.classList.remove('hide'); // Show hamburger when sidebar is closed
                 });
             });
+
         </script>
         <script>
             if ('serviceWorker' in navigator) {
