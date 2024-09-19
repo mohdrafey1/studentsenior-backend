@@ -57,6 +57,8 @@ module.exports.google = async (req, res, next) => {
             res.cookie('access_token', token, {
                 httpOnly: true,
                 expires: expiryDate,
+                secure: true, // Only use secure cookies in production
+                sameSite: 'None', // Allows the cookie to be sent cross-origin
             })
                 .status(200)
                 .json(rest);
@@ -80,7 +82,8 @@ module.exports.google = async (req, res, next) => {
             res.cookie('access_token', token, {
                 httpOnly: true,
                 expires: expiryDate,
-                s,
+                secure: true, // Only use secure cookies in production
+                sameSite: 'None', // Allows the cookie to be sent cross-origin
             })
                 .status(200)
                 .json(rest);
