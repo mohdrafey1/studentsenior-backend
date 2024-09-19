@@ -37,7 +37,7 @@ module.exports.signin = async (req, res, next) => {
         res.cookie('access_token', token, {
             httpOnly: true,
             expires: expiryDate,
-            secure: process.env.NODE_ENV === 'production', // Only use secure cookies in production
+            secure: true, // Only use secure cookies in production
             sameSite: 'None', // Allows the cookie to be sent cross-origin
         })
             .status(200)
