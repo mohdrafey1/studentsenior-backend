@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const wrapAsync = require('../../utils/wrapAsync.js');
 const { validateApiKey } = require('../../middleware.js');
+const { verifyToken } = require('../../utils/verifyUser.js');
 const multer = require('multer');
 const { storage } = require('../../cloudConfig.js');
 const upload = multer({
@@ -19,13 +20,18 @@ router.get('/', validateApiKey, apiStoreController.fetchProducts);
 // Create a new pyq
 router.post(
     '/',
-    validateApiKey,
+    verifyToken,
     upload.single('image'),
     wrapAsync(apiStoreController.createProduct)
 );
 
-router.put('/:id', upload.single('image'), apiStoreController.updateProduct);
+router.put(
+    '/:id',
+    verifyToken,
+    upload.single('image'),
+    apiStoreController.updateProduct
+);
 
-router.delete('/:id', apiStoreController.deleteProduct);
+router.delete('/:id', verifyToken, apiStoreController.deleteProduct);
 
 module.exports = router;

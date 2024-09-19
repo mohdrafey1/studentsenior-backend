@@ -5,9 +5,9 @@ const bcryptjs = require('bcryptjs');
 // update user
 
 module.exports.updateUser = async (req, res, next) => {
-    // if (req.user.id !== req.params.id) {
-    //     return next(errorHandler(401, 'You can update only your account!'));
-    // }
+    if (req.user.id !== req.params.id) {
+        return next(errorHandler(401, 'You can update only your account!'));
+    }
     try {
         if (req.body.password) {
             req.body.password = bcryptjs.hashSync(req.body.password, 10);

@@ -1,4 +1,3 @@
-// some issue with this , will fix later
 const jwt = require('jsonwebtoken');
 const { errorHandler } = require('./error.js');
 

@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 module.exports = {
     fetchProducts: async (req, res) => {
         try {
-            let store = await Store.find({}).populate('college');
+            const store = await Store.find({ status: true });
             res.json(store);
         } catch (err) {
             console.error(err);
@@ -25,21 +25,10 @@ module.exports = {
                 whatsapp,
                 telegram,
                 college,
-                status,
                 available,
             } = req.body;
 
-            const token = req.cookies.access_token; // Get the token from cookies or authorization header
-            let owner;
-
-            if (token) {
-                const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify and decode the token
-                owner = decoded.id; // Assign the user ID as the owner
-            } else {
-                return res
-                    .status(403)
-                    .json({ description: 'Access denied. No token provided.' });
-            }
+            let owner = req.user.id;
 
             const newProduct = new Store({
                 name,
@@ -49,7 +38,6 @@ module.exports = {
                 telegram,
                 owner,
                 college,
-                status: status === 'true',
                 available: available === 'true',
                 image: { url, filename },
             });

@@ -5,7 +5,7 @@ const { validateApiKey } = require('../../middleware.js');
 
 const router = express.Router();
 
-router.post('/update/:id', validateApiKey, updateUser); // add verify token later (verifyToken)
+router.post('/update/:id', verifyToken, validateApiKey, updateUser); // add verify token later (verifyToken)
 
 // router.delete('/delete/:id', verifyToken, deleteUser);  //will implement later if needed
 
