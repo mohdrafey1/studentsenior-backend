@@ -15,8 +15,15 @@ module.exports = {
 
     createProduct: async (req, res) => {
         try {
-            let url = req.file.path;
-            let filename = req.file.filename;
+            let url, filename;
+            if (req.file) {
+                url = req.file.path;
+                filename = req.file.filename;
+            } else {
+                return res
+                    .status(400)
+                    .json({ description: 'Image is required' });
+            }
 
             const {
                 name,
@@ -52,28 +59,6 @@ module.exports = {
         }
     },
 
-    // getProduct: async (req, res) => {
-    //     try {
-    //         const { id } = req.params;
-    //         const product = await Store.findById(id);
-
-    //         if (!product) {
-    //             return res
-    //                 .status(404)
-    //                 .json({ description: 'Product not found' });
-    //         }
-
-    //         let previousImageUrl = product.image.url.replace(
-    //             '/upload',
-    //             '/upload/h_200,w_250'
-    //         );
-    //         res.json({ product, previousImageUrl });
-    //     } catch (err) {
-    //         console.error(err);
-    //         res.status(500).json({ description: 'Error loading product' });
-    //     }
-    // },
-
     updateProduct: async (req, res) => {
         try {
             const { id } = req.params;
@@ -84,8 +69,8 @@ module.exports = {
                 whatsapp,
                 telegram,
                 college,
-                status,
                 available,
+                status = true,
             } = req.body;
 
             const updatedProduct = await Store.findByIdAndUpdate(
@@ -97,7 +82,7 @@ module.exports = {
                     whatsapp,
                     telegram,
                     college,
-                    status: status === 'true',
+                    status,
                     available: available === 'true',
                 },
                 { new: true }
@@ -109,25 +94,29 @@ module.exports = {
                     .json({ description: 'Product not found' });
             }
 
+            if (updatedProduct.owner.toString() !== req.user.id) {
+                return res.status(403).json({
+                    description:
+                        'You are not authorized to Update this product',
+                });
+            }
+
             if (req.file) {
-                // Delete the old image from Cloudinary if it exists
                 if (updatedProduct.image && updatedProduct.image.filename) {
                     await cloudinary.uploader.destroy(
                         updatedProduct.image.filename
                     );
                 }
 
-                // Upload the new image
                 const url = req.file.path;
                 const filename = req.file.filename;
 
-                // Update image details
                 updatedProduct.image = { url, filename };
             }
 
             await updatedProduct.save();
 
-            res.json({
+            res.status(200).json({
                 description: 'Product updated successfully',
                 updatedProduct,
             });
@@ -141,14 +130,28 @@ module.exports = {
         try {
             const product = await Store.findById(req.params.id);
 
+            if (!product) {
+                return res
+                    .status(404)
+                    .json({ description: 'Product not found' });
+            }
+
+            if (product.owner.toString() !== req.user.id) {
+                return res.status(403).json({
+                    description:
+                        'You are not authorized to delete this product',
+                });
+            }
+
             if (product && product.image && product.image.filename) {
-                // Delete the image from Cloudinary
                 await cloudinary.uploader.destroy(product.image.filename);
             }
 
             await Store.findByIdAndDelete(req.params.id);
 
-            res.json({ description: 'Product deleted successfully' });
+            res.status(200).json({
+                description: 'Product deleted successfully',
+            });
         } catch (err) {
             console.error('Error deleting product:', err);
             res.status(500).json({ description: 'Error deleting product' });
