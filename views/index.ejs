@@ -2,112 +2,272 @@
 
     <body>
         <div class="container mt-4">
-            <div class="row">
-                <!-- Card for All Colleges -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">All Colleges</h5>
-                            <p>Total: <%= totalColleges %>
-                            </p>
-                            <a href="/colleges" class="btn btn-primary">View Colleges</a>
+            <!-- Total Counts Section -->
+            <div class="text-center mb-4">
+                <h2 class="display-4">Dashboard Overview</h2>
+                <p class="text-muted">Quick summary of resources and recent activity</p>
+            </div>
+
+            <div class="row text-center">
+                <!-- Card for Total Colleges -->
+                <div class="col-md-3 mb-3">
+                    <a href="/colleges" class="text-decoration-none">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">Colleges</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <%= totalColleges %>
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Card for Total PYQs -->
+                <div class="col-md-3 mb-3">
+                    <a href="/pyqs" class="text-decoration-none">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">PYQs</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <%= totalPYQs %>
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Card for Total Notes -->
+                <div class="col-md-3 mb-3">
+                    <a href="/notes" class="text-decoration-none">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-info">Notes</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <%= totalNotes %>
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Card for Total Groups -->
+                <div class="col-md-3 mb-3">
+                    <a href="/whatsappgroup" class="text-decoration-none">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-warning">Groups</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <%= totalGroups %>
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Card for Total Seniors -->
+                <div class="col-md-3 mb-3">
+                    <a href="/colleges" class="text-decoration-none">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-danger">Seniors</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <%= totalSeniors %>
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Card for Total Communities -->
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-light border-0 shadow-sm hover-card">
+                        <div class="card-body">
+                            <h5 class="card-title text-secondary">Communities</h5>
+                            <h4 class="font-weight-bold text-dark">0</h4>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card for All PYQs -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">All PYQs</h5>
-                            <p>Total: <%= totalPYQs %>
-                            </p>
-                            <a href="/pyqs" class="btn btn-primary">View PYQs</a>
+                <!-- Card for Total Store Products -->
+                <div class="col-md-3 mb-3">
+                    <a href="/store" class="text-decoration-none">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-purple">Store Products</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <%= totalProduct %>
+                                </h4>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
-                <!-- Card for Notes -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Notes</h5>
-                            <p>Total: <%= totalNotes %>
-                            </p>
-                            <a href="/notes" class="btn btn-primary">View Notes</a>
+                <!-- Card for Total Admins -->
+                <div class="col-md-3 mb-3">
+                    <a href="/user" class="text-decoration-none">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-dark">Admins</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <%= totalUsers %>
+                                </h4>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
-                <!-- Card for Groups -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Groups</h5>
-                            <p>Total Groups: <%= totalGroups %>
-                            </p>
-                            <a href="/whatsappgroup" class="btn btn-primary">View Groups</a>
+                <!-- Card for Total Users -->
+                <div class="col-md-3 mb-3">
+                    <a href="/client" class="text-decoration-none">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-teal">Users</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <%= totalClients %>
+                                </h4>
+                            </div>
                         </div>
-                    </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Items Section -->
+            <div class="mt-4">
+                <div class="text-center mb-4">
+                    <h2 class="display-5">Recent Items</h2>
                 </div>
 
-                <!-- Card for Seniors -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Seniors</h5>
-                            <p>Total senior: <%= totalSeniors %>
-                            </p>
-                            <a href="/seniors" class="btn btn-primary">View Seniors</a>
+                <div class="row">
+                    <!-- Recent PYQs -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                Recent PYQs
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <% recentPYQs.forEach(pyq=> { %>
+                                    <a href="/pyqs/<%= pyq._id %>" class="text-decoration-none hover-item">
+                                        <li class="list-group-item">
+                                            <%= pyq.subjectName %> - <%= pyq.subjectCode %>
+                                        </li>
+                                    </a>
+                                    <% }); %>
+                            </ul>
                         </div>
                     </div>
-                </div>
 
-                <!-- Card for Communities -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Communities</h5>
-                            <p>Total community: 0</p>
-                            <a href="/communities" class="btn btn-primary">View Communities</a>
+                    <!-- Recent Seniors -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-success text-white">
+                                Recent Seniors
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <% recentSeniors.forEach(senior=> { %>
+                                    <a href="/seniors/<%= senior._id %>" class="text-decoration-none hover-item">
+                                        <li class="list-group-item">
+                                            <%= senior.name %> - <%= senior.branch %>
+                                        </li>
+                                    </a>
+                                    <% }); %>
+                            </ul>
                         </div>
                     </div>
-                </div>
 
-                <!-- Card for Store -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Store</h5>
-                            <p>Total Produts: <%= totalProduct %>
-                            </p>
-                            <a href="/store" class="btn btn-primary">View Store</a>
+                    <!-- Recent Products -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-danger text-white">
+                                Recent Products
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <% recentProducts.forEach(product=> { %>
+                                    <a href="/store" class="text-decoration-none hover-item">
+                                        <li class="list-group-item">
+                                            <%= product.name %> - $<%= product.price %>
+                                        </li>
+                                    </a>
+                                    <% }); %>
+                            </ul>
                         </div>
                     </div>
-                </div>
 
-                <!-- card for users -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Admin</h5>
-                            <p>Total Admins: <%= totalUsers %>
-                            </p>
-                            <a href="/user" class="btn btn-primary">View All Admin</a>
+                    <!-- Recent Colleges -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-warning text-white">
+                                Recent Colleges
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <% recentColleges.forEach(college=> { %>
+                                    <a href="/colleges/<%= college._id %>" class="text-decoration-none hover-item">
+                                        <li class="list-group-item">
+                                            <%= college.name %> - <%= college.location %>
+                                        </li>
+                                    </a>
+                                    <% }); %>
+                            </ul>
                         </div>
                     </div>
-                </div>
-                <!-- card for Client -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Users</h5>
-                            <p>Total User: <%= totalClients %>
-                            </p>
-                            <a href="/client" class="btn btn-primary">View All Users </a>
+
+                    <!-- Recent Notes -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-info text-white">
+                                Recent Notes
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <% recentNotes.forEach(note=> { %>
+                                    <a href="/notes" class="text-decoration-none hover-item">
+                                        <li class="list-group-item">
+                                            <%= note.subjectName %> - <%= note.status %>
+                                        </li>
+                                    </a>
+                                    <% }); %>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Recent Groups -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-secondary text-white">
+                                Recent Groups
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <% recentGroups.forEach(group=> { %>
+                                    <a href="/whatsappgroup" class="text-decoration-none hover-item">
+                                        <li class="list-group-item">
+                                            <%= group.title %> - Status: <%= group.status %>
+                                        </li>
+                                    </a>
+                                    <% }); %>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Hover card effect -->
+        <style>
+            .hover-card:hover {
+                transform: scale(1.05);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .hover-item:hover {
+                background-color: #f8f9fa;
+                transition: background-color 0.2s ease-in-out;
+            }
+
+            .card-header {
+                font-weight: bold;
+            }
+
+            li:hover {
+                background-color: rgb(255, 255, 234);
+            }
+        </style>
     </body>
