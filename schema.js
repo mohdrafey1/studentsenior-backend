@@ -1,12 +1,10 @@
 const Joi = require('joi');
 
 module.exports.collegeSchema = Joi.object({
-    college: Joi.object({
-        name: Joi.string().required(),
-        description: Joi.string().required(),
-        location: Joi.string().required(),
-        status: Joi.boolean(),
-    }).required(),
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    location: Joi.string().required(),
+    status: Joi.boolean(),
 });
 
 module.exports.pyqSchema = Joi.object({
