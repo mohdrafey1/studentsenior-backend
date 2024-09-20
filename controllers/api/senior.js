@@ -46,7 +46,7 @@ module.exports.updateSenior = async (req, res) => {
     const { id } = req.params;
     const { name, domain, branch, year, whatsapp, telegram, college } =
         req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     try {
         const updatedSenior = await Seniors.findByIdAndUpdate(
