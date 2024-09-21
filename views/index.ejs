@@ -147,29 +147,46 @@
                             </div>
                             <ul class="list-group list-group-flush">
                                 <% recentPYQs.forEach(pyq=> { %>
-                                    <a href="/pyqs/<%= pyq._id %>" class="text-decoration-none hover-item">
-                                        <li class="list-group-item">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a href="/pyqs/<%= pyq._id %>" class="text-decoration-none hover-item">
                                             <%= pyq.subjectName %> - <%= pyq.subjectCode %>
-                                        </li>
-                                    </a>
+                                        </a>
+                                        <!-- Toggle Button -->
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label" for="pyqSwitch<%= pyq._id %>">Status</label>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="pyqSwitch<%= pyq._id %>" <%=pyq.status ? 'checked' : '' %>
+                                            onchange="toggleStatus('<%= pyq._id %>', this.checked, 'pyq')">
+                                        </div>
+                                    </li>
                                     <% }); %>
                             </ul>
                         </div>
                     </div>
 
-                    <!-- Recent Seniors -->
+
+                    <!-- Recent Colleges -->
                     <div class="col-md-6 mb-4">
                         <div class="card border-0 shadow-sm">
-                            <div class="card-header bg-success text-white">
-                                Recent Seniors
+                            <div class="card-header bg-warning text-white">
+                                Recent Colleges
                             </div>
                             <ul class="list-group list-group-flush">
-                                <% recentSeniors.forEach(senior=> { %>
-                                    <a href="/seniors/<%= senior._id %>" class="text-decoration-none hover-item">
-                                        <li class="list-group-item">
-                                            <%= senior.name %> - <%= senior.branch %>
-                                        </li>
-                                    </a>
+                                <% recentColleges.forEach(college=> { %>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a href="/colleges/<%= college._id %>" class="text-decoration-none hover-item">
+                                            <%= college.name %>
+                                        </a>
+                                        <!-- Toggle Button -->
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label"
+                                                for="collegeSwitch<%= college._id %>">Status</label>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="collegeSwitch<%= college._id %>" <%=college.status ? 'checked' : ''
+                                                %>
+                                            onchange="toggleStatus('<%= college._id %>', this.checked, 'college')">
+                                        </div>
+                                    </li>
                                     <% }); %>
                             </ul>
                         </div>
@@ -183,29 +200,46 @@
                             </div>
                             <ul class="list-group list-group-flush">
                                 <% recentProducts.forEach(product=> { %>
-                                    <a href="/store" class="text-decoration-none hover-item">
-                                        <li class="list-group-item">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a href="/store" class="text-decoration-none hover-item">
                                             <%= product.name %> - $<%= product.price %>
-                                        </li>
-                                    </a>
+                                        </a>
+                                        <!-- Toggle Button -->
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label"
+                                                for="productSwitch<%= product._id %>">Status</label>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="productSwitch<%= product._id %>" <%=product.status ? 'checked' : ''
+                                                %>
+                                            onchange="toggleStatus('<%= product._id %>', this.checked, 'product')">
+                                        </div>
+                                    </li>
                                     <% }); %>
                             </ul>
                         </div>
                     </div>
 
-                    <!-- Recent Colleges -->
+                    <!-- Recent Seniors -->
                     <div class="col-md-6 mb-4">
                         <div class="card border-0 shadow-sm">
-                            <div class="card-header bg-warning text-white">
-                                Recent Colleges
+                            <div class="card-header bg-success text-white">
+                                Recent Seniors
                             </div>
                             <ul class="list-group list-group-flush">
-                                <% recentColleges.forEach(college=> { %>
-                                    <a href="/colleges/<%= college._id %>" class="text-decoration-none hover-item">
-                                        <li class="list-group-item">
-                                            <%= college.name %> - <%= college.location %>
-                                        </li>
-                                    </a>
+                                <% recentSeniors.forEach(senior=> { %>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a href="/seniors/<%= senior._id %>" class="text-decoration-none hover-item">
+                                            <%= senior.name %> - <%= senior.branch %>
+                                        </a>
+                                        <!-- Toggle Button -->
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label"
+                                                for="seniorSwitch<%= senior._id %>">Status</label>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="seniorSwitch<%= senior._id %>" <%=senior.status ? 'checked' : '' %>
+                                            onchange="toggleStatus('<%= senior._id %>', this.checked, 'senior')">
+                                        </div>
+                                    </li>
                                     <% }); %>
                             </ul>
                         </div>
@@ -219,11 +253,19 @@
                             </div>
                             <ul class="list-group list-group-flush">
                                 <% recentNotes.forEach(note=> { %>
-                                    <a href="/notes" class="text-decoration-none hover-item">
-                                        <li class="list-group-item">
-                                            <%= note.subjectName %> - <%= note.status %>
-                                        </li>
-                                    </a>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a href="/notes" class="text-decoration-none hover-item">
+                                            <%= note.subjectName %>
+                                        </a>
+                                        <!-- Toggle Button -->
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label"
+                                                for="noteSwitch<%= note._id %>">Status</label>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="noteSwitch<%= note._id %>" <%=note.status ? 'checked' : '' %>
+                                            onchange="toggleStatus('<%= note._id %>', this.checked, 'note')">
+                                        </div>
+                                    </li>
                                     <% }); %>
                             </ul>
                         </div>
@@ -237,11 +279,19 @@
                             </div>
                             <ul class="list-group list-group-flush">
                                 <% recentGroups.forEach(group=> { %>
-                                    <a href="/whatsappgroup" class="text-decoration-none hover-item">
-                                        <li class="list-group-item">
-                                            <%= group.title %> - Status: <%= group.status %>
-                                        </li>
-                                    </a>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a href="/whatsappgroup" class="text-decoration-none hover-item">
+                                            <%= group.title %>
+                                        </a>
+                                        <!-- Toggle Button -->
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label"
+                                                for="groupSwitch<%= group._id %>">Status</label>
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="groupSwitch<%= group._id %>" <%=group.status ? 'checked' : '' %>
+                                            onchange="toggleStatus('<%= group._id %>', this.checked, 'group')">
+                                        </div>
+                                    </li>
                                     <% }); %>
                             </ul>
                         </div>
@@ -270,4 +320,28 @@
                 background-color: rgb(255, 255, 234);
             }
         </style>
+
+        <script>
+            function toggleStatus(id, status, type) {
+                fetch(`/toggle-status/${type}/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log(`${type} status updated successfully`);
+                        } else {
+                            console.error(`Failed to update ${type} status`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+        </script>
     </body>

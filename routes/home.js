@@ -10,7 +10,7 @@ const Groups = require('../models/WhatsappGroup');
 const Notes = require('../models/Notes');
 const { isLoggedIn, isRafey } = require('../middleware.js');
 
-router.get('/', async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
     try {
         const totalUsers = await User.countDocuments();
         const totalClients = await Client.countDocuments();

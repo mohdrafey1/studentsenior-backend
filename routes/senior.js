@@ -16,7 +16,7 @@ router.get('/:id/edit', isLoggedIn, wrapAsync(seniorController.editSeniorForm));
 
 router
     .route('/:id')
-    .get(wrapAsync(seniorController.showSenior))
+    .get(isLoggedIn, wrapAsync(seniorController.showSenior))
     .put(isLoggedIn, wrapAsync(seniorController.editSenior))
     .delete(isLoggedIn, wrapAsync(seniorController.deleteSenior));
 

@@ -20,6 +20,7 @@ const User = require('./models/User.js');
 const cookieParser = require('cookie-parser');
 
 const home = require('./routes/home.js');
+const toggleStatus = require('./routes/toggleStatus.js');
 const collegeRouter = require('./routes/college');
 const apicollegeRouter = require('./routes/api/apicollege.js');
 const apiPyqRouter = require('./routes/api/apiPyq.js');
@@ -124,7 +125,6 @@ app.use((req, res, next) => {
 
 app.use('/', home);
 
-//college routes
 app.use('/colleges', collegeRouter);
 app.use('/api/colleges', apicollegeRouter);
 app.use('/', userRouter);
@@ -140,6 +140,7 @@ app.use('/seniors', seniorRouter);
 app.use('/api/seniors', apiSeniorRouter);
 app.use('/store', storeRouter);
 app.use('/api/store', apiStoreRouter);
+app.use('/toggle-status', toggleStatus);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
