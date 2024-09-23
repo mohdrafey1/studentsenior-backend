@@ -36,6 +36,7 @@ const seniorRouter = require('./routes/senior.js');
 const apiSeniorRouter = require('./routes/api/apisenior.js');
 const storeRouter = require('./routes/store.js');
 const apiStoreRouter = require('./routes/api/apistore.js');
+const apiCommunityRouter = require('./routes/api/apicommunity.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -141,6 +142,7 @@ app.use('/api/seniors', apiSeniorRouter);
 app.use('/store', storeRouter);
 app.use('/api/store', apiStoreRouter);
 app.use('/toggle-status', toggleStatus);
+app.use('/api/community', apiCommunityRouter);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

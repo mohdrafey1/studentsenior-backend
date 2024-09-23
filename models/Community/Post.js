@@ -1,0 +1,45 @@
+const mongoose = require('mongoose');
+
+const PostSchema = new mongoose.Schema({
+    content: {
+        type: String,
+        required: true,
+    },
+    isAnonymous: {
+        type: Boolean,
+        default: false,
+    },
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Client',
+        required: true,
+    },
+    likes: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Client',
+        default: [],
+    },
+    comments: [
+        {
+            content: {
+                type: String,
+                required: true,
+            },
+            author: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Client',
+                required: true,
+            },
+            timestamp: {
+                type: Date,
+                default: Date.now,
+            },
+            likes: {
+                type: Number,
+                default: 0,
+            },
+        },
+    ],
+});
+
+module.exports = mongoose.model('Post', PostSchema);
