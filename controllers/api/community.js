@@ -11,10 +11,10 @@ module.exports.fetchPost = async (req, res) => {
 };
 
 module.exports.createPost = async (req, res) => {
-    const { content, isAnonymous } = req.body;
+    const { content, isAnonymous, college } = req.body;
     let author = req.user.id;
     try {
-        const newPost = new Post({ content, isAnonymous, author });
+        const newPost = new Post({ content, isAnonymous, college, author });
         await newPost.save();
         res.json({ description: 'Post Created Succesfully' });
     } catch (err) {
@@ -25,7 +25,7 @@ module.exports.createPost = async (req, res) => {
 
 module.exports.updatePost = async (req, res) => {
     try {
-        const { content, isAnonymous } = req.body;
+        const { content, isAnonymous, college } = req.body;
 
         const post = await Post.findById(req.params.id);
 
@@ -44,6 +44,7 @@ module.exports.updatePost = async (req, res) => {
             {
                 content,
                 isAnonymous,
+                college,
             },
             { new: true }
         );

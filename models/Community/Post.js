@@ -14,6 +14,11 @@ const PostSchema = new mongoose.Schema({
         ref: 'Client',
         required: true,
     },
+    college: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'College',
+        required: true,
+    },
     likes: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Client',

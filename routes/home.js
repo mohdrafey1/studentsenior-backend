@@ -9,6 +9,7 @@ const Colleges = require('../models/Colleges');
 const Groups = require('../models/WhatsappGroup');
 const Notes = require('../models/Notes');
 const { isLoggedIn, isRafey } = require('../middleware.js');
+const Post = require('../models/Community/Post.js');
 
 router.get('/', isLoggedIn, async (req, res) => {
     try {
@@ -20,6 +21,7 @@ router.get('/', isLoggedIn, async (req, res) => {
         const totalNotes = await Notes.countDocuments();
         const totalSeniors = await Senior.countDocuments();
         const totalProduct = await Store.countDocuments();
+        const totalPost = await Post.countDocuments();
 
         // Fetch recent 5 entries for each category
         const recentPYQs = await PYQ.find().sort({ createdAt: -1 }).limit(5);
@@ -33,6 +35,7 @@ router.get('/', isLoggedIn, async (req, res) => {
             .sort({ createdAt: -1 })
             .limit(5);
         const recentNotes = await Notes.find().sort({ createdAt: -1 }).limit(5);
+        const recentPosts = await Post.find().sort({ createdAt: -1 }).limit(5);
         const recentGroups = await Groups.find()
             .sort({ createdAt: -1 })
             .limit(5);
@@ -46,6 +49,7 @@ router.get('/', isLoggedIn, async (req, res) => {
             totalNotes,
             totalSeniors,
             totalProduct,
+            totalPost,
             recentPYQs,
             recentSeniors,
             recentProducts,
