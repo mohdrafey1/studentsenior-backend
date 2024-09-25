@@ -1,0 +1,38 @@
+<% layout('/layouts/boilerplate.ejs') %>
+
+    <div class="container">
+        <h3 class="m-4 text-center">All Community Posts</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Content</th>
+                        <th>Author</th>
+                        <th>College</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% allPost.forEach(post=> { %>
+                        <tr>
+                            <td class="text-truncate" style="max-width: 200px;">
+                                <%= post.content %>
+                            </td>
+                            <td>
+                                <%= post.author.username %>
+                            </td>
+                            <td>
+                                <%= post.college.name %>
+                            </td>
+                            <td>
+                                <a href="/community/<%= post._id %>" class="btn btn-success btn-sm mb-1">View</a>
+                                <form action="/community/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm mb-1">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>

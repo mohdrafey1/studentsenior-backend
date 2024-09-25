@@ -1,0 +1,54 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <body>
+        <div class="container my-5">
+            <h3 class="mb-4 text-center">Post Detail</h3>
+
+            <ul class="list-group mb-4">
+                <li class="list-group-item">
+                    <strong>Added by :</strong>
+                    <%= post.author.username %>
+                </li>
+                <li class="list-group-item">
+                    <strong>College Name:</strong>
+                    <%= post.college.name %>
+                </li>
+                <li class="list-group-item">
+                    <strong>Content:</strong>
+                    <%= post.content %>
+                </li>
+                <li class="list-group-item">
+                    <strong>Status of user:</strong>
+                    <%= post.isAnonymous ? 'Anonymous' : 'Public' %>
+                </li>
+            </ul>
+
+            <div class="d-flex justify-content-between">
+                <a href="/community/<%= post._id %>/edit" class="btn btn-warning">Edit</a>
+                <form action="/community/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+
+            <div class="container mt-4">
+                <h4>Comments</h4>
+                <ul class="list-group">
+                    <% post.comments.forEach(comment=> { %>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>
+                                    <%= comment.author.username %>:
+                                </strong>
+                                <%= comment.content %>
+                            </div>
+                            <form action="/community/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE"
+                                method="POST">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </li>
+                        <% }) %>
+                </ul>
+            </div>
+
+        </div>
+    </body>

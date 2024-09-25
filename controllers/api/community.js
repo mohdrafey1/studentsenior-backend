@@ -1,4 +1,4 @@
-const Post = require('../../models/Community/Post');
+const Post = require('../../models/Post');
 
 module.exports.fetchPost = async (req, res) => {
     try {

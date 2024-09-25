@@ -60,3 +60,8 @@ module.exports.storeSchema = Joi.object({
     status: Joi.boolean().default(false),
     image: Joi.string().allow('', null),
 });
+
+module.exports.postSchema = Joi.object({
+    content: Joi.string().required(),
+    isAnonymous: Joi.boolean().default(false),
+});
