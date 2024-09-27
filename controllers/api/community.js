@@ -2,7 +2,15 @@ const Post = require('../../models/Post');
 
 module.exports.fetchPost = async (req, res) => {
     try {
-        const posts = await Post.find();
+        const posts = await Post.find()
+            .populate('college')
+            .populate('author')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'author',
+                },
+            });
         res.json(posts);
     } catch (err) {
         console.error('Error fetching Posts', err);
@@ -170,25 +178,49 @@ module.exports.likePost = async (req, res) => {
     const userId = req.user.id;
     const postId = req.params.id;
 
-    const post = await Post.findById(postId);
-    if (!post.likes.includes(userId)) {
-        post.likes.push(userId);
-        await post.save();
-        res.json({ message: 'Post liked!' });
-    } else {
-        res.json({ message: 'You already liked this post.' });
+    try {
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        // Check if the user has already liked the post
+        const hasLiked = post.likes.includes(userId);
+
+        if (hasLiked) {
+            // If already liked, remove the like (unlike the post)
+            post.likes = post.likes.filter(
+                (id) => id.toString() !== userId.toString()
+            );
+            await post.save();
+            return res.json({
+                message: 'Post unliked!',
+                likes: post.likes.length,
+            });
+        } else {
+            // If not liked, add the like
+            post.likes.push(userId);
+            await post.save();
+            return res.json({
+                message: 'Post liked!',
+                likes: post.likes.length,
+            });
+        }
+    } catch (err) {
+        console.error('Error liking/unliking post:', err);
+        return res.status(500).json({ message: 'Error liking/unliking post' });
     }
 };
 
-module.exports.unlikePost = async (req, res) => {
-    const userId = req.user.id;
-    const postId = req.params.id;
+// module.exports.unlikePost = async (req, res) => {
+//     const userId = req.user.id;
+//     const postId = req.params.id;
 
-    const post = await Post.findById(postId);
-    post.likes = post.likes.filter((id) => id.toString() !== userId.toString());
-    await post.save();
-    res.json({ message: 'Post unliked!' });
-};
+//     const post = await Post.findById(postId);
+//     post.likes = post.likes.filter((id) => id.toString() !== userId.toString());
+//     await post.save();
+//     res.json({ message: 'Post unliked!' });
+// };
 
 module.exports.likeComment = async (req, res) => {
     const { postId, commentId } = req.params;

@@ -64,21 +64,36 @@ module.exports.deletePost = async (req, res) => {
     res.redirect('/community');
 };
 
+//currently not working will fix later
 module.exports.deleteComment = async (req, res) => {
     const { postId, commentId } = req.params;
-    console.log(req.params);
-    try {
-        await Post.findByIdAndUpdate(
-            postId,
-            { $pull: { comments: { _id: commentId } } },
-            { new: true }
-        );
 
-        req.flash('success', 'Comment deleted successfully');
+    try {
+        const post = await Post.findById(postId);
+        // if (!post) {
+        //     return res.status(404).json({ message: 'Post not found' });
+        // }
+
+        // const comment = post.comments.id(commentId);
+        // if (!comment) {
+        //     return res.status(404).json({ message: 'Comment not found' });
+        // }
+
+        // if (comment.author.toString() !== req.user.id) {
+        //     return res.status(403).json({
+        //         description: 'You are not authorized to delete this comment',
+        //     });
+        // }
+
+        // Remove the comment by pulling it out of the array
+        post.comments.pull({ _id: commentId });
+        await post.save();
+
+        req.flash('success', 'comment deleted successfully');
         res.redirect(`/community/${postId}`);
     } catch (err) {
-        console.error('Error occurred while deleting comment:', err);
-        req.flash('error', 'Could not delete the comment');
+        console.error('Error deleting comment:', err);
+        req.flash('error', 'error deleting comment');
         res.redirect(`/community/${postId}`);
     }
 };
