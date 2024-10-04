@@ -65,3 +65,12 @@ module.exports.postSchema = Joi.object({
     content: Joi.string().required(),
     isAnonymous: Joi.boolean().default(false),
 });
+
+module.exports.opportunitySchema = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    whatsapp: Joi.string(),
+    email: Joi.string(),
+    college: Joi.string().required(),
+    status: Joi.boolean().default(false),
+});

@@ -1,0 +1,73 @@
+<% layout('/layouts/boilerplate.ejs') %>
+
+    <div class="container mt-4">
+        <h1>Edit Opportunity</h1>
+        <form action="/opportunity/getopportunities/<%= getOpportunity._id %>?_method=PUT" method="POST">
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" value="<%= getOpportunity.name %>"
+                    required>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description"
+                    class="form-control"><%= getOpportunity.description %></textarea>
+            </div>
+
+            <!-- College -->
+            <div class="form-group">
+                <label for="college">Select College</label>
+                <select id="college" name="college" class="form-control" required>
+                    <option value="">Select College</option>
+                    <!-- Populate with colleges and select current college -->
+                </select>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status" required>
+                    <option value="true" <%=getOpportunity.status ? 'selected' : '' %>>Active</option>
+                    <option value="false" <%=!getOpportunity.status ? 'selected' : '' %>>Inactive</option>
+                </select>
+            </div>
+
+            <!-- WhatsApp Number -->
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp Number</label>
+                <input type="text" id="whatsapp" name="whatsapp" class="form-control"
+                    value="<%= getOpportunity.whatsapp %>">
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" value="<%= getOpportunity.email %>">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-success mt-3">Update Opportunity</button>
+        </form>
+    </div>
+
+    <script>
+        // Fetch colleges and populate the college dropdown, with current selection pre-selected
+        fetch('/api/colleges')
+            .then(response => response.json())
+            .then(data => {
+                const collegeSelect = document.getElementById('college');
+                data.forEach(college => {
+                    const option = document.createElement('option');
+                    option.value = college._id;
+                    option.textContent = college.name;
+                    if (college._id === '<%= getOpportunity.college._id %>') {
+                        option.selected = true;
+                    }
+                    collegeSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching colleges:', error));
+    </script>

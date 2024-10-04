@@ -1,0 +1,57 @@
+<% layout('/layouts/boilerplate.ejs') %>
+
+    <div class="container mt-4">
+        <h1>
+            <%= giveOpportunity.name %> Details
+        </h1>
+
+        <!-- Opportunity Details -->
+        <ul class="list-group mb-4">
+            <li class="list-group-item">
+                <strong>Description:</strong>
+                <%= giveOpportunity.description || 'Not provided' %>
+            </li>
+
+            <li class="list-group-item">
+                <strong>Owner:</strong>
+                <%= giveOpportunity.owner ? giveOpportunity.owner.username : 'Not provided' %>
+            </li>
+
+            <li class="list-group-item">
+                <strong>College:</strong>
+                <%= giveOpportunity.college ? giveOpportunity.college.name : 'Not linked to a college' %>
+            </li>
+
+            <li class="list-group-item">
+                <strong>Status:</strong>
+                <%= giveOpportunity.status ? 'Active' : 'Inactive' %>
+            </li>
+
+            <li class="list-group-item">
+                <strong>WhatsApp:</strong>
+                <%= giveOpportunity.whatsapp || 'Not provided' %>
+            </li>
+
+            <li class="list-group-item">
+                <strong>Email:</strong>
+                <%= giveOpportunity.email || 'Not provided' %>
+            </li>
+
+            <!-- Soft delete status -->
+            <% if (giveOpportunity.isDeleted) { %>
+                <li class="list-group-item">
+                    <strong>Deleted At:</strong>
+                    <%= giveOpportunity.deletedAt ? giveOpportunity.deletedAt.toLocaleDateString() : 'N/A' %>
+                </li>
+                <% } %>
+        </ul>
+
+        <!-- Edit and Delete Buttons -->
+        <div class="d-flex justify-content-between">
+            <a href="/opportunity/giveopportunities/<%= giveOpportunity._id %>/edit" class="btn btn-warning">Edit</a>
+            <form action="/opportunity/giveopportunities/<%= giveOpportunity._id %>?_method=DELETE" method="POST"
+                class="d-inline">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>

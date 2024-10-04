@@ -1,0 +1,69 @@
+<% layout('/layouts/boilerplate.ejs') %>
+
+    <div class="container mt-4">
+        <h1>Add New Opportunity</h1>
+        <form action="/opportunity/giveopportunities" method="POST">
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control"></textarea>
+            </div>
+
+            <!-- College -->
+            <div class="form-group">
+                <label for="college">Select College</label>
+                <select id="college" name="college" class="form-control" required>
+                    <option value="">Select College</option>
+                    <!-- College options will be dynamically populated -->
+                </select>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status" required>
+                    <option value="">Select</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
+
+            <!-- WhatsApp Number -->
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp Number</label>
+                <input type="text" id="whatsapp" name="whatsapp" class="form-control"
+                    placeholder="Enter 10-digit number">
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary mt-3">Add Opportunity</button>
+        </form>
+    </div>
+
+    <script>
+        // Fetch colleges and populate the college dropdown
+        fetch('/api/colleges')
+            .then(response => response.json())
+            .then(data => {
+                const collegeSelect = document.getElementById('college');
+                data.forEach(college => {
+                    const option = document.createElement('option');
+                    option.value = college._id;
+                    option.textContent = college.name;
+                    collegeSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching colleges:', error));
+    </script>

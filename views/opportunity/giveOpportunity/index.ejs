@@ -1,0 +1,47 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="d-flex m-4 gap-4">
+        <div> <a href="/opportunity/giveopportunities/new" class="btn btn-primary mb-3">Add New Give Opportunity</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <h1>All Give Opportunity</h1>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>College Name</th>
+                    <th>whatsapp</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% allGiveOpportunities.forEach(giveopportunity=> { %>
+                    <tr>
+                        <td>
+                            <%= giveopportunity.name %>
+                        </td>
+                        <td>
+                            <%= giveopportunity.college.name %>
+                        </td>
+                        <td>
+                            <%= giveopportunity.whatsapp %>
+                        </td>
+                        <td>
+                            <%= giveopportunity.status ? 'Approved' : 'Pending' %>
+                        </td>
+                        <td>
+                            <a href="opportunity/giveopportunities/<%= giveopportunity._id %>"
+                                class="btn btn-success btn-sm">View</a>
+                            <form action="opportunity/giveopportunities/<%= giveopportunity._id %>?_method=DELETE"
+                                method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>

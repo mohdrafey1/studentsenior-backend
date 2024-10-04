@@ -7,6 +7,7 @@ const Colleges = require('../models/Colleges');
 const Groups = require('../models/WhatsappGroup');
 const Notes = require('../models/Notes');
 const Post = require('../models/Post.js');
+const { GetOpportunity, GiveOpportunity } = require('../models/Opportunity');
 
 module.exports.home = async (req, res) => {
     try {
@@ -19,6 +20,8 @@ module.exports.home = async (req, res) => {
         const totalSeniors = await Senior.countDocuments();
         const totalProduct = await Store.countDocuments();
         const totalPost = await Post.countDocuments();
+        const totalGetCommunity = await GetOpportunity.countDocuments();
+        const totalGiveCommunity = await GiveOpportunity.countDocuments();
 
         // Fetch recent 5 entries for each category
         const recentPYQs = await PYQ.find().sort({ createdAt: -1 }).limit(5);
@@ -47,6 +50,8 @@ module.exports.home = async (req, res) => {
             totalSeniors,
             totalProduct,
             totalPost,
+            totalGetCommunity,
+            totalGiveCommunity,
             recentPYQs,
             recentSeniors,
             recentProducts,

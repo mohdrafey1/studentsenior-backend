@@ -38,6 +38,8 @@ const storeRouter = require('./routes/store.js');
 const apiStoreRouter = require('./routes/api/apistore.js');
 const communityRouter = require('./routes/community.js');
 const apiCommunityRouter = require('./routes/api/apicommunity.js');
+const opportunityRouter = require('./routes/opportunity.js');
+const apiOpportunityRouter = require('./routes/api/apiopportunity.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -145,6 +147,8 @@ app.use('/api/store', apiStoreRouter);
 app.use('/toggle-status', toggleStatus);
 app.use('/community', communityRouter);
 app.use('/api/community', apiCommunityRouter);
+app.use('/opportunity', opportunityRouter);
+app.use('/api/opportunity', apiOpportunityRouter);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

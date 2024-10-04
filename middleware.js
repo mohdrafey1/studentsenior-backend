@@ -8,6 +8,7 @@ const {
     seniorSchema,
     storeSchema,
     postSchema,
+    opportunitySchema,
 } = require('./schema.js');
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -107,6 +108,16 @@ module.exports.validateStore = (req, res, next) => {
 
 module.exports.validatePost = (req, res, next) => {
     let { error } = postSchema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(',');
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+};
+
+module.exports.validateOpportunity = (req, res, next) => {
+    let { error } = opportunitySchema.validate(req.body);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(',');
         throw new ExpressError(400, errMsg);
