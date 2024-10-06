@@ -21,6 +21,7 @@ module.exports = {
 
     createGetOpportunities: async (req, res) => {
         const { name, description, college, whatsapp, email } = req.body;
+        console.log(req.body);
 
         try {
             let owner = req.user.id;
