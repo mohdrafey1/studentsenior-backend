@@ -1,11 +1,13 @@
 const Store = require('../models/Store');
 const { cloudinary } = require('../cloudConfig.js');
+const Affiliate = require('../models/AffiliateProduct.js');
 
 module.exports = {
     index: async (req, res) => {
         try {
             let store = await Store.find({}).populate('college');
-            res.render('store/index.ejs', { store });
+            let affiliateProduct = await Affiliate.find({});
+            res.render('store/index.ejs', { store, affiliateProduct });
         } catch (err) {
             console.error(err);
             req.flash('error', 'Error fetching products');
@@ -160,6 +162,51 @@ module.exports = {
                 );
             }
             await Store.findByIdAndDelete(req.params.id);
+
+            req.flash('success', 'Product deleted successfully');
+            res.redirect(`/store`);
+        } catch (err) {
+            console.error('Error deleting product:', err);
+            req.flash('error', 'Error deleting Product');
+            res.redirect(`/store`);
+        }
+    },
+
+    createAffiliateForm: async (req, res) => {
+        try {
+            res.render('store/newAffiliate.ejs');
+        } catch (err) {
+            console.error(err);
+            req.flash('error', 'Error loading form');
+            res.redirect('/store');
+        }
+    },
+
+    createAffiliateProduct: async (req, res) => {
+        try {
+            const { name, price, description, image, link } = req.body;
+
+            const newProduct = new Affiliate({
+                name,
+                price,
+                description,
+                image,
+                link,
+            });
+
+            await newProduct.save();
+            req.flash('success', 'Product Created Successfully');
+            res.redirect('/store');
+        } catch (err) {
+            console.error(err);
+            req.flash('error', 'Error creating product');
+            res.redirect('/store/newaffiliate');
+        }
+    },
+
+    deleteAffiliateProduct: async (req, res) => {
+        try {
+            await Affiliate.findByIdAndDelete(req.params.id);
 
             req.flash('success', 'Product deleted successfully');
             res.redirect(`/store`);

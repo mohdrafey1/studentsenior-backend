@@ -1,6 +1,7 @@
 const Store = require('../../models/Store.js');
 const { cloudinary } = require('../../cloudConfig.js');
 const jwt = require('jsonwebtoken');
+const Affiliate = require('../../models/AffiliateProduct.js');
 
 module.exports = {
     fetchProducts: async (req, res) => {
@@ -155,6 +156,16 @@ module.exports = {
         } catch (err) {
             console.error('Error deleting product:', err);
             res.status(500).json({ description: 'Error deleting product' });
+        }
+    },
+
+    fetchAffiliateProducts: async (req, res) => {
+        try {
+            const affiliateProduct = await Affiliate.find({});
+            res.json(affiliateProduct);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ description: 'Error fetching products' });
         }
     },
 };

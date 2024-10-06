@@ -1,0 +1,38 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container mt-4">
+        <h1>Add New Affiliate Product</h1>
+        <form action="/store/newaffiliate" method="POST">
+            <!-- Product Name -->
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" required></textarea>
+            </div>
+
+            <!-- Product Image -->
+            <div class="form-group">
+                <label for="image">Product Image Link</label>
+                <input type="text" name="image" id="image" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="link">Product Link</label>
+                <input type="text" name="link" id="link" class="form-control" required>
+            </div>
+
+            <!-- Price -->
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" class="form-control" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary mt-3">Add Product</button>
+        </form>
+    </div>

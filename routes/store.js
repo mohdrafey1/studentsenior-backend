@@ -25,6 +25,18 @@ router
 
 router.get('/new', isLoggedIn, wrapAsync(storeController.createStoreForm));
 
+router.post(
+    '/newaffiliate',
+    isLoggedIn,
+    wrapAsync(storeController.createAffiliateProduct)
+);
+
+router.get(
+    '/newaffiliate',
+    isLoggedIn,
+    wrapAsync(storeController.createAffiliateForm)
+);
+
 router.get('/:id/edit', isLoggedIn, wrapAsync(storeController.editProductForm));
 
 router
@@ -36,5 +48,11 @@ router
         wrapAsync(storeController.editProduct)
     )
     .delete(isLoggedIn, wrapAsync(storeController.deleteProduct));
+
+router.delete(
+    '/affiliate/:id',
+    isLoggedIn,
+    wrapAsync(storeController.deleteAffiliateProduct)
+);
 
 module.exports = router;

@@ -17,6 +17,12 @@ const apiStoreController = require('../../controllers/api/store.js');
 // Fetch all pyq and send as JSON
 router.get('/', validateApiKey, apiStoreController.fetchProducts);
 
+router.get(
+    '/affiliate',
+    validateApiKey,
+    apiStoreController.fetchAffiliateProducts
+);
+
 // Create a new pyq
 router.post(
     '/',
