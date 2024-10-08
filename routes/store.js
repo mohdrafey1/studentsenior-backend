@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authorizeRole = require('../utils/rolePermission.js');
 const wrapAsync = require('../utils/wrapAsync.js');
 const { isLoggedIn, validateStore } = require('../middleware.js');
 const multer = require('multer');
@@ -18,6 +19,7 @@ router
     .get(isLoggedIn, wrapAsync(storeController.index))
     .post(
         isLoggedIn,
+        authorizeRole('admin'),
         upload.single('image'),
         validateStore,
         wrapAsync(storeController.createProduct)
@@ -28,6 +30,7 @@ router.get('/new', isLoggedIn, wrapAsync(storeController.createStoreForm));
 router.post(
     '/newaffiliate',
     isLoggedIn,
+    authorizeRole('admin'),
     wrapAsync(storeController.createAffiliateProduct)
 );
 
@@ -37,21 +40,32 @@ router.get(
     wrapAsync(storeController.createAffiliateForm)
 );
 
-router.get('/:id/edit', isLoggedIn, wrapAsync(storeController.editProductForm));
+router.get(
+    '/:id/edit',
+    authorizeRole('admin'),
+    isLoggedIn,
+    wrapAsync(storeController.editProductForm)
+);
 
 router
     .route('/:id')
     .put(
         isLoggedIn,
+        authorizeRole('admin'),
         upload.single('image'),
         validateStore,
         wrapAsync(storeController.editProduct)
     )
-    .delete(isLoggedIn, wrapAsync(storeController.deleteProduct));
+    .delete(
+        isLoggedIn,
+        authorizeRole('admin'),
+        wrapAsync(storeController.deleteProduct)
+    );
 
 router.delete(
     '/affiliate/:id',
     isLoggedIn,
+    authorizeRole('admin'),
     wrapAsync(storeController.deleteAffiliateProduct)
 );
 

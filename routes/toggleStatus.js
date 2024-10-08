@@ -9,25 +9,31 @@ const Colleges = require('../models/Colleges');
 const Groups = require('../models/WhatsappGroup');
 const Notes = require('../models/Notes');
 const { isLoggedIn } = require('../middleware.js');
+const authorizeRole = require('../utils/rolePermission.js');
 
-router.put('/:type/:id', async (req, res) => {
-    const { type, id } = req.params;
-    const { status } = req.body;
+router.put(
+    '/:type/:id',
+    isLoggedIn,
+    authorizeRole('admin'),
+    async (req, res) => {
+        const { type, id } = req.params;
+        const { status } = req.body;
 
-    try {
-        let model;
-        if (type === 'pyq') model = PYQ;
-        else if (type === 'senior') model = Senior;
-        else if (type === 'college') model = Colleges;
-        else if (type === 'product') model = Store;
-        else if (type === 'note') model = Notes;
-        else if (type === 'group') model = Groups;
+        try {
+            let model;
+            if (type === 'pyq') model = PYQ;
+            else if (type === 'senior') model = Senior;
+            else if (type === 'college') model = Colleges;
+            else if (type === 'product') model = Store;
+            else if (type === 'note') model = Notes;
+            else if (type === 'group') model = Groups;
 
-        await model.findByIdAndUpdate(id, { status });
-        res.json({ success: true });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+            await model.findByIdAndUpdate(id, { status });
+            res.json({ success: true });
+        } catch (error) {
+            res.status(500).json({ success: false, error: error.message });
+        }
     }
-});
+);
 
 module.exports = router;

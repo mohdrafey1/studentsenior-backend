@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Colleges = require('../models/Colleges.js');
+const authorizeRole = require('../utils/rolePermission.js');
 const wrapAsync = require('../utils/wrapAsync.js');
 const { isLoggedIn, isOwner, validateColleges } = require('../middleware.js');
 
@@ -11,6 +11,7 @@ router
     .get(isLoggedIn, wrapAsync(collegeController.index))
     .post(
         isLoggedIn,
+        authorizeRole('admin'),
         validateColleges,
         wrapAsync(collegeController.createCollege)
     );
@@ -23,6 +24,7 @@ router
     .get(wrapAsync(collegeController.showCollege))
     .put(
         isLoggedIn,
+        authorizeRole('admin'),
         isOwner,
         validateColleges,
         wrapAsync(collegeController.editCollege)
@@ -33,6 +35,7 @@ router
 router.get(
     '/:id/edit',
     isLoggedIn,
+    authorizeRole('admin'),
     isOwner,
     wrapAsync(collegeController.editCollegeForm)
 );
