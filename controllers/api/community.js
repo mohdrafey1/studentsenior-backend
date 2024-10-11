@@ -59,7 +59,7 @@ module.exports.updatePost = async (req, res) => {
 
         res.json({ description: 'Post Updated Succesfully ', updatedPost });
     } catch (err) {
-        res.json(500).json({ description: 'Error in Updating Post' });
+        res.status(500).json({ description: 'Error in Updating Post' });
     }
 };
 
