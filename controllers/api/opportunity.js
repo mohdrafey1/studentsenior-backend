@@ -21,7 +21,6 @@ module.exports = {
 
     createGetOpportunities: async (req, res) => {
         const { name, description, college, whatsapp, email } = req.body;
-        console.log(req.body);
 
         try {
             let owner = req.user.id;
@@ -40,7 +39,7 @@ module.exports = {
         } catch (error) {
             console.error(error);
             res.status(500).json({
-                message: 'Error Adding Get Opportunity',
+                message: `${error}`,
             });
         }
     },
