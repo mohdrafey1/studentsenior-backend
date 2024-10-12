@@ -47,7 +47,14 @@ module.exports.editCollegeForm = async (req, res) => {
 
 module.exports.editCollege = async (req, res) => {
     let { id } = req.params;
-    await Colleges.findByIdAndUpdate(id, { ...req.body.college });
+    const { name, description, location, status } = req.body;
+    const updatedCollege = {
+        name,
+        description,
+        location,
+        status,
+    };
+    await Colleges.findByIdAndUpdate(id, updatedCollege, { new: true });
     req.flash('success', 'Updated Successfully');
     res.redirect(`/colleges/${id}`);
 };
