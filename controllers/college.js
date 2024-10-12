@@ -28,7 +28,15 @@ module.exports.showCollege = async (req, res) => {
 
 module.exports.createCollege = async (req, res) => {
     // console.log(req.body);
-    const newCollege = new Colleges(req.body.college);
+
+    const { name, description, location, status } = req.body;
+
+    const newCollege = new Colleges({
+        name,
+        description,
+        location,
+        status,
+    });
     newCollege.owner = req.user._id;
     await newCollege.save();
     req.flash('success', 'New College Added Successfully');
