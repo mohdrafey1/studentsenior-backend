@@ -39,6 +39,12 @@ module.exports.home = async (req, res) => {
         const recentGroups = await Groups.find()
             .sort({ createdAt: -1 })
             .limit(5);
+        const recentGetOpportunity = await GetOpportunity.find()
+            .sort({ createdAt: -1 })
+            .limit(5);
+        const recentGiveOpportunity = await GiveOpportunity.find()
+            .sort({ createdAt: -1 })
+            .limit(5);
 
         res.render('index', {
             totalUsers,
@@ -59,6 +65,8 @@ module.exports.home = async (req, res) => {
             recentNotes,
             recentGroups,
             recentPosts,
+            recentGetOpportunity,
+            recentGiveOpportunity,
         });
     } catch (error) {
         console.error('Error fetching totals and recent items:', error);

@@ -8,6 +8,7 @@ const PYQ = require('../models/PYQ');
 const Colleges = require('../models/Colleges');
 const Groups = require('../models/WhatsappGroup');
 const Notes = require('../models/Notes');
+const { GetOpportunity, GiveOpportunity } = require('../models/Opportunity.js');
 const { isLoggedIn } = require('../middleware.js');
 const authorizeRole = require('../utils/rolePermission.js');
 
@@ -27,6 +28,8 @@ router.put(
             else if (type === 'product') model = Store;
             else if (type === 'note') model = Notes;
             else if (type === 'group') model = Groups;
+            else if (type === 'getOpportunity') model = GetOpportunity;
+            else if (type === 'giveOpportunity') model = GiveOpportunity;
 
             await model.findByIdAndUpdate(id, { status });
             res.json({ success: true });
