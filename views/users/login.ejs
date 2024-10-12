@@ -3,20 +3,67 @@
     <body>
         <div class="container my-5">
             <h3 class="mb-4 text-center">Log in</h3>
-            <form action="/login" method="POST">
+            <form id="loginForm" action="/login" method="POST">
                 <div class="mb-3">
                     <label for="username" class="form-label">User Name</label>
                     <input type="text" class="form-control" id="username" name="username" placeholder="Enter username"
                         required>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 position-relative">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" name="password"
-                        placeholder="Enter Password" rows="3" required></input>
+                        placeholder="Enter Password" required>
+                    <!-- Eye Icon to toggle password visibility -->
+                    <i class="bi bi-eye-slash" id="togglePassword"
+                        style="position: absolute; right: 10px; top: 70%; transform: translateY(-50%); cursor: pointer;"></i>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary" id="loginBtn">Login</button>
             </form>
+
+            <!-- Loader -->
+            <div id="loader" class="spinner-border text-primary" style="display: none;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
+
+        <style>
+            /* Center loader */
+            #loader {
+                display: block;
+                margin: 20px auto;
+                width: 3rem;
+                height: 3rem;
+                border-width: 0.3rem;
+            }
+        </style>
+
+        <script>
+            // Toggle password visibility
+            document.getElementById('togglePassword').addEventListener('click', function () {
+                var passwordInput = document.getElementById('password');
+                var togglePassword = document.getElementById('togglePassword');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    togglePassword.classList.remove('bi-eye-slash');
+                    togglePassword.classList.add('bi-eye');
+                } else {
+                    passwordInput.type = 'password';
+                    togglePassword.classList.remove('bi-eye');
+                    togglePassword.classList.add('bi-eye-slash');
+                }
+            });
+
+            // Loader logic on form submit
+            document.getElementById('loginForm').addEventListener('submit', function (event) {
+                var loginForm = document.getElementById('loginForm');
+                var loader = document.getElementById('loader');
+
+                // Hide form and show loader
+                loginForm.style.display = 'none';
+                loader.style.display = 'block';
+            });
+        </script>
     </body>
