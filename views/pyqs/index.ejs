@@ -216,15 +216,6 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Ensure newly added PYQ is shown at the top
-            const pyqList = document.getElementById('pyq-list');
-            if (pyqList.children.length > 0) {
-                pyqList.insertBefore(pyqList.lastChild, pyqList.firstChild);
-            }
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
             // Fetch colleges and populate the dropdown
             fetch('/api/colleges')
                 .then(response => response.json())
