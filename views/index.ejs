@@ -11,12 +11,20 @@
             <div class="row text-center">
                 <!-- Card for Total Colleges -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/colleges" class="text-decoration-none">
+                    <a href="/colleges" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
                                 <h5 class="card-title text-primary">Colleges</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalColleges %>
+                                    <span class="card-text">
+                                        <%= totalColleges %>
+                                    </span>
+                                    <!-- Hidden loader inside the card -->
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
@@ -25,12 +33,19 @@
 
                 <!-- Card for Total PYQs -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/pyqs" class="text-decoration-none">
+                    <a href="/pyqs" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
                                 <h5 class="card-title text-success">PYQs</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalPYQs %>
+                                    <span class="card-text">
+                                        <%= totalPYQs %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-success" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
@@ -39,12 +54,19 @@
 
                 <!-- Card for Total Notes -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/notes" class="text-decoration-none">
+                    <a href="/notes" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
                                 <h5 class="card-title text-info">Notes</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalNotes %>
+                                    <span class="card-text">
+                                        <%= totalNotes %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-info" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
@@ -53,12 +75,19 @@
 
                 <!-- Card for Total Groups -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/whatsappgroup" class="text-decoration-none">
+                    <a href="/whatsappgroup" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
                                 <h5 class="card-title text-warning">Groups</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalGroups %>
+                                    <span class="card-text">
+                                        <%= totalGroups %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-warning" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
@@ -67,12 +96,19 @@
 
                 <!-- Card for Total Seniors -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/seniors" class="text-decoration-none">
+                    <a href="/seniors" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
                                 <h5 class="card-title text-danger">Seniors</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalSeniors %>
+                                    <span class="card-text">
+                                        <%= totalSeniors %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-danger" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
@@ -81,38 +117,61 @@
 
                 <!-- Card for Total Store Products -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/store" class="text-decoration-none">
+                    <a href="/store" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
-                                <h5 class="card-title text-purple">Store</h5>
+                                <h5 class="card-title text-secondary">Store</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalProduct %>
+                                    <span class="card-text">
+                                        <%= totalProduct %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-secondary" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
                     </a>
                 </div>
 
+                <!-- Card for Get Opportunity -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/opportunity/getopportunities" class="text-decoration-none">
+                    <a href="/opportunity/getopportunities" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
-                                <h5 class="card-title h6 text-purple">Get Opportunity</h5>
+                                <h5 class="card-title h6 text-warning">Get Opportunity</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalGetCommunity %>
+                                    <span class="card-text">
+                                        <%= totalGetCommunity %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-warning" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
                     </a>
                 </div>
 
+                <!-- Card for Give Opportunity -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/opportunity/giveopportunities" class="text-decoration-none">
+                    <a href="/opportunity/giveopportunities" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
-                                <h5 class="card-title h6 text-purple">Give Opportunity</h5>
+                                <h5 class="card-title h6 text-info">Give Opportunity</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalGiveCommunity %>
+                                    <span class="card-text">
+                                        <%= totalGiveCommunity %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-info" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
@@ -121,12 +180,19 @@
 
                 <!-- Card for Total Communities -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/community" class="text-decoration-none">
+                    <a href="/community" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
-                                <h5 class="card-title h6 text-secondary">Communities</h5>
+                                <h5 class="card-title h6 text-success">Communities</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalPost %>
+                                    <span class="card-text">
+                                        <%= totalPost %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-success" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
@@ -135,12 +201,19 @@
 
                 <!-- Card for Total Admins -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/user" class="text-decoration-none">
+                    <a href="/user" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
-                                <h5 class="card-title text-dark">Admins</h5>
+                                <h5 class="card-title text-primary">Admins</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalUsers %>
+                                    <span class="card-text">
+                                        <%= totalUsers %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
@@ -148,13 +221,20 @@
                 </div>
 
                 <!-- Card for Total Users -->
-                <div class="col-md-3 col-sm-4 mb-3">
-                    <a href="/client" class="text-decoration-none">
+                <div class="col-md-3 col-sm-4 col-6 mb-3">
+                    <a href="/client" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
-                                <h5 class="card-title text-teal">Users</h5>
+                                <h5 class="card-title text-danger">Users</h5>
                                 <h4 class="font-weight-bold text-dark">
-                                    <%= totalClients %>
+                                    <span class="card-text">
+                                        <%= totalClients %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-danger" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
                                 </h4>
                             </div>
                         </div>
@@ -459,5 +539,36 @@
                     });
             }
 
+        </script>
+        <script>
+            const cardLinks = document.querySelectorAll('.card-link');
+
+            cardLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    const cardBody = this.querySelector('.card-body');
+                    const cardText = cardBody.querySelector('.card-text');
+                    const cardLoader = cardBody.querySelector('.card-loader');
+
+                    cardText.classList.add('d-none');
+                    cardLoader.classList.remove('d-none');
+
+                    setTimeout(() => {
+                        window.location.href = this.href;
+                    }, 500);
+                });
+            });
+
+            window.addEventListener('pageshow', function (event) {
+                if (event.persisted) {
+                    document.querySelectorAll('.card-loader').forEach(loader => {
+                        loader.classList.add('d-none');
+                    });
+                    document.querySelectorAll('.card-text').forEach(text => {
+                        text.classList.remove('d-none');
+                    });
+                }
+            });
         </script>
     </body>
