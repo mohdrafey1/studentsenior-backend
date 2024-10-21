@@ -1,38 +1,35 @@
 <% layout('/layouts/boilerplate.ejs') %>
-
     <div class="container">
         <h3 class="m-4 text-center">All Community Posts</h3>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Content</th>
-                        <th>Author</th>
-                        <th>College</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% allPost.forEach(post=> { %>
-                        <tr>
-                            <td class="text-truncate" style="max-width: 200px;">
+        <div class="row">
+            <% allPost.forEach(post=> { %>
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate" style="max-width: 500px;">
                                 <%= post.content %>
-                            </td>
-                            <td>
+                            </h5>
+                            <p class="card-text"><strong>Author:</strong>
                                 <%= post.author.username %>
-                            </td>
-                            <td>
+                            </p>
+                            <p class="card-text d-none d-md-block"><strong>College:</strong>
                                 <%= post.college.name %>
-                            </td>
-                            <td>
-                                <a href="/community/<%= post._id %>" class="btn btn-success btn-sm mb-1">View</a>
-                                <form action="/community/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
-                                    <button type="submit" class="btn btn-danger btn-sm mb-1">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <% }) %>
-                </tbody>
-            </table>
+                            </p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a href="/community/<%= post._id %>" class="btn btn-success btn-sm">View</a>
+                            <form action="/community/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
         </div>
+
+        <% if (allPost.length===0) { %>
+            <div class="col-12">
+                <p class="text-center">No community posts available at the moment.</p>
+            </div>
+            <% } %>
     </div>

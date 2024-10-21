@@ -2,27 +2,27 @@
 
     <div class="container py-5">
         <h3 class="my-4 text-center">All Products</h3>
-        <a href="/store/new" class="btn btn-primary mb-3">Add New Product</a>
-        <a href="/store/newAffiliate" class="btn btn-primary mb-3">Add New Affiliate Product</a>
+        <div class="d-flex justify-content-center gap-3 mb-4">
+            <a href="/store/new" class="btn btn-primary">Add New Product</a>
+            <a href="/store/newAffiliate" class="btn btn-primary">Add New Affiliate Product</a>
+        </div>
 
-        <!-- Grid layout for displaying seniors -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        <!-- Grid layout for displaying regular store products -->
+        <h4 class="text-center">Store Products</h4>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             <% if (store.length> 0) { %>
                 <% store.forEach(item=> { %>
                     <div class="col">
                         <div class="card h-100 shadow-sm">
-                            <img src="<%= item.image.url %>" class="card-img-top"
-                                alt="<%= item.name %>'s Profile Picture"
+                            <img src="<%= item.image.url %>" class="card-img-top" alt="<%= item.name %>'s Image"
                                 onerror="this.onerror=null; this.src='/path-to-default-image.jpg';">
                             <div class="card-body text-center">
                                 <h5 class="card-title">
                                     <%= item.name %>
                                 </h5>
-                                <h6 class="card-subtitle mb-2 text-muted">
-                                    Price: ₹ <%= item.price %>
+                                <h6 class="card-subtitle mb-2 text-muted">Price: ₹ <%= item.price %>
                                 </h6>
-                                <p class="card-text">
-                                    Description: <%= item.description || 'Not specified' %>
+                                <p class="card-text">Description: <%= item.description || 'Not specified' %>
                                 </p>
                             </div>
                             <div class="card-footer text-center">
@@ -36,34 +36,31 @@
                     </div>
                     <% }) %>
                         <% } else { %>
-                            <!-- Message when no seniors are available -->
                             <div class="col-12">
-                                <p class="text-center">No Store available at the moment.</p>
+                                <p class="text-center">No Store Products available at the moment.</p>
                             </div>
                             <% } %>
         </div>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+
+        <!-- Grid layout for displaying affiliate products -->
+        <h4 class="text-center mt-5">Affiliate Products</h4>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             <% if (affiliateProduct.length> 0) { %>
                 <% affiliateProduct.forEach(item=> { %>
                     <div class="col">
                         <div class="card h-100 shadow-sm">
-                            <img src="<%= item.image %>" class="card-img-top" alt="<%= item.name %>'s Profile Picture">
+                            <img src="<%= item.image %>" class="card-img-top" alt="<%= item.name %>'s Image">
                             <div class="card-body text-center">
                                 <h5 class="card-title">
                                     <%= item.name %>
                                 </h5>
-                                <h6 class="card-subtitle mb-2 text-muted">
-                                    Price: ₹ <%= item.price %>
+                                <h6 class="card-subtitle mb-2 text-muted">Price: ₹ <%= item.price %>
                                 </h6>
-                                <p class="card-text">
-                                    Description: <%= item.description || 'Not specified' %>
+                                <p class="card-text">Description: <%= item.description || 'Not specified' %>
                                 </p>
-                                <a target="_blank" href="<%= item.link %>" class="card-text">
-                                    Link
-                                </a>
+                                <a target="_blank" href="<%= item.link %>" class="card-link">View Product</a>
                             </div>
                             <div class="card-footer text-center">
-                                <!-- <a href="/store/item._id/edit" class="btn btn-sm btn-warning">Edit</a> -->
                                 <form action="/store/affiliate/<%= item._id %>?_method=DELETE" method="POST"
                                     class="d-inline-block">
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -73,9 +70,8 @@
                     </div>
                     <% }) %>
                         <% } else { %>
-                            <!-- Message when no seniors are available -->
                             <div class="col-12">
-                                <p class="text-center">No Affiliate Product available at the moment.</p>
+                                <p class="text-center">No Affiliate Products available at the moment.</p>
                             </div>
                             <% } %>
         </div>
