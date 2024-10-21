@@ -7,7 +7,11 @@
                 <label for="college">Select College</label>
                 <select id="college" name="college" class="form-control" required>
                     <option value="">Select College</option>
-                    <!-- Options will be populated dynamically -->
+                    <% colleges.forEach(college=> { %>
+                        <option value="<%= college._id %>">
+                            <%= college.name %>
+                        </option>
+                        <% }) %>
                 </select>
             </div>
             <div class="mb-3">
@@ -83,22 +87,3 @@
             <a href="/pyqs/<%= pyq._id %>" class="btn btn-secondary ms-2">Cancel</a>
         </form>
     </div>
-
-    <script>
-        // Fetch colleges and populate the dropdown
-        fetch('/api/colleges')
-            .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById('college');
-                data.forEach(college => {
-                    const option = document.createElement('option');
-                    option.value = college._id;
-                    option.textContent = college.name;
-                    if (college._id === '<%= pyq.college %>') {
-                        option.selected = true;
-                    }
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching colleges:', error));
-    </script>

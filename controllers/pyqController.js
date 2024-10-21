@@ -1,4 +1,5 @@
 const PYQ = require('../models/PYQ');
+const Colleges = require('../models/Colleges');
 
 // Index - List all approved PYQs for a specific college
 exports.index = async (req, res) => {
@@ -13,7 +14,7 @@ exports.index = async (req, res) => {
 
     //something wrong here will correct it
     if (collegeName) {
-        const college = await PYQ.findOne({
+        const college = await Colleges.findOne({
             name: new RegExp(collegeName, 'i'),
         });
         if (college) {
@@ -62,9 +63,17 @@ exports.index = async (req, res) => {
 };
 
 // Show form to add new PYQ
-exports.new = (req, res) => {
-    // console.log('Rendering new PYQ form');
-    res.render('pyqs/new');
+exports.new = async (req, res) => {
+    try {
+        const colleges = await Colleges.find();
+        return res.render('pyqs/new', {
+            title: 'Add New PYQ',
+            colleges,
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).send('Server Error');
+    }
 };
 
 // Create - Add new PYQ
@@ -119,12 +128,13 @@ module.exports.show = async (req, res) => {
 // Edit - Show form to edit a PYQ
 module.exports.edit = async (req, res) => {
     const { id } = req.params;
-    const pyq = await PYQ.findById(id);
+    const pyq = await PYQ.findById(id).populate('college');
+    const colleges = await Colleges.find();
     if (!pyq) {
         req.flash('error', 'PYQ not found!');
         return res.redirect(`/pyqs`);
     }
-    res.render('pyqs/edit', { pyq });
+    res.render('pyqs/edit', { pyq, colleges });
 };
 
 // edit
