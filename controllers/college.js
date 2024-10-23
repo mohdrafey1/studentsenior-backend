@@ -16,7 +16,10 @@ module.exports.collegeForm = (req, res) => {
 
 module.exports.showCollege = async (req, res) => {
     let { id } = req.params;
-    const college = await Colleges.findById(id).populate('owner');
+    const college = await Colleges.findById(id)
+        .populate('owner')
+        .populate('client');
+
     if (!college) {
         req.flash('error', 'College You requested for does not exist');
         return res.redirect('/colleges');

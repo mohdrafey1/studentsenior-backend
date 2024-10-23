@@ -7,7 +7,7 @@
             <ul class="list-group mb-4">
                 <li class="list-group-item">
                     <strong>Added by :</strong>
-                    <%=college.owner.username %>
+                    <%=college.client ? college.client.username : college.owner.username %>
                 </li>
                 <li class="list-group-item">
                     <strong>Name:</strong>

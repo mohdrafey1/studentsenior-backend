@@ -12,11 +12,14 @@ module.exports.fetchCollege = async (req, res) => {
 
 module.exports.createCollege = async (req, res) => {
     const { name, location, description } = req.body;
+
+    const client = req.user.id;
     const newCollege = new Colleges({
         name,
         location,
         description,
         owner: '66cb98fca9c088fc1180070e',
+        client,
     });
     await newCollege.save();
     res.json({

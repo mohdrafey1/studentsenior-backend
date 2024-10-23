@@ -11,6 +11,10 @@ const CollegeSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'User',
         },
+        client: {
+            type: Schema.Types.ObjectId,
+            ref: 'Client',
+        },
     },
     {
         timestamps: true,
