@@ -198,19 +198,38 @@
                         </div>
                     </a>
                 </div>
+                <div class="col-md-3 col-sm-4 col-6 mb-3">
+                    <a href="/contactus" class="text-decoration-none card-link">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">Messages</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <span class="card-text">
+                                        <%= totalMessages %>
+                                    </span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-success" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
 
                 <!-- Card for Total Admins -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
                     <a href="/user" class="text-decoration-none card-link">
                         <div class="card bg-light border-0 shadow-sm hover-card">
                             <div class="card-body">
-                                <h5 class="card-title text-success">Admins</h5>
+                                <h5 class="card-title text-danger">Admins</h5>
                                 <h4 class="font-weight-bold text-dark">
                                     <span class="card-text">
                                         <%= totalUsers %>
                                     </span>
                                     <span class="card-loader d-none">
-                                        <div class="spinner-border text-success" role="status">
+                                        <div class="spinner-border text-danger" role="status">
                                             <span class="sr-only">Loading...</span>
                                         </div>
                                     </span>
@@ -240,25 +259,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-md-3 col-sm-4 col-6 mb-3">
-                    <a href="/client" class="text-decoration-none card-link">
-                        <div class="card bg-light border-0 shadow-sm hover-card">
-                            <div class="card-body">
-                                <h5 class="card-title text-danger">Demo</h5>
-                                <h4 class="font-weight-bold text-dark">
-                                    <span class="card-text">
-                                        1000
-                                    </span>
-                                    <span class="card-loader d-none">
-                                        <div class="spinner-border text-danger" role="status">
-                                            <span class="sr-only">Loading...</span>
-                                        </div>
-                                    </span>
-                                </h4>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+
             </div>
 
             <!-- Recent Items Section -->

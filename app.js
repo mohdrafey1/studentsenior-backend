@@ -8,7 +8,6 @@ const mongoose = require('mongoose');
 const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const wrapAsync = require('./utils/wrapAsync.js');
 const ExpressError = require('./utils/ExpressError.js');
 const cors = require('cors');
 const session = require('express-session');
@@ -40,6 +39,8 @@ const communityRouter = require('./routes/community.js');
 const apiCommunityRouter = require('./routes/api/apicommunity.js');
 const opportunityRouter = require('./routes/opportunity.js');
 const apiOpportunityRouter = require('./routes/api/apiopportunity.js');
+const contactUsRouter = require('./routes/contactus.js');
+const apiContactUsRouter = require('./routes/api/apicontactus.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -149,6 +150,8 @@ app.use('/community', communityRouter);
 app.use('/api/community', apiCommunityRouter);
 app.use('/opportunity', opportunityRouter);
 app.use('/api/opportunity', apiOpportunityRouter);
+app.use('/contactus', contactUsRouter);
+app.use('/api/contactus', apiContactUsRouter);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
