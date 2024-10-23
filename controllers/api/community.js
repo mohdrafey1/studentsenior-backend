@@ -223,15 +223,19 @@ module.exports.likePost = async (req, res) => {
 // };
 
 module.exports.likeComment = async (req, res) => {
-    const { postId, commentId } = req.params;
+    try {
+        const { postId, commentId } = req.params;
 
-    // Find the post and the specific comment
-    const post = await Post.findById(postId);
-    const comment = post.comments.id(commentId);
+        // Find the post and the specific comment
+        const post = await Post.findById(postId);
+        const comment = post.comments.id(commentId);
 
-    // Increment the like count
-    comment.likes += 1;
-    await post.save();
+        // Increment the like count
+        comment.likes += 1;
+        await post.save();
 
-    res.json({ message: 'Comment liked!', likes: comment.likes });
+        res.json({ message: 'Comment liked!', likes: comment.likes });
+    } catch (error) {
+        console.log(error);
+    }
 };
