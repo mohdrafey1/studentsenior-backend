@@ -18,28 +18,31 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/User.js');
 const cookieParser = require('cookie-parser');
 
+//dashboard router
 const home = require('./routes/home.js');
 const toggleStatus = require('./routes/toggleStatus.js');
 const collegeRouter = require('./routes/college');
-const apicollegeRouter = require('./routes/api/apicollege.js');
-const apiPyqRouter = require('./routes/api/apiPyq.js');
 const userRouter = require('./routes/user.js');
+const notesRouter = require('./routes/notes.js');
+const seniorRouter = require('./routes/senior.js');
+const storeRouter = require('./routes/store.js');
+const communityRouter = require('./routes/community.js');
+const opportunityRouter = require('./routes/opportunity.js');
+const contactUsRouter = require('./routes/contactus.js');
 const pyqRouter = require('./routes/pyqRoutes.js');
 const groupRouter = require('./routes/whatsappGroup.js');
+
+//api router
+const apicollegeRouter = require('./routes/api/apicollege.js');
+const apiPyqRouter = require('./routes/api/apiPyq.js');
 const apiGroupRouter = require('./routes/api/apigroup.js');
-const notesRouter = require('./routes/notes.js');
 const apiNotesRouter = require('./routes/api/apinotes.js');
 const userRoutes = require('./routes/api/apiuser.js');
 const authRoutes = require('./routes/api/apiauth.js');
-const seniorRouter = require('./routes/senior.js');
 const apiSeniorRouter = require('./routes/api/apisenior.js');
-const storeRouter = require('./routes/store.js');
 const apiStoreRouter = require('./routes/api/apistore.js');
-const communityRouter = require('./routes/community.js');
 const apiCommunityRouter = require('./routes/api/apicommunity.js');
-const opportunityRouter = require('./routes/opportunity.js');
 const apiOpportunityRouter = require('./routes/api/apiopportunity.js');
-const contactUsRouter = require('./routes/contactus.js');
 const apiContactUsRouter = require('./routes/api/apicontactus.js');
 
 const allowedOrigins = [
@@ -130,27 +133,30 @@ app.use((req, res, next) => {
 
 app.use('/', home);
 
-app.use('/colleges', collegeRouter);
-app.use('/api/colleges', apicollegeRouter);
+//dashboard routes
 app.use('/', userRouter);
-app.use('/pyqs', pyqRouter);
-app.use('/api/pyqs', apiPyqRouter);
 app.use('/whatsappgroup', groupRouter);
-app.use('/api/whatsappgroup', apiGroupRouter);
+app.use('/colleges', collegeRouter);
+app.use('/pyqs', pyqRouter);
 app.use('/notes', notesRouter);
+app.use('/seniors', seniorRouter);
+app.use('/store', storeRouter);
+app.use('/community', communityRouter);
+app.use('/opportunity', opportunityRouter);
+app.use('/toggle-status', toggleStatus);
+app.use('/contactus', contactUsRouter);
+
+//frontend api routes
+app.use('/api/colleges', apicollegeRouter);
+app.use('/api/pyqs', apiPyqRouter);
+app.use('/api/whatsappgroup', apiGroupRouter);
 app.use('/api/notes', apiNotesRouter);
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/seniors', seniorRouter);
 app.use('/api/seniors', apiSeniorRouter);
-app.use('/store', storeRouter);
 app.use('/api/store', apiStoreRouter);
-app.use('/toggle-status', toggleStatus);
-app.use('/community', communityRouter);
 app.use('/api/community', apiCommunityRouter);
-app.use('/opportunity', opportunityRouter);
 app.use('/api/opportunity', apiOpportunityRouter);
-app.use('/contactus', contactUsRouter);
 app.use('/api/contactus', apiContactUsRouter);
 
 app.all('*', (req, res, next) => {
