@@ -6,7 +6,7 @@ module.exports.fetchCollege = async (req, res) => {
         res.json(allColleges);
     } catch (err) {
         console.error('Error fetching colleges:', err);
-        res.json({ description: 'Error fetching colleges' });
+        res.json({ message: 'Error fetching colleges' });
     }
 };
 
@@ -14,15 +14,22 @@ module.exports.createCollege = async (req, res) => {
     const { name, location, description } = req.body;
 
     const client = req.user.id;
-    const newCollege = new Colleges({
-        name,
-        location,
-        description,
-        owner: '66cb98fca9c088fc1180070e',
-        client,
-    });
-    await newCollege.save();
-    res.json({
-        description: 'College submitted successfully and is pending approval.',
-    });
+    try {
+        const newCollege = new Colleges({
+            name,
+            location,
+            description,
+            owner: '66cb98fca9c088fc1180070e',
+            client,
+        });
+        await newCollege.save();
+        res.json({
+            description:
+                'College submitted successfully and is pending approval.',
+        });
+    } catch (error) {
+        res.status(402).json({
+            message: 'Unable to add College , something error occuredd',
+        });
+    }
 };

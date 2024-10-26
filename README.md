@@ -1,1 +1,1 @@
-studentsenior.com
+The Student Senior Dashboard is an administrative interface designed to manage and oversee all the data and operations of the Student Senior platform. This dashboard provides a centralized control panel for managing users, academic resources, community posts, mentorship pairings, and item listings. Admins can easily review, update, or delete data, ensuring that the platform remains organized and efficient. Also it include the backend code of student senior platform .

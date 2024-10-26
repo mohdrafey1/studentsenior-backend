@@ -14,7 +14,7 @@ module.exports.fetchPost = async (req, res) => {
         res.json(posts);
     } catch (err) {
         console.error('Error fetching Posts', err);
-        res.status(500).json({ description: 'Error Fetching Notes' });
+        res.status(500).json({ message: 'Error Fetching Notes' });
     }
 };
 
@@ -27,7 +27,7 @@ module.exports.createPost = async (req, res) => {
         res.json({ description: 'Post Created Succesfully' });
     } catch (err) {
         console.error('Error Adding Post ', err);
-        res.json({ description: `Error Adding Post ${err}` });
+        res.json({ message: `Error Adding Post ${err}` });
     }
 };
 
@@ -38,12 +38,12 @@ module.exports.updatePost = async (req, res) => {
         const post = await Post.findById(req.params.id);
 
         if (!post) {
-            return res.status(404).json({ description: 'Post Not Found ' });
+            return res.status(404).json({ message: 'Post Not Found ' });
         }
 
         if (post.author.toString() !== req.user.id) {
             return res.status(403).json({
-                description: 'You are Not Authorized to Update this post',
+                message: 'You are Not Authorized to Update this post',
             });
         }
 
@@ -59,7 +59,7 @@ module.exports.updatePost = async (req, res) => {
 
         res.json({ description: 'Post Updated Succesfully ', updatedPost });
     } catch (err) {
-        res.status(500).json({ description: 'Error in Updating Post' });
+        res.status(500).json({ message: 'Error in Updating Post' });
     }
 };
 
@@ -68,18 +68,18 @@ module.exports.deletePost = async (req, res) => {
     try {
         const post = await Post.findById(postId);
         if (!post) {
-            return res.status(404).json({ description: 'Post Not Found ' });
+            return res.status(404).json({ message: 'Post Not Found ' });
         }
 
         if (post.author.toString() !== req.user.id) {
             return res.status(403).json({
-                description: 'You are Not Authorized to delete this post',
+                message: 'You are Not Authorized to delete this post',
             });
         }
         await Post.findByIdAndDelete(postId);
         res.json({ description: 'Post Deleted Successfully' });
     } catch (err) {
-        res.status(500).json({ description: `Error Deleting Post ${err}` });
+        res.status(500).json({ message: `Error Deleting Post ${err}` });
     }
 };
 
@@ -109,7 +109,7 @@ module.exports.createComment = async (req, res) => {
         res.json({ description: 'Commented Successfully' });
     } catch (err) {
         console.error('Error Creating Comment', err);
-        res.status(500).json({ description: `Error Creating Comment ${err}` });
+        res.status(500).json({ message: `Error Creating Comment ${err}` });
     }
 };
 
@@ -130,7 +130,7 @@ module.exports.updateComment = async (req, res) => {
 
         if (comment.author.toString() !== req.user.id) {
             return res.status(403).json({
-                description: 'You are Not Authorized to Edit this Comment',
+                message: 'You are Not Authorized to Edit this Comment',
             });
         }
 
@@ -139,7 +139,7 @@ module.exports.updateComment = async (req, res) => {
 
         res.json({ description: 'comment updated successfully' });
     } catch (err) {
-        res.status(500).json({ description: 'error deleting comment ' });
+        res.status(500).json({ message: 'error deleting comment ' });
     }
 };
 
@@ -159,7 +159,7 @@ module.exports.deleteComment = async (req, res) => {
 
         if (comment.author.toString() !== req.user.id) {
             return res.status(403).json({
-                description: 'You are not authorized to delete this comment',
+                message: 'You are not authorized to delete this comment',
             });
         }
 
@@ -170,7 +170,7 @@ module.exports.deleteComment = async (req, res) => {
         return res.json({ description: 'Comment deleted successfully' });
     } catch (err) {
         console.error('Error deleting comment:', err);
-        return res.status(500).json({ description: 'Error deleting comment' });
+        return res.status(500).json({ message: 'Error deleting comment' });
     }
 };
 
@@ -211,16 +211,6 @@ module.exports.likePost = async (req, res) => {
         return res.status(500).json({ message: 'Error liking/unliking post' });
     }
 };
-
-// module.exports.unlikePost = async (req, res) => {
-//     const userId = req.user.id;
-//     const postId = req.params.id;
-
-//     const post = await Post.findById(postId);
-//     post.likes = post.likes.filter((id) => id.toString() !== userId.toString());
-//     await post.save();
-//     res.json({ message: 'Post unliked!' });
-// };
 
 module.exports.likeComment = async (req, res) => {
     try {

@@ -73,7 +73,7 @@ module.exports = {
             if (!updatedGetOpportunity) {
                 return res
                     .status(404)
-                    .json({ description: 'Opportunity not found' });
+                    .json({ message: 'Opportunity not found' });
             }
 
             res.status(201).json({
@@ -99,7 +99,7 @@ module.exports = {
             if (!deletedOpportunity) {
                 return res
                     .status(404)
-                    .json({ description: 'Opportunity not found' });
+                    .json({ message: 'Opportunity not found' });
             }
 
             res.status(200).json({
@@ -180,7 +180,7 @@ module.exports = {
             if (!updatedGiveOpportunity) {
                 return res
                     .status(404)
-                    .json({ description: 'Opportunity not found' });
+                    .json({ message: 'Opportunity not found' });
             }
 
             res.status(201).json({
@@ -208,7 +208,7 @@ module.exports = {
             if (!deletedOpportunity) {
                 return res
                     .status(404)
-                    .json({ description: 'Opportunity not found' });
+                    .json({ message: 'Opportunity not found' });
             }
 
             res.status(200).json({

@@ -10,7 +10,7 @@ module.exports = {
             res.json(store);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ description: 'Error fetching products' });
+            res.status(500).json({ message: 'Error fetching products' });
         }
     },
 
@@ -21,9 +21,7 @@ module.exports = {
                 url = req.file.path;
                 filename = req.file.filename;
             } else {
-                return res
-                    .status(400)
-                    .json({ description: 'Image is required' });
+                return res.status(400).json({ message: 'Image is required' });
             }
 
             const {
@@ -56,7 +54,7 @@ module.exports = {
             });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ description: 'Error creating product' });
+            res.status(500).json({ Message: 'Error creating product' });
         }
     },
 
@@ -90,15 +88,12 @@ module.exports = {
             );
 
             if (!updatedProduct) {
-                return res
-                    .status(404)
-                    .json({ description: 'Product not found' });
+                return res.status(404).json({ message: 'Product not found' });
             }
 
             if (updatedProduct.owner.toString() !== req.user.id) {
                 return res.status(403).json({
-                    description:
-                        'You are not authorized to Update this product',
+                    message: 'You are not authorized to Update this product',
                 });
             }
 
@@ -123,7 +118,7 @@ module.exports = {
             });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ description: 'Error updating product' });
+            res.status(500).json({ message: `${err}` });
         }
     },
 
@@ -137,13 +132,6 @@ module.exports = {
                     .json({ description: 'Product not found' });
             }
 
-            if (product.owner.toString() !== req.user.id) {
-                return res.status(403).json({
-                    description:
-                        'You are not authorized to delete this product',
-                });
-            }
-
             if (product && product.image && product.image.filename) {
                 await cloudinary.uploader.destroy(product.image.filename);
             }
@@ -155,7 +143,7 @@ module.exports = {
             });
         } catch (err) {
             console.error('Error deleting product:', err);
-            res.status(500).json({ description: 'Error deleting product' });
+            res.status(500).json({ message: 'Error deleting product' });
         }
     },
 
@@ -165,7 +153,7 @@ module.exports = {
             res.json(affiliateProduct);
         } catch (err) {
             console.error(err);
-            res.status(500).json({ description: 'Error fetching products' });
+            res.status(500).json({ message: 'Error fetching products' });
         }
     },
 };

@@ -7,7 +7,7 @@ module.exports.fetchPyq = async (req, res) => {
         res.json(pyqs);
     } catch (err) {
         console.error('Error fetching PYQs:', err);
-        res.status(500).json({ description: 'Error fetching PYQs' });
+        res.status(500).json({ message: 'Error fetching PYQs' });
     }
 };
 
@@ -45,6 +45,6 @@ module.exports.fetchPyq = async (req, res) => {
 //         });
 //     } catch (err) {
 //         console.error('Error creating PYQ:', err);
-//         res.status(500).json({ description: 'Error creating PYQ' });
+//         res.status(500).json({ Message: 'Error creating PYQ' });
 //     }
 // };

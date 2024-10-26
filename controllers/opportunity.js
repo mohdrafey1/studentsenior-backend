@@ -205,7 +205,7 @@ module.exports = {
             if (!updatedGiveOpportunity) {
                 return res
                     .status(404)
-                    .json({ description: 'Opportunity not found' });
+                    .json({ message: 'Opportunity not found' });
             }
 
             req.flash('success', 'Get Opportunity Updated Successfully');

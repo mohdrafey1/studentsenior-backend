@@ -7,7 +7,7 @@ module.exports.fetchSenior = async (req, res) => {
         res.json(seniors);
     } catch (err) {
         console.error('Error fetching Seniors:', err);
-        res.status(500).json({ description: 'Error fetching Seniors' });
+        res.status(500).json({ message: 'Error fetching Seniors' });
     }
 };
 
@@ -38,7 +38,7 @@ module.exports.createSenior = async (req, res) => {
         });
     } catch (err) {
         console.error('Error creating Senior:', err);
-        res.status(500).json({ description: 'Error creating Senior' });
+        res.status(500).json({ message: 'Error creating Senior' });
     }
 };
 
@@ -64,12 +64,12 @@ module.exports.updateSenior = async (req, res) => {
         );
 
         if (!updatedSenior) {
-            return res.status(404).json({ description: 'Senior not found' });
+            return res.status(404).json({ message: 'Senior not found' });
         }
 
         if (updatedSenior.owner.toString() !== req.user.id) {
             return res.status(403).json({
-                description: 'You are not authorized to Update this Senior',
+                message: 'You are not authorized to Update this Senior',
             });
         }
 
@@ -79,7 +79,7 @@ module.exports.updateSenior = async (req, res) => {
         });
     } catch (err) {
         console.error('Error updating Senior:', err);
-        res.status(500).json({ description: 'Error updating Senior' });
+        res.status(500).json({ message: 'Error updating Senior' });
     }
 };
 
@@ -87,12 +87,12 @@ module.exports.deleteSenior = async (req, res) => {
     try {
         const senior = await Seniors.findById(req.params.id);
         if (!senior) {
-            return res.status(404).json({ description: 'Senior not found' });
+            return res.status(404).json({ message: 'Senior not found' });
         }
 
         if (senior.owner.toString() !== req.user.id) {
             return res.status(403).json({
-                description: 'You are not authorized to delete this Senior',
+                message: 'You are not authorized to delete this Senior',
             });
         }
 
@@ -103,6 +103,6 @@ module.exports.deleteSenior = async (req, res) => {
         });
     } catch (err) {
         console.error('Error deleting Senior:', err);
-        res.status(500).json({ description: 'Error deleting Senior' });
+        res.status(500).json({ message: 'Error deleting Senior' });
     }
 };

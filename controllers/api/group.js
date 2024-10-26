@@ -7,7 +7,7 @@ module.exports.fetchGroups = async (req, res) => {
         res.json(groups);
     } catch (err) {
         console.error('Error fetching Groups:', err);
-        res.status(500).json({ description: 'Error fetching Groups' });
+        res.status(500).json({ message: 'Error fetching Groups' });
     }
 };
 
@@ -32,6 +32,6 @@ module.exports.createGroup = async (req, res) => {
         });
     } catch (err) {
         console.error('Error creating Group:', err);
-        res.status(500).json({ description: 'Error creating Group' });
+        res.status(500).json({ message: 'Error creating Group' });
     }
 };

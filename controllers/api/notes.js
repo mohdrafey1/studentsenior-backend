@@ -7,7 +7,7 @@ module.exports.fetchNotes = async (req, res) => {
         res.json(notes);
     } catch (err) {
         console.error('Error fetching Notes:', err);
-        res.status(500).json({ description: 'Error fetching Notes' });
+        res.status(500).json({ message: 'Error fetching Notes' });
     }
 };
 
@@ -34,6 +34,6 @@ module.exports.fetchNotes = async (req, res) => {
 //         });
 //     } catch (err) {
 //         console.error('Error creating NOtes:', err);
-//         res.status(500).json({ description: 'Error creating Notes' });
+//         res.status(500).json({ message: 'Error creating Notes' });
 //     }
 // };
