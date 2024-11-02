@@ -12,4 +12,14 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.delete('/:id', async (req, res) => {
+    try {
+        await contactUs.findByIdAndDelete(req.params.id);
+        res.redirect(`/contactus`);
+    } catch (error) {
+        console.log(error);
+        req.flash('error', 'Error Deleting Message');
+    }
+});
+
 module.exports = router;
