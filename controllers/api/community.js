@@ -1,4 +1,5 @@
 const Post = require('../../models/Post');
+const { post } = require('../../routes/api/apicommunity');
 
 module.exports.fetchPost = async (req, res) => {
     try {
@@ -15,6 +16,27 @@ module.exports.fetchPost = async (req, res) => {
     } catch (err) {
         console.error('Error fetching Posts', err);
         res.status(500).json({ message: 'Error Fetching Notes' });
+    }
+};
+
+module.exports.fetchPostbyId = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+            .populate('college')
+            .populate('author')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'author',
+                },
+            });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.status(200).json(post); // Use 200 OK for a successful fetch
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: 'Some error occurred on the server' });
     }
 };
 

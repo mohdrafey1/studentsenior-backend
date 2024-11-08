@@ -6,6 +6,8 @@ const { validateApiKey } = require('../../middleware.js');
 
 router.get('/posts', validateApiKey, communityControllers.fetchPost);
 
+router.get('/posts/:id', validateApiKey, communityControllers.fetchPostbyId);
+
 router.post(
     '/posts',
     validateApiKey,
