@@ -8,6 +8,8 @@ const apiPyqController = require('../../controllers/api/pyq.js');
 // Fetch all pyq and send as JSON
 router.get('/', validateApiKey, apiPyqController.fetchPyq);
 
+router.get('/:id', validateApiKey, apiPyqController.fetchPyqById);
+
 // Create a new pyq
 // router.post('/', wrapAsync(apiPyqController.createPyq));
 

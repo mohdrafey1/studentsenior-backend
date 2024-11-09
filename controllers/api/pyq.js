@@ -11,6 +11,19 @@ module.exports.fetchPyq = async (req, res) => {
     }
 };
 
+module.exports.fetchPyqById = async (req, res) => {
+    try {
+        const pyq = await PYQ.findById(req.params.id);
+        if (!pyq) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.status(200).json(pyq);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: 'Some error occurred on the server' });
+    }
+};
+
 // Create a new PYQ
 // module.exports.createPyq = async (req, res) => {
 //     const {

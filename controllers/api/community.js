@@ -33,7 +33,7 @@ module.exports.fetchPostbyId = async (req, res) => {
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
         }
-        res.status(200).json(post); // Use 200 OK for a successful fetch
+        res.status(200).json(post);
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: 'Some error occurred on the server' });
