@@ -11,6 +11,20 @@ module.exports.fetchPyq = async (req, res) => {
     }
 };
 
+module.exports.fetchPyqByCollege = async (req, res) => {
+    try {
+        const { collegeId } = req.params;
+        const pyqs = await PYQ.find({ status: true, college: collegeId });
+
+        return res.status(200).json(pyqs);
+    } catch (err) {
+        console.error('Error fetching PYQs:', err);
+        return res
+            .status(500)
+            .json({ message: 'Some error occurred on the server' });
+    }
+};
+
 module.exports.fetchPyqById = async (req, res) => {
     try {
         const pyq = await PYQ.findById(req.params.id);
@@ -21,6 +35,30 @@ module.exports.fetchPyqById = async (req, res) => {
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: 'Some error occurred on the server' });
+    }
+};
+
+//fetch related papers
+module.exports.fetchRelatedPapers = async (req, res) => {
+    const { year, semester, course, branch, examType } = req.query;
+
+    const query = {};
+    if (year) query.year = year;
+    if (semester) query.semester = semester;
+    if (course) query.course = course;
+    if (examType) query.examType = examType;
+
+    if (branch) {
+        const branches = branch.split(',').map((b) => b.trim());
+        query.branch = { $in: branches };
+    }
+
+    try {
+        const relatedPapers = await PYQ.find(query).limit(6);
+        res.json(relatedPapers);
+    } catch (error) {
+        res.status(500).send('Error fetching related papers');
+        console.log(error);
     }
 };
 
