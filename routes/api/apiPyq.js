@@ -14,10 +14,16 @@ router.get(
     apiPyqController.fetchPyqByCollege
 );
 
+router.get(
+    '/:collegeId/bundle',
+    validateApiKey,
+    apiPyqController.fetchPyqBundle
+);
+
 router.get('/:id', validateApiKey, apiPyqController.fetchPyqById);
 
 router.get(
-    '/:collegeId/related-pyqs',
+    '/:collegeId/:pyqId/related-pyqs',
     validateApiKey,
     apiPyqController.fetchRelatedPapers
 );
