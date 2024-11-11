@@ -17,7 +17,7 @@ router.get(
 router.get('/:id', validateApiKey, apiPyqController.fetchPyqById);
 
 router.get(
-    '/s/related-pyqs',
+    '/:collegeId/related-pyqs',
     validateApiKey,
     apiPyqController.fetchRelatedPapers
 );

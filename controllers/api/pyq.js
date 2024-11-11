@@ -40,9 +40,10 @@ module.exports.fetchPyqById = async (req, res) => {
 
 //fetch related papers
 module.exports.fetchRelatedPapers = async (req, res) => {
+    const { collegeId } = req.params;
     const { year, semester, course, branch, examType } = req.query;
 
-    const query = {};
+    const query = { status: true, college: collegeId };
     if (year) query.year = year;
     if (semester) query.semester = semester;
     if (course) query.course = course;
