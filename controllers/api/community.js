@@ -1,5 +1,4 @@
 const Post = require('../../models/Post');
-const { post } = require('../../routes/api/apicommunity');
 
 module.exports.fetchPost = async (req, res) => {
     try {

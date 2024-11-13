@@ -14,8 +14,10 @@ const upload = multer({
 
 const apiStoreController = require('../../controllers/api/store.js');
 
-// Fetch all pyq and send as JSON
+// Fetch all pyq
 router.get('/', validateApiKey, apiStoreController.fetchProducts);
+
+router.get('/:id', validateApiKey, apiStoreController.fetchProductById);
 
 router.get(
     '/affiliate',

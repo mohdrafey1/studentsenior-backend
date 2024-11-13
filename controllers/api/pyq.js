@@ -26,10 +26,11 @@ module.exports.fetchPyqByCollege = async (req, res) => {
 };
 
 module.exports.fetchPyqById = async (req, res) => {
+    const { id } = req.params;
     try {
-        const pyq = await PYQ.findById(req.params.id);
+        const pyq = await PYQ.findOne({ _id: id, status: true });
         if (!pyq) {
-            return res.status(404).json({ message: 'Post not found' });
+            return res.status(404).json({ message: 'Pyq not found' });
         }
         res.status(200).json(pyq);
     } catch (e) {
