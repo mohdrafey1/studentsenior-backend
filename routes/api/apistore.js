@@ -17,6 +17,18 @@ const apiStoreController = require('../../controllers/api/store.js');
 // Fetch all pyq
 router.get('/', validateApiKey, apiStoreController.fetchProducts);
 
+router.get(
+    '/all/:collegeId',
+    validateApiKey,
+    apiStoreController.fetchProductByCollege
+);
+
+router.get(
+    '/suggested/:collegeId',
+    validateApiKey,
+    apiStoreController.fetchSuggestedProducts
+);
+
 router.get('/:id', validateApiKey, apiStoreController.fetchProductById);
 
 router.get(

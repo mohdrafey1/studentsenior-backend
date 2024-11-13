@@ -14,6 +14,41 @@ module.exports = {
         }
     },
 
+    fetchProductByCollege: async (req, res) => {
+        try {
+            const { collegeId } = req.params;
+            const store = await Store.find({
+                status: true,
+                college: collegeId,
+            }).sort({ createdAt: -1 });
+
+            return res.status(200).json(store);
+        } catch (err) {
+            return res
+                .status(500)
+                .json({ message: 'Some error occurred on the server' });
+        }
+    },
+
+    fetchSuggestedProducts: async (req, res) => {
+        const { collegeId } = req.params;
+        try {
+            const suggestedProducts = await Store.find({
+                status: true,
+                college: collegeId,
+            })
+                .populate('college')
+                .limit(5)
+                .sort({ createdAt: -1 });
+
+            res.json(suggestedProducts);
+        } catch (err) {
+            res.status(500).json({
+                message: 'Error fetching suggested products',
+            });
+        }
+    },
+
     fetchProductById: async (req, res) => {
         try {
             const { id } = req.params;

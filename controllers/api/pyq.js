@@ -14,7 +14,9 @@ module.exports.fetchPyq = async (req, res) => {
 module.exports.fetchPyqByCollege = async (req, res) => {
     try {
         const { collegeId } = req.params;
-        const pyqs = await PYQ.find({ status: true, college: collegeId });
+        const pyqs = await PYQ.find({ status: true, college: collegeId }).sort({
+            createdAt: -1,
+        });
 
         return res.status(200).json(pyqs);
     } catch (err) {
