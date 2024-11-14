@@ -24,7 +24,7 @@ router.get(
 );
 
 router.get(
-    '/suggested/:collegeId',
+    '/suggested/:collegeId/:id',
     validateApiKey,
     apiStoreController.fetchSuggestedProducts
 );

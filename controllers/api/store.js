@@ -20,7 +20,9 @@ module.exports = {
             const store = await Store.find({
                 status: true,
                 college: collegeId,
-            }).sort({ createdAt: -1 });
+            })
+                .populate('college')
+                .sort({ createdAt: -1 });
 
             return res.status(200).json(store);
         } catch (err) {
@@ -31,11 +33,12 @@ module.exports = {
     },
 
     fetchSuggestedProducts: async (req, res) => {
-        const { collegeId } = req.params;
+        const { collegeId, id } = req.params;
         try {
             const suggestedProducts = await Store.find({
                 status: true,
                 college: collegeId,
+                _id: { $ne: id },
             })
                 .populate('college')
                 .limit(5)
