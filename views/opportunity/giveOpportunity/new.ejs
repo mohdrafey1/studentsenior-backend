@@ -20,9 +20,15 @@
                 <label for="college">Select College</label>
                 <select id="college" name="college" class="form-control" required>
                     <option value="">Select College</option>
-                    <!-- College options will be dynamically populated -->
+                    <% colleges.forEach(college=> { %>
+                        <option value="<%= college._id %>">
+                            <%= college.name %>
+                        </option>
+                        <% }); %>
                 </select>
+
             </div>
+
 
             <!-- Status -->
             <div class="form-group">
@@ -51,19 +57,3 @@
             <button type="submit" class="btn btn-primary mt-3">Add Opportunity</button>
         </form>
     </div>
-
-    <script>
-        // Fetch colleges and populate the college dropdown
-        fetch('/api/colleges')
-            .then(response => response.json())
-            .then(data => {
-                const collegeSelect = document.getElementById('college');
-                data.forEach(college => {
-                    const option = document.createElement('option');
-                    option.value = college._id;
-                    option.textContent = college.name;
-                    collegeSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching colleges:', error));
-    </script>

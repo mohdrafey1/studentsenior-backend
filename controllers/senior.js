@@ -1,4 +1,5 @@
 const Seniors = require('../models/Senior');
+const Colleges = require('../models/Colleges');
 
 module.exports = {
     index: async (req, res) => {
@@ -6,7 +7,8 @@ module.exports = {
         res.render('seniors/index.ejs', { allSenior });
     },
     createSeniorForm: async (req, res) => {
-        res.render('seniors/new.ejs');
+        const colleges = await Colleges.find({});
+        res.render('seniors/new.ejs', { colleges });
     },
     createSenior: async (req, res) => {
         const {
@@ -50,13 +52,14 @@ module.exports = {
     },
 
     editSeniorForm: async (req, res) => {
+        const colleges = await Colleges.find({});
         const { id } = req.params;
         const senior = await Seniors.findById(id);
         if (!senior) {
             req.flash('error', 'Senior not found!');
             return res.redirect(`/seniors`);
         }
-        res.render('seniors/edit', { senior });
+        res.render('seniors/edit', { senior, colleges });
     },
     editSenior: async (req, res) => {
         try {

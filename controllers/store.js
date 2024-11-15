@@ -1,6 +1,7 @@
 const Store = require('../models/Store');
 const { cloudinary } = require('../cloudConfig.js');
 const Affiliate = require('../models/AffiliateProduct.js');
+const Colleges = require('../models/Colleges.js');
 
 module.exports = {
     index: async (req, res) => {
@@ -16,8 +17,9 @@ module.exports = {
     },
 
     createStoreForm: async (req, res) => {
+        const colleges = await Colleges.find();
         try {
-            res.render('store/new.ejs');
+            res.render('store/new.ejs', { colleges });
         } catch (err) {
             console.error(err);
             req.flash('error', 'Error loading form');
@@ -69,6 +71,7 @@ module.exports = {
 
     editProductForm: async (req, res) => {
         try {
+            const colleges = await Colleges.find();
             const { id } = req.params;
             const store = await Store.findById(id);
 
@@ -81,7 +84,7 @@ module.exports = {
                 '/upload',
                 '/upload/h_200,w_250'
             );
-            res.render('store/edit', { store, previousImageUrl });
+            res.render('store/edit', { store, previousImageUrl, colleges });
         } catch (err) {
             console.error(err);
             req.flash('error', 'Error loading product');

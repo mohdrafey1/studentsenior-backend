@@ -1,4 +1,5 @@
 const Notes = require('../models/Notes');
+const Colleges = require('../models/Colleges');
 
 module.exports = {
     index: async (req, res) => {
@@ -6,7 +7,8 @@ module.exports = {
         res.render('notes/index.ejs', { notes });
     },
     createNotesForm: async (req, res) => {
-        res.render('notes/new.ejs');
+        const colleges = await Colleges.find();
+        res.render('notes/new.ejs', { colleges });
     },
     createNotes: async (req, res) => {
         const { subjectName, description, by, link, college, status, target } =
@@ -26,13 +28,14 @@ module.exports = {
         return res.redirect(`/notes`);
     },
     editNotesForm: async (req, res) => {
+        const colleges = await Colleges.find();
         const { id } = req.params;
         const notes = await Notes.findById(id);
         if (!notes) {
             req.flash('error', 'Notes not found!');
             return res.redirect(`/notes`);
         }
-        res.render('notes/edit', { notes });
+        res.render('notes/edit', { notes, colleges });
     },
     editNotes: async (req, res) => {
         try {

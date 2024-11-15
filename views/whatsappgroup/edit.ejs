@@ -4,9 +4,16 @@
         <form action="/whatsappgroup/<%= group._id %>?_method=PUT" method="POST">
             <div class="form-group">
                 <label for="college">Select College</label>
+
                 <select id="college" name="college" class="form-control" required>
+
                     <option value="">Select College</option>
-                    <!-- Options will be populated dynamically -->
+                    <% colleges.forEach(college=> { %>
+                        <option value="<%= college._id %>" <%=group.college._id.toString()===college._id.toString()
+                            ? 'selected' : '' %>>
+                            <%= college.name %>
+                        </option>
+                        <% }); %>
                 </select>
             </div>
             <div class="form-group">
@@ -35,22 +42,3 @@
             <button type="submit" class="btn btn-success">Update Group</button>
         </form>
     </div>
-
-    <script>
-        // Fetch colleges and populate the dropdown
-        fetch('/api/colleges')
-            .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById('college');
-                data.forEach(college => {
-                    const option = document.createElement('option');
-                    option.value = college._id;
-                    option.textContent = college.name;
-                    if (college._id === '<%= group.college %>') {
-                        option.selected = true;
-                    }
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching colleges:', error));
-    </script>

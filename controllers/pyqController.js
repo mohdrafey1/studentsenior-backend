@@ -3,23 +3,23 @@ const Colleges = require('../models/Colleges');
 
 // Index - List all approved PYQs for a specific college
 exports.index = async (req, res) => {
+    const colleges = await Colleges.find();
+
     const perPage = 10;
     const page = parseInt(req.query.page) || 1;
 
-    // Extract filter criteria from query params
-    const { collegeName, year, course, semester, status, examType } = req.query;
+    const { subjectName, college, year, course, semester, status, examType } =
+        req.query;
 
     // Build a query object based on the filters provided
     const query = {};
 
-    //something wrong here will correct it
-    if (collegeName) {
-        const college = await Colleges.findOne({
-            name: new RegExp(collegeName, 'i'),
-        });
-        if (college) {
-            query.college = college.name;
-        }
+    if (college) {
+        query.college = college;
+    }
+
+    if (subjectName) {
+        query.subjectName = new RegExp(subjectName, 'i');
     }
 
     if (year) {
@@ -46,7 +46,7 @@ exports.index = async (req, res) => {
         const totalPYQs = await PYQ.countDocuments(query);
         const pyqs = await PYQ.find(query)
             .populate('college')
-            .sort({ createdAt: -1 }) // Newest first
+            .sort({ createdAt: -1 })
             .skip(perPage * (page - 1))
             .limit(perPage);
 
@@ -54,7 +54,8 @@ exports.index = async (req, res) => {
             pyqs: pyqs,
             currentPage: page,
             totalPages: Math.ceil(totalPYQs / perPage),
-            filters: req.query, // Pass the current filters to the view
+            filters: req.query,
+            colleges,
         });
     } catch (err) {
         console.error(err);

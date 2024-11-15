@@ -1,5 +1,6 @@
 // whatsappGroup.js
 const WhatsappGroup = require('../models/WhatsappGroup');
+const Colleges = require('../models/Colleges');
 
 module.exports = {
     index: async (req, res) => {
@@ -7,7 +8,8 @@ module.exports = {
         res.render('whatsappgroup/index.ejs', { Groups });
     },
     createGroupForm: async (req, res) => {
-        res.render('whatsappgroup/new.ejs');
+        const colleges = await Colleges.find();
+        res.render('whatsappgroup/new.ejs', { colleges });
     },
     createGroup: async (req, res) => {
         const { title, info, domain, link, college, status } = req.body;
@@ -24,13 +26,14 @@ module.exports = {
         return res.redirect(`/whatsappgroup`);
     },
     editGroupForm: async (req, res) => {
+        const colleges = await Colleges.find();
         const { id } = req.params;
         const group = await WhatsappGroup.findById(id);
         if (!group) {
             req.flash('error', 'Group not found!');
             return res.redirect(`/whatsappgroup`);
         }
-        res.render('whatsappgroup/edit', { group });
+        res.render('whatsappgroup/edit', { group, colleges });
     },
     editGroup: async (req, res) => {
         try {

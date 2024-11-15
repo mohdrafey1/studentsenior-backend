@@ -1,4 +1,5 @@
 const { GetOpportunity, GiveOpportunity } = require('../models/Opportunity');
+const Colleges = require('../models/Colleges');
 
 module.exports = {
     getOpportunities: async (req, res) => {
@@ -19,7 +20,8 @@ module.exports = {
     },
 
     createGetOpportunitiesform: async (req, res) => {
-        res.render('opportunity/getOpportunity/new.ejs');
+        const colleges = await Colleges.find();
+        res.render('opportunity/getOpportunity/new.ejs', { colleges });
     },
 
     createGetOpportunities: async (req, res) => {
@@ -63,12 +65,16 @@ module.exports = {
     editGetOpportunities: async (req, res) => {
         const { id } = req.params;
         const getOpportunity = await GetOpportunity.findById(id);
+        const colleges = await Colleges.find();
         if (!getOpportunity) {
             req.flash('error', 'Opportunity not found!');
             return res.redirect('/opportunity/getopportunities');
         }
 
-        res.render('opportunity/getOpportunity/edit.ejs', { getOpportunity });
+        res.render('opportunity/getOpportunity/edit.ejs', {
+            getOpportunity,
+            colleges,
+        });
     },
 
     updateGetOpportunities: async (req, res) => {
@@ -125,7 +131,8 @@ module.exports = {
     },
 
     createGiveOpportunitiesform: async (req, res) => {
-        res.render('opportunity/giveOpportunity/new.ejs');
+        const colleges = await Colleges.find();
+        res.render('opportunity/giveOpportunity/new.ejs', { colleges });
     },
 
     createGiveOpportunities: async (req, res) => {
@@ -166,6 +173,7 @@ module.exports = {
     },
 
     editGiveOpportunities: async (req, res) => {
+        const colleges = await Colleges.find();
         const { id } = req.params;
         const giveopportunity = await GiveOpportunity.findById(id);
         if (!giveopportunity) {
@@ -173,7 +181,10 @@ module.exports = {
             return res.redirect('/opportunity/giveopportunities');
         }
 
-        res.render('opportunity/giveOpportunity/edit.ejs', { giveopportunity });
+        res.render('opportunity/giveOpportunity/edit.ejs', {
+            giveopportunity,
+            colleges,
+        });
     },
 
     updateGiveOpportunities: async (req, res) => {
