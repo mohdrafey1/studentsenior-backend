@@ -10,6 +10,19 @@ module.exports.fetchCollege = async (req, res) => {
     }
 };
 
+module.exports.fetchCollegeById = async (req, res) => {
+    try {
+        const { collegeId } = req.params;
+        const college = await Colleges.findOne({
+            status: true,
+            _id: collegeId,
+        });
+        res.status(200).json(college);
+    } catch (error) {
+        res.status(500).json({ message: 'Error occured on the backend' });
+    }
+};
+
 module.exports.createCollege = async (req, res) => {
     const { name, location, description } = req.body;
 

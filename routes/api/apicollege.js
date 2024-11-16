@@ -8,6 +8,12 @@ const apiCollegeController = require('../../controllers/api/college.js');
 
 router.get('/', validateApiKey, apiCollegeController.fetchCollege);
 
+router.get(
+    '/:collegeId',
+    validateApiKey,
+    apiCollegeController.fetchCollegeById
+);
+
 router.post(
     '/',
     verifyToken,
