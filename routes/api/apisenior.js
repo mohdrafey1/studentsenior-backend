@@ -15,6 +15,8 @@ router.get(
     apiSeniorController.fetchSeniorByCollege
 );
 
+router.get('/:id', validateApiKey, apiSeniorController.fetchSeniorById);
+
 // Create a new pyq
 router.post(
     '/',

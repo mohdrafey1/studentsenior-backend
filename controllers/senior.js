@@ -73,6 +73,7 @@ module.exports = {
                 telegram,
                 college,
                 status,
+                profilePicture,
             } = req.body;
 
             // Find the senior by ID and update the details
@@ -86,6 +87,7 @@ module.exports = {
                     whatsapp,
                     telegram,
                     college,
+                    profilePicture,
                     status: status === 'true', // Convert status to boolean
                 },
                 {

@@ -24,6 +24,22 @@ module.exports.fetchSeniorByCollege = async (req, res) => {
     }
 };
 
+module.exports.fetchSeniorById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const senior = await Seniors.findOne({
+            status: true,
+            _id: id,
+        });
+        if (!senior) {
+            return res.status(404).json({ message: 'Senior not found' });
+        }
+        res.json(senior);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching Senior' });
+    }
+};
+
 module.exports.createSenior = async (req, res) => {
     const { name, domain, branch, year, whatsapp, telegram, college, status } =
         req.body;
