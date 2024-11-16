@@ -11,6 +11,19 @@ module.exports.fetchGroups = async (req, res) => {
     }
 };
 
+module.exports.fetchGroupsByCollege = async (req, res) => {
+    try {
+        const { collegeId } = req.params;
+        const groups = await WhatsappGroup.find({
+            status: true,
+            college: collegeId,
+        });
+        res.json(groups);
+    } catch (error) {
+        res.status(500).json({ message: 'Error on the backend' });
+    }
+};
+
 module.exports.createGroup = async (req, res) => {
     const { title, info, domain, link, college, status } = req.body;
     // console.log(req.body);

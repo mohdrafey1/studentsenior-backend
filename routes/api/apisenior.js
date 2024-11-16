@@ -9,6 +9,12 @@ const apiSeniorController = require('../../controllers/api/senior.js');
 // Fetch all pyq and send as JSON
 router.get('/', validateApiKey, apiSeniorController.fetchSenior);
 
+router.get(
+    '/college/:collegeId',
+    validateApiKey,
+    apiSeniorController.fetchSeniorByCollege
+);
+
 // Create a new pyq
 router.post(
     '/',

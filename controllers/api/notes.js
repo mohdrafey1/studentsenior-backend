@@ -11,6 +11,20 @@ module.exports.fetchNotes = async (req, res) => {
     }
 };
 
+module.exports.fetchNotesByCollege = async (req, res) => {
+    try {
+        const { collegeId } = req.params;
+
+        const notes = await Notes.find({
+            status: true,
+            college: collegeId,
+        }).populate('by');
+        res.status(200).json(notes);
+    } catch (error) {
+        res.status(500).json({ message: 'Error on the backend' });
+    }
+};
+
 // Create a new Notes
 // module.exports.createNotes = async (req, res) => {
 //     const { subjectName, description, by, link, college, status, target } =

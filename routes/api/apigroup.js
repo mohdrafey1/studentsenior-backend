@@ -8,6 +8,12 @@ const apiGroupController = require('../../controllers/api/group.js');
 // all pyq
 router.get('/', validateApiKey, apiGroupController.fetchGroups);
 
+router.get(
+    '/college/:collegeId',
+    validateApiKey,
+    apiGroupController.fetchGroupsByCollege
+);
+
 // Create a new pyq
 router.post('/', validateGroup, wrapAsync(apiGroupController.createGroup));
 

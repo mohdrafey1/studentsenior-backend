@@ -14,7 +14,31 @@ module.exports.fetchPost = async (req, res) => {
         res.json(posts);
     } catch (err) {
         console.error('Error fetching Posts', err);
-        res.status(500).json({ message: 'Error Fetching Notes' });
+        res.status(500).json({ message: 'Error Fetching Posts' });
+    }
+};
+
+module.exports.fetchPostByCollege = async (req, res) => {
+    try {
+        const { collegeId } = req.params;
+        const posts = await Post.find({ college: collegeId })
+            .sort({
+                createdAt: -1,
+            })
+            .populate('college')
+            .populate('author')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'author',
+                },
+            });
+
+        res.status(200).json(posts);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Something Error occur on the backend',
+        });
     }
 };
 

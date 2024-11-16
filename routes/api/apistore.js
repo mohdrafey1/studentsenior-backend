@@ -18,7 +18,7 @@ const apiStoreController = require('../../controllers/api/store.js');
 router.get('/', validateApiKey, apiStoreController.fetchProducts);
 
 router.get(
-    '/all/:collegeId',
+    '/college/:collegeId',
     validateApiKey,
     apiStoreController.fetchProductByCollege
 );

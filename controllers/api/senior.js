@@ -11,6 +11,19 @@ module.exports.fetchSenior = async (req, res) => {
     }
 };
 
+module.exports.fetchSeniorByCollege = async (req, res) => {
+    try {
+        const { collegeId } = req.params;
+        const seniors = await Seniors.find({
+            status: true,
+            college: collegeId,
+        });
+        res.json(seniors);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching Seniors' });
+    }
+};
+
 module.exports.createSenior = async (req, res) => {
     const { name, domain, branch, year, whatsapp, telegram, college, status } =
         req.body;

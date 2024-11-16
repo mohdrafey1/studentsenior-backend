@@ -9,7 +9,7 @@ const apiPyqController = require('../../controllers/api/pyq.js');
 router.get('/', validateApiKey, apiPyqController.fetchPyq);
 
 router.get(
-    '/all/:collegeId',
+    '/college/:collegeId',
     validateApiKey,
     apiPyqController.fetchPyqByCollege
 );

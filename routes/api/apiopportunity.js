@@ -11,6 +11,12 @@ router.get(
     opportunityController.getOpportunities
 );
 
+router.get(
+    '/getopportunities/college/:collegeId',
+    validateApiKey,
+    opportunityController.getOpportunitiesByCollege
+);
+
 router.post(
     '/getopportunities',
     verifyToken,
@@ -31,6 +37,12 @@ router.delete(
 
 router.get(
     '/giveopportunities',
+    validateApiKey,
+    opportunityController.giveOpportunities
+);
+
+router.get(
+    '/giveopportunities/college/:collegeId',
     validateApiKey,
     opportunityController.giveOpportunities
 );

@@ -19,6 +19,27 @@ module.exports = {
         }
     },
 
+    getOpportunitiesByCollege: async (req, res) => {
+        try {
+            const { collegeId } = req.params;
+            const allGetOpportunities = await GetOpportunity.find({
+                status: true,
+                isDeleted: false,
+                college: collegeId,
+            })
+                .sort({ createdAt: -1 })
+                .populate('college')
+                .populate('owner');
+
+            res.json(allGetOpportunities);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                message: 'Unable to Fetch Get Opportunities',
+            });
+        }
+    },
+
     createGetOpportunities: async (req, res) => {
         const { name, description, college, whatsapp, email } = req.body;
 
@@ -116,6 +137,26 @@ module.exports = {
                 status: true,
                 isDeleted: false,
             })
+                .populate('college')
+                .populate('owner');
+
+            res.json(allGiveOpportunities);
+        } catch (error) {
+            res.status(500).json({
+                message: 'Unable to Fetch Give Opportunity',
+            });
+        }
+    },
+
+    giveOpportunities: async (req, res) => {
+        const { collegeId } = req.params;
+        try {
+            const allGiveOpportunities = await GiveOpportunity.find({
+                status: true,
+                isDeleted: false,
+                college: collegeId,
+            })
+                .sort({ createdAt: -1 })
                 .populate('college')
                 .populate('owner');
 
