@@ -34,6 +34,9 @@ module.exports.fetchPyqById = async (req, res) => {
         if (!pyq) {
             return res.status(404).json({ message: 'Pyq not found' });
         }
+        await PYQ.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
+        console.log(pyq);
+
         res.status(200).json(pyq);
     } catch (e) {
         console.error(e);

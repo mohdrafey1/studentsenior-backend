@@ -16,6 +16,7 @@ const PYQSchema = new mongoose.Schema(
             required: true,
         },
         status: { type: Boolean, default: false },
+        clickCount: { type: Number, default: 0 },
     },
     { timestamps: true }
 );
