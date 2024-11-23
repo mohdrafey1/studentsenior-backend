@@ -31,6 +31,8 @@ const opportunityRouter = require('./routes/opportunity.js');
 const contactUsRouter = require('./routes/contactus.js');
 const pyqRouter = require('./routes/pyqRoutes.js');
 const groupRouter = require('./routes/whatsappGroup.js');
+const courseRoutes = require('./routes/branchcourse/course.js');
+const branchRoutes = require('./routes/branchcourse/branch.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/apicollege.js');
@@ -145,6 +147,8 @@ app.use('/community', communityRouter);
 app.use('/opportunity', opportunityRouter);
 app.use('/toggle-status', toggleStatus);
 app.use('/contactus', contactUsRouter);
+app.use('/courses', courseRoutes);
+app.use('/branches', branchRoutes);
 
 //frontend api routes
 app.use('/api/colleges', apicollegeRouter);

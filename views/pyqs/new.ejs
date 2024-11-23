@@ -2,25 +2,35 @@
     <div class="container mt-4">
         <h1>Add New PYQ</h1>
         <form action="/pyqs" method="POST">
+            <!-- College Selection -->
             <div class="form-group">
                 <label for="college">Select College</label>
+
                 <select id="college" name="college" class="form-control" required>
+
                     <option value="">Select College</option>
                     <% colleges.forEach(college=> { %>
-                        <option value="<%= college._id %>">
+                        <option value="<%= college._id %>" <%=pyq.college._id.toString()===college._id.toString()
+                            ? 'selected' : '' %>>
                             <%= college.name %>
                         </option>
-                        <% }) %>
+                        <% }); %>
                 </select>
             </div>
+
+            <!-- Subject Name -->
             <div class="form-group">
                 <label for="subjectName">Subject Name</label>
                 <input type="text" id="subjectName" name="subjectName" class="form-control" required />
             </div>
+
+            <!-- Subject Code -->
             <div class="form-group">
                 <label for="subjectCode">Subject Code</label>
                 <input type="text" id="subjectCode" name="subjectCode" class="form-control" required />
             </div>
+
+            <!-- Semester -->
             <div class="form-group">
                 <label for="semester">Semester</label>
                 <select id="semester" name="semester" class="form-control" required>
@@ -34,40 +44,58 @@
                     <option value="7">7th</option>
                 </select>
             </div>
+
+            <!-- Year -->
             <div class="form-group">
                 <label for="year">Year</label>
                 <select id="year" name="year" class="form-control" required>
                     <option value="">Select Year</option>
-                    <!-- Options for years -->
-                    <script>
-                        const startYear = 2020;
-                        const endYear = 2025;
-                        const yearSelect = document.getElementById('year');
-                        for (let year = startYear; year <= endYear; year++) {
-                            const nextYear = year + 1;
-                            const option = document.createElement('option');
-                            option.value = `${year}-${nextYear}`;
-                            option.textContent = `${year}-${nextYear}`;
-                            yearSelect.appendChild(option);
-                        }
-                    </script>
+                    <% for (let year=2020; year <=2025; year++) { %>
+                        <option value="<%= `${year}-${year + 1}` %>">
+                            <%= `${year}-${year + 1}` %>
+                        </option>
+                        <% } %>
                 </select>
-            </div>
-            <div class="form-group">
-                <label for="course">Course</label>
-                <select id="course" name="course" class="form-control" required>
-                    <option value="">Select Course</option>
-                    <option value="BTech">BTech</option>
-                    <option value="BBA">BBA</option>
-                    <option value="BCA">BCA</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="branch">Branch</label>
-                <input type="text" id="branch" name="branch" class="form-control" required />
             </div>
 
+            <!-- Course -->
+            <div class="form-group">
+                <label for="course">Select Course</label>
+                <select id="course" name="course" class="form-control" required>
+                    <option value="">Select Course</option>
+                    <% courses.forEach(course=> { %>
+                        <option value="<%= course.courseCode %>">
+                            <%= course.courseCode %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+
+            <!-- Branches Selection -->
+            <div class="form-group">
+                <label for="branch-select">Select Branches</label>
+                <input type="text" id="selected-branches" class="form-control" placeholder="Select branches" readonly
+                    onclick="toggleDropdown()" />
+                <div id="dropdown" class="dropdown"
+                    style="display: none; border: 1px solid #ccc; padding: 10px; position: absolute; background: white;">
+                    <% branches.forEach(branch=> { %>
+                        <div>
+                            <input type="checkbox" id="branch_<%= branch.branchCode %>" value="<%= branch.branchCode %>"
+                                onchange="updateSelection(event, '<%= branch.branchCode %>')" />
+                            <label for="branch_<%= branch.branchCode %>">
+                                <%= branch.branchName %> - <%= branch.branchCode %>
+                            </label>
+                        </div>
+                        <% }) %>
+                            <button type="button" class="btn btn-primary btn-sm mt-2"
+                                onclick="confirmSelection()">OK</button>
+                </div>
+            </div>
+
+            <!-- Hidden Input for Branch Codes -->
+            <input type="hidden" id="branchCodes" name="branch" />
+
+            <!-- Exam Type -->
             <div class="form-group">
                 <label for="examType">Exam Type</label>
                 <select id="examType" name="examType" class="form-control" required>
@@ -78,18 +106,59 @@
                     <option value="Makeup/Improvement">Makeup/Improvement</option>
                 </select>
             </div>
+
+            <!-- Link -->
             <div class="form-group">
                 <label for="link">Link</label>
                 <input type="text" id="link" name="link" class="form-control" required />
             </div>
-            <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select class="form-select" id="status" name="status" required>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" class="form-control" required>
                     <option value="">Select</option>
                     <option value="true">True</option>
                     <option value="false">False</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Add PYQ</button>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary mt-4">Add PYQ</button>
         </form>
     </div>
+
+    <script>
+        let selectedBranches = [];
+        let selectedBranchCodes = [];
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateSelection(event, branchName) {
+            const branchCode = event.target.value;
+            if (event.target.checked) {
+                selectedBranches.push(branchName);
+                selectedBranchCodes.push(branchCode);
+            } else {
+                selectedBranches = selectedBranches.filter(name => name !== branchName);
+                selectedBranchCodes = selectedBranchCodes.filter(code => code !== branchCode);
+            }
+            updateInput();
+        }
+
+        function updateInput() {
+            const input = document.getElementById('selected-branches');
+            input.value = selectedBranches.join(', ');
+
+            // Update the hidden input field to include selected branch codes
+            const branchCodesInput = document.getElementById('branchCodes');
+            branchCodesInput.value = selectedBranchCodes.join(',');
+        }
+
+        function confirmSelection() {
+            toggleDropdown();
+        }
+    </script>

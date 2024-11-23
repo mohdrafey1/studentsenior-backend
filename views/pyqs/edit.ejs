@@ -5,15 +5,19 @@
         <form action="/pyqs/<%= pyq._id %>?_method=PUT" method="POST">
             <div class="form-group">
                 <label for="college">Select College</label>
+
                 <select id="college" name="college" class="form-control" required>
+
                     <option value="">Select College</option>
                     <% colleges.forEach(college=> { %>
-                        <option value="<%= college._id %>">
+                        <option value="<%= college._id %>" <%=pyq.college._id.toString()===college._id.toString()
+                            ? 'selected' : '' %>>
                             <%= college.name %>
                         </option>
-                        <% }) %>
+                        <% }); %>
                 </select>
             </div>
+
             <div class="mb-3">
                 <label for="subjectName" class="form-label">Subject Name</label>
                 <input type="text" id="subjectName" name="subjectName" class="form-control"
@@ -48,12 +52,13 @@
             </div>
             <div class="mb-3">
                 <label for="course" class="form-label">Course</label>
-                <select id="course" name="course" class="form-select" required>
-                    <option value="" disabled>Select Course</option>
-                    <option value="BTech" <%=pyq.course=='BTech' ? 'selected' : '' %>>BTech</option>
-                    <option value="BBA" <%=pyq.course=='BBA' ? 'selected' : '' %>>BBA</option>
-                    <option value="BCA" <%=pyq.course=='BCA' ? 'selected' : '' %>>BCA</option>
-                    <option value="Other" <%=pyq.course=='Other' ? 'selected' : '' %>>Other</option>
+                <select id="course" name="course" class="form-control" required>
+                    <option value="">Select Course</option>
+                    <% courses.forEach(course=> { %>
+                        <option value="<%= course.courseCode %>" <%=pyq.course===course.courseCode ? 'selected' : '' %>>
+                            <%= course.courseCode %>
+                        </option>
+                        <% }); %>
                 </select>
             </div>
             <div class="mb-3">

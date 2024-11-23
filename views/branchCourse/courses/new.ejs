@@ -1,0 +1,18 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container my-5">
+        <h1 class="text-primary mb-4">Add New Course</h1>
+        <form action="/courses" method="POST" class="shadow p-4 bg-light rounded">
+            <div class="mb-3">
+                <label for="courseName" class="form-label">Course Name:</label>
+                <input type="text" id="courseName" name="courseName" class="form-control"
+                    placeholder="Enter course name" required />
+            </div>
+            <div class="mb-3">
+                <label for="courseCode" class="form-label">Course Code:</label>
+                <input type="text" id="courseCode" name="courseCode" class="form-control"
+                    placeholder="Enter course code" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>

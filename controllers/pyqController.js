@@ -1,5 +1,6 @@
 const PYQ = require('../models/PYQ');
 const Colleges = require('../models/Colleges');
+const { Branch, Course } = require('../models/CourseBranch');
 
 // Index - List all approved PYQs for a specific college
 exports.index = async (req, res) => {
@@ -67,9 +68,13 @@ exports.index = async (req, res) => {
 exports.new = async (req, res) => {
     try {
         const colleges = await Colleges.find();
+        const courses = await Course.find();
+        const branches = await Branch.find();
         return res.render('pyqs/new', {
             title: 'Add New PYQ',
             colleges,
+            courses,
+            branches,
         });
     } catch (error) {
         console.error('Error:', error);
@@ -131,11 +136,13 @@ module.exports.edit = async (req, res) => {
     const { id } = req.params;
     const pyq = await PYQ.findById(id).populate('college');
     const colleges = await Colleges.find();
+    const courses = await Course.find();
+    const branches = await Branch.find();
     if (!pyq) {
         req.flash('error', 'PYQ not found!');
         return res.redirect(`/pyqs`);
     }
-    res.render('pyqs/edit', { pyq, colleges });
+    res.render('pyqs/edit', { pyq, colleges, courses, branches });
 };
 
 // edit
