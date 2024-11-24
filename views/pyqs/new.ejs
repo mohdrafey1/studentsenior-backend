@@ -3,20 +3,19 @@
         <h1>Add New PYQ</h1>
         <form action="/pyqs" method="POST">
             <!-- College Selection -->
+
             <div class="form-group">
                 <label for="college">Select College</label>
-
                 <select id="college" name="college" class="form-control" required>
-
                     <option value="">Select College</option>
                     <% colleges.forEach(college=> { %>
-                        <option value="<%= college._id %>" <%=pyq.college._id.toString()===college._id.toString()
-                            ? 'selected' : '' %>>
+                        <option value="<%= college._id %>">
                             <%= college.name %>
                         </option>
-                        <% }); %>
+                        <% }) %>
                 </select>
             </div>
+
 
             <!-- Subject Name -->
             <div class="form-group">
