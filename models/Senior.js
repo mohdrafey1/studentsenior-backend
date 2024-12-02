@@ -40,6 +40,7 @@ const seniorSchema = new mongoose.Schema(
             required: true,
         },
         status: { type: Boolean, default: false },
+        priority: { type: Number, default: 10 },
     },
     { timestamps: true }
 );

@@ -17,7 +17,9 @@ module.exports.fetchSeniorByCollege = async (req, res) => {
         const seniors = await Seniors.find({
             status: true,
             college: collegeId,
-        }).populate('owner', 'profilePicture');
+        })
+            .populate('owner', 'profilePicture')
+            .sort({ priority: 1 });
         res.json(seniors);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching Seniors' });
