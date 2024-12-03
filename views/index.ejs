@@ -1,6 +1,6 @@
 <%- layout("layouts/boilerplate.ejs") %>
 
-    <body>
+    <div>
         <div class="container mt-4">
             <!-- Total Counts Section -->
             <div class="text-center mb-4">
@@ -19,6 +19,7 @@
                                     <span class="card-text">
                                         <%= totalColleges %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalColleges"></span>
                                     <!-- Hidden loader inside the card -->
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-primary" role="status">
@@ -41,6 +42,7 @@
                                     <span class="card-text">
                                         <%= totalPYQs %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalPYQs"></span>
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-primary" role="status">
                                             <span class="sr-only">Loading...</span>
@@ -83,6 +85,7 @@
                                     <span class="card-text">
                                         <%= totalGroups %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalGroups"></span>
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-info" role="status">
                                             <span class="sr-only">Loading...</span>
@@ -104,6 +107,7 @@
                                     <span class="card-text">
                                         <%= totalSeniors %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalSeniors"></span>
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-secondary" role="status">
                                             <span class="sr-only">Loading...</span>
@@ -125,6 +129,7 @@
                                     <span class="card-text">
                                         <%= totalProduct %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalProduct"></span>
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-secondary" role="status">
                                             <span class="sr-only">Loading...</span>
@@ -146,6 +151,7 @@
                                     <span class="card-text">
                                         <%= totalGetCommunity %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalGetCommunity"></span>
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-warning" role="status">
                                             <span class="sr-only">Loading...</span>
@@ -167,6 +173,7 @@
                                     <span class="card-text">
                                         <%= totalGiveCommunity %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalGiveCommunity"></span>
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-warning" role="status">
                                             <span class="sr-only">Loading...</span>
@@ -188,6 +195,7 @@
                                     <span class="card-text">
                                         <%= totalPost %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalPost"></span>
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-success" role="status">
                                             <span class="sr-only">Loading...</span>
@@ -207,6 +215,7 @@
                                     <span class="card-text">
                                         <%= totalMessages %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalMessages"></span>
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-success" role="status">
                                             <span class="sr-only">Loading...</span>
@@ -249,6 +258,7 @@
                                     <span class="card-text">
                                         <%= totalClients %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalClients"></span>
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-danger" role="status">
                                             <span class="sr-only">Loading...</span>
@@ -535,8 +545,13 @@
             li:hover {
                 background-color: rgb(255, 255, 234);
             }
-        </style>
 
+            .new-count {
+                font-size: 0.9rem;
+                color: green;
+                margin-left: 5px;
+            }
+        </style>
         <script>
             function toggleStatus(id, status, type) {
                 fetch(`/toggle-status/${type}/${id}`, {
@@ -544,7 +559,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ status }),
+                    body: JSON.stringify({ status })
                 })
                     .then(response => response.json())
                     .then(data => {
@@ -559,8 +574,6 @@
                     });
             }
 
-        </script>
-        <script>
             const cardLinks = document.querySelectorAll('.card-link');
 
             cardLinks.forEach(link => {
@@ -590,5 +603,44 @@
                     });
                 }
             });
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const previousCounts = JSON.parse(localStorage.getItem("dashboardCounts")) || {};
+
+                // @ts-ignore
+                const currentCounts = {
+                    totalClients: <%= JSON.stringify(totalClients) %>,
+                    totalColleges: <%= JSON.stringify(totalColleges) %>,
+                    totalGetCommunity: <%= JSON.stringify(totalGetCommunity) %>,
+                    totalGiveCommunity: <%= JSON.stringify(totalGiveCommunity) %>,
+                    totalPYQs: <%= JSON.stringify(totalPYQs) %>,
+                    totalSeniors: <%= JSON.stringify(totalSeniors) %>,
+                    totalGroups: <%= JSON.stringify(totalGroups) %>,
+                    totalClients: <%= JSON.stringify(totalClients) %>,
+                    totalMessages: <%= JSON.stringify(totalMessages) %>,
+                    totalPost: <%= JSON.stringify(totalPost) %>,
+                    // Add other keys as required
+                };
+
+                const newCounts = {};
+                for (const key in currentCounts) {
+                    const previous = previousCounts[key] || 0;
+                    const current = currentCounts[key];
+                    const diff = current - previous;
+                    if (diff > 0) {
+                        newCounts[key] = diff;
+                    }
+                }
+
+                for (const key in newCounts) {
+                    const newCountElement = document.querySelector(`.new-count[data-key="${key}"]`);
+                    if (newCountElement) {
+                        newCountElement.textContent = `+${newCounts[key]}`;
+                        newCountElement.classList.remove("d-none");
+                    }
+                }
+
+                localStorage.setItem("dashboardCounts", JSON.stringify(currentCounts));
+            });
         </script>
-    </body>
+        </body>
