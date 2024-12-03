@@ -20,9 +20,7 @@ module.exports = {
             const store = await Store.find({
                 status: true,
                 college: collegeId,
-            })
-                .populate('college')
-                .sort({ createdAt: -1 });
+            }).populate('college');
 
             return res.status(200).json(store);
         } catch (err) {
