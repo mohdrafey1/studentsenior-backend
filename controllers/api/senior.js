@@ -36,6 +36,7 @@ module.exports.fetchSeniorById = async (req, res) => {
         if (!senior) {
             return res.status(404).json({ message: 'Senior not found' });
         }
+        await Seniors.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
         res.json(senior);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching Senior' });

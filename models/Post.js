@@ -46,6 +46,7 @@ const PostSchema = new mongoose.Schema(
                 },
             },
         ],
+        clickCount: { type: Number, default: 0 },
     },
     { timestamps: true }
 );

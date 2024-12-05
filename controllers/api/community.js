@@ -44,7 +44,8 @@ module.exports.fetchPostByCollege = async (req, res) => {
 
 module.exports.fetchPostbyId = async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id)
+        const { id } = req.params;
+        const post = await Post.findById(id)
             .populate('college')
             .populate('author')
             .populate({
@@ -56,6 +57,8 @@ module.exports.fetchPostbyId = async (req, res) => {
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
         }
+        await Post.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
+
         res.status(200).json(post);
     } catch (e) {
         console.error(e);

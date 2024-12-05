@@ -20,7 +20,7 @@ module.exports = {
             const store = await Store.find({
                 status: true,
                 college: collegeId,
-            }).populate('college');
+            }).sort({ available: -1 });
 
             return res.status(200).json(store);
         } catch (err) {
@@ -35,6 +35,7 @@ module.exports = {
         try {
             const suggestedProducts = await Store.find({
                 status: true,
+                available: true,
                 college: collegeId,
                 _id: { $ne: id },
             })
@@ -59,6 +60,7 @@ module.exports = {
                     .status(404)
                     .json({ message: 'Product not found or inactive' });
             }
+            await Store.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
             res.json(product);
         } catch (err) {
             console.error(err);

@@ -41,6 +41,7 @@ const seniorSchema = new mongoose.Schema(
         },
         status: { type: Boolean, default: false },
         priority: { type: Number, default: 10 },
+        clickCount: { type: Number, default: 0 },
     },
     { timestamps: true }
 );
