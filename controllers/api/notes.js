@@ -18,7 +18,9 @@ module.exports.fetchNotesByCollege = async (req, res) => {
         const notes = await Notes.find({
             status: true,
             college: collegeId,
-        }).populate('by');
+        })
+            .populate('by')
+            .sort({ createdAt: -1 });
         res.status(200).json(notes);
     } catch (error) {
         res.status(500).json({ message: 'Error on the backend' });
