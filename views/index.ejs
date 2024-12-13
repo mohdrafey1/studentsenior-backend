@@ -227,6 +227,27 @@
                     </a>
                 </div>
 
+                <div class="col-md-3 col-sm-4 col-6 mb-3">
+                    <a href="/pyqs/s/requested-pyqs" class="text-decoration-none card-link">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">Requested Pyqs</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <span class="card-text">
+                                        <%= totalRequestedPyqs %>
+                                    </span>
+                                    <span class="new-count d-none" data-key="totalRequestedPyqs"></span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-success" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
                 <!-- Card for Total Admins -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
                     <a href="/user" class="text-decoration-none card-link">
@@ -619,6 +640,7 @@
                     totalClients: <%= JSON.stringify(totalClients) %>,
                     totalMessages: <%= JSON.stringify(totalMessages) %>,
                     totalPost: <%= JSON.stringify(totalPost) %>,
+                    totalRequestedPyqs: <%= JSON.stringify(totalRequestedPyqs) %>
                     // Add other keys as required
                 };
 

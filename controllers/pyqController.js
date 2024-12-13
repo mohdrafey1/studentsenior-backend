@@ -1,6 +1,7 @@
 const PYQ = require('../models/PYQ');
 const Colleges = require('../models/Colleges');
 const { Branch, Course } = require('../models/CourseBranch');
+const PyqRequest = require('../models/PyqRequest');
 
 // Index - List all approved PYQs for a specific college
 exports.index = async (req, res) => {
@@ -204,4 +205,47 @@ module.exports.editPyq = async (req, res) => {
 exports.delete = async (req, res) => {
     await PYQ.findByIdAndDelete(req.params.id);
     res.redirect(`/pyqs`);
+};
+
+exports.requestedPyq = async (req, res) => {
+    try {
+        const requestedPyqs = await PyqRequest.find({})
+            .populate('college')
+            .sort({ createdAt: -1 });
+        res.render('pyqs/requestedPyqs', { requestedPyqs });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching requested PYQs');
+    }
+};
+
+exports.deleteRequestedPyq = async (req, res) => {
+    try {
+        const { reqId } = req.params;
+        console.log(reqId);
+        await PyqRequest.findByIdAndDelete(reqId);
+        req.flash('success', 'Requested PYQ deleted successfully.');
+        res.redirect('/pyqs/s/requested-pyqs');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error deleting requested PYQ');
+    }
+};
+
+exports.updateRequestedPyqStatus = async (req, res) => {
+    try {
+        const { reqId } = req.params;
+        const { status } = req.body;
+
+        await PyqRequest.findByIdAndUpdate(reqId, {
+            status: status === 'true',
+        });
+
+        req.flash('success', 'PYQ status updated successfully.');
+        res.redirect('/pyqs/s/requested-pyqs');
+    } catch (error) {
+        console.error(error);
+        req.flash('error', 'Unable to update PYQ status.');
+        res.redirect('/pyqs/s/requested-pyq');
+    }
 };

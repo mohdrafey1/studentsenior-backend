@@ -28,6 +28,8 @@ router.get(
     apiPyqController.fetchRelatedPapers
 );
 
+router.post('/request-pyq', apiPyqController.requestPyq);
+
 // Create a new pyq
 // router.post('/', wrapAsync(apiPyqController.createPyq));
 

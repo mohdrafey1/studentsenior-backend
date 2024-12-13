@@ -1,0 +1,76 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container my-5">
+        <h1 class="text-primary mb-4">Requested Previous Year Question Papers</h1>
+
+        <% if (requestedPyqs.length===0) { %>
+            <p class="text-muted">No requests found.</p>
+            <% } else { %>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Subject</th>
+                                <th>Semester</th>
+                                <th>Year</th>
+                                <th>Branch</th>
+                                <th>Exam Type</th>
+                                <th>College</th>
+                                <th>Description</th>
+                                <th>WhatsApp</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% requestedPyqs.forEach(pyq=> { %>
+                                <tr>
+                                    <td>
+                                        <%= pyq.subject %>
+                                    </td>
+                                    <td>
+                                        <%= pyq.semester %>
+                                    </td>
+                                    <td>
+                                        <%= pyq.year %>
+                                    </td>
+                                    <td>
+                                        <%= pyq.branch %>
+                                    </td>
+                                    <td>
+                                        <%= pyq.examType %>
+                                    </td>
+                                    <td>
+                                        <%= pyq.college.name %>
+                                    </td>
+                                    <td>
+                                        <%= pyq.description %>
+                                    </td>
+                                    <td>
+                                        <%= pyq.whatsapp %>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="/pyqs/s/requested-pyq/<%= pyq._id %>/status"
+                                            class="status-form">
+                                            <select name="status" class="form-select form-select-sm"
+                                                onchange="this.form.submit()">
+                                                <option value="false" <%=pyq.status===false ? 'selected' : '' %>>Request
+                                                    Pending</option>
+                                                <option value="true" <%=pyq.status===true ? 'selected' : '' %>>Request
+                                                    Fulfilled</option>
+                                            </select>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="/pyqs/s/requested-pyq/<%= pyq._id %>?_method=DELETE" method="POST"
+                                            style="display:inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+                <% } %>
+    </div>

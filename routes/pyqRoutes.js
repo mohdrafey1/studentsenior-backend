@@ -41,4 +41,26 @@ router.get(
     wrapAsync(pyqController.edit)
 );
 
+//requested pyq
+router.get(
+    '/s/requested-pyqs',
+    isLoggedIn,
+    authorizeRole('admin'),
+    wrapAsync(pyqController.requestedPyq)
+);
+
+router.delete(
+    '/s/requested-pyq/:reqId',
+    isLoggedIn,
+    authorizeRole('admin'),
+    wrapAsync(pyqController.deleteRequestedPyq)
+);
+
+router.post(
+    '/s/requested-pyq/:reqId/status',
+    isLoggedIn,
+    authorizeRole('admin'),
+    wrapAsync(pyqController.updateRequestedPyqStatus)
+);
+
 module.exports = router;

@@ -1,4 +1,5 @@
 const PYQ = require('../../models/PYQ');
+const PyqRequest = require('../../models/PyqRequest');
 
 // Fetch all PYQs with status true
 module.exports.fetchPyq = async (req, res) => {
@@ -96,8 +97,40 @@ module.exports.fetchPyqBundle = async (req, res) => {
         const bundlePyq = await PYQ.find(query);
         res.json(bundlePyq);
     } catch (error) {
-        res.status(500).send('Error fetching related papers');
-        console.log(error);
+        res.status(500).json({ message: 'Error fetching related papers' });
+    }
+};
+
+module.exports.requestPyq = async (req, res) => {
+    const {
+        subject,
+        semester,
+        year,
+        branch,
+        examType,
+        college,
+        description,
+        whatsapp,
+    } = req.body;
+
+    try {
+        const newRequest = new PyqRequest({
+            subject,
+            semester,
+            year,
+            branch,
+            examType,
+            college,
+            description,
+            whatsapp,
+        });
+        await newRequest.save();
+
+        res.status(201).json({
+            message: 'Request sent successfull , we will provide you pyq soon',
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'error requesting pyq ' });
     }
 };
 
