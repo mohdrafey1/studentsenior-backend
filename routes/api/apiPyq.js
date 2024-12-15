@@ -20,7 +20,8 @@ router.get(
     apiPyqController.fetchPyqBundle
 );
 
-router.get('/:id', validateApiKey, apiPyqController.fetchPyqById);
+// router.get('/:id', validateApiKey, apiPyqController.fetchPyqById); // discard later
+router.get('/:slug', validateApiKey, apiPyqController.fetchPyqBySlug);
 
 router.get(
     '/:collegeId/:pyqId/related-pyqs',
