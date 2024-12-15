@@ -96,6 +96,7 @@ exports.create = async (req, res) => {
             examType,
             link,
             college,
+            slug,
             status,
         } = req.body;
 
@@ -111,6 +112,7 @@ exports.create = async (req, res) => {
             examType,
             link,
             college,
+            slug,
             status,
         });
         await newPYQ.save();
@@ -160,6 +162,7 @@ module.exports.editPyq = async (req, res) => {
             branch,
             examType,
             link,
+            slug,
             status,
         } = req.body;
 
@@ -179,6 +182,7 @@ module.exports.editPyq = async (req, res) => {
             branch,
             examType,
             link,
+            slug,
             status: status === 'true',
         };
 

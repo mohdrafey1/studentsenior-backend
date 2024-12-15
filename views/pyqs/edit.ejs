@@ -78,6 +78,11 @@
                     <option value="Makeup/Improvement" <%=pyq.examType=='Makeup' ? 'selected' : '' %>>Makeup</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="slug">Slug</label>
+                <input type="text" id="slug" name="slug" class="form-control" readonly required
+                    value="<%= pyq.slug %>" />
+            </div>
             <div class="mb-3">
                 <label for="pdfLink" class="form-label">PDF Link</label>
                 <input type="url" id="pdfLink" name="link" class="form-control" value="<%= pyq.link %>" required>
@@ -89,6 +94,7 @@
                     <option value="false" <%=pyq.status ? '' : 'selected' %>>False</option>
                 </select>
             </div>
+
             <button type="submit" class="btn btn-primary">Update PYQ</button>
             <a href="/pyqs/<%= pyq._id %>" class="btn btn-secondary ms-2">Cancel</a>
         </form>

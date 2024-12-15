@@ -112,6 +112,11 @@
                 <input type="text" id="link" name="link" class="form-control" required />
             </div>
 
+            <div class="form-group">
+                <label for="slug">Slug</label>
+                <input type="text" id="slug" name="slug" class="form-control" readonly required />
+            </div>
+
             <!-- Status -->
             <div class="form-group">
                 <label for="status">Status</label>
@@ -160,4 +165,27 @@
         function confirmSelection() {
             toggleDropdown();
         }
+
+        // Generate slug dynamically
+        function generateSlug() {
+            const subjectName = document.getElementById('subjectName').value.trim().toLowerCase();
+            const examType = document.getElementById('examType').value.trim().toLowerCase();
+            const year = document.getElementById('year').value.trim();
+
+            if (subjectName && examType && year) {
+                // Replace spaces with hyphens and remove special characters
+                const slug = `${subjectName}-${examType}-${year}`
+                    .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove special characters
+                    .replace(/\s+/g, '-')           // Replace spaces with hyphens
+                    .toLowerCase();
+                document.getElementById('slug').value = slug;
+            } else {
+                document.getElementById('slug').value = ''; // Clear slug if fields are empty
+            }
+        }
+
+        // Add event listeners to trigger slug generation
+        document.getElementById('subjectName').addEventListener('input', generateSlug);
+        document.getElementById('examType').addEventListener('change', generateSlug);
+        document.getElementById('year').addEventListener('change', generateSlug);
     </script>

@@ -28,14 +28,34 @@ module.exports.fetchPyqByCollege = async (req, res) => {
     }
 };
 
-module.exports.fetchPyqById = async (req, res) => {
-    const { id } = req.params;
+// module.exports.fetchPyqById = async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         const pyq = await PYQ.findOne({ _id: id, status: true });
+//         if (!pyq) {
+//             return res.status(404).json({ message: 'Pyq not found' });
+//         }
+//         await PYQ.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
+
+//         res.status(200).json(pyq);
+//     } catch (e) {
+//         console.error(e);
+//         res.status(500).json({ message: 'Some error occurred on the server' });
+//     }
+// };
+
+module.exports.fetchPyqBySlug = async (req, res) => {
+    const { slug } = req.params;
     try {
-        const pyq = await PYQ.findOne({ _id: id, status: true });
+        const pyq = await PYQ.findOneAndUpdate(
+            { slug: slug, status: true },
+            { $inc: { clickCount: 1 } },
+            { new: true }
+        );
+
         if (!pyq) {
-            return res.status(404).json({ message: 'Pyq not found' });
+            return res.status(404).json({ message: 'PYQ not found' });
         }
-        await PYQ.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
 
         res.status(200).json(pyq);
     } catch (e) {
