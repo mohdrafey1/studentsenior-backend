@@ -26,17 +26,37 @@ module.exports.fetchSeniorByCollege = async (req, res) => {
     }
 };
 
-module.exports.fetchSeniorById = async (req, res) => {
+// module.exports.fetchSeniorById = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const senior = await Seniors.findOne({
+//             status: true,
+//             _id: id,
+//         }).populate('owner', 'profilePicture');
+//         if (!senior) {
+//             return res.status(404).json({ message: 'Senior not found' });
+//         }
+//         await Seniors.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
+//         res.json(senior);
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error fetching Senior' });
+//     }
+// };
+
+module.exports.fetchSeniorBySlug = async (req, res) => {
     try {
-        const { id } = req.params;
-        const senior = await Seniors.findOne({
-            status: true,
-            _id: id,
-        }).populate('owner', 'profilePicture');
+        const { slug } = req.params;
+
+        const senior = await Seniors.findOneAndUpdate(
+            { slug: slug, status: true },
+            { $inc: { clickCount: 1 } },
+            { new: true }
+        ).populate('owner', 'profilePicture');
+
         if (!senior) {
             return res.status(404).json({ message: 'Senior not found' });
         }
-        await Seniors.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
+
         res.json(senior);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching Senior' });
@@ -44,11 +64,31 @@ module.exports.fetchSeniorById = async (req, res) => {
 };
 
 module.exports.createSenior = async (req, res) => {
+    const createSlug = (name) => {
+        return `${name}`
+            .toLowerCase()
+            .replace(/[^a-z0-9 -]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+    };
+
     const { name, domain, branch, year, whatsapp, telegram, college, status } =
         req.body;
 
     try {
         let owner = req.user.id;
+
+        let slug = createSlug(name);
+
+        let existingSenior = await Seniors.findOne({ slug });
+
+        let counter = 1;
+
+        while (existingSenior) {
+            slug = `${createSlug(name)}-${counter}`;
+            existingSenior = await Seniors.findOne({ slug });
+            counter++;
+        }
 
         const newSenior = new Seniors({
             name,
@@ -58,6 +98,7 @@ module.exports.createSenior = async (req, res) => {
             telegram,
             year,
             college,
+            slug,
             status,
             owner,
         });
