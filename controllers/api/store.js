@@ -31,13 +31,13 @@ module.exports = {
     },
 
     fetchSuggestedProducts: async (req, res) => {
-        const { collegeId, id } = req.params;
+        const { collegeId, slug } = req.params;
         try {
             const suggestedProducts = await Store.find({
                 status: true,
                 available: true,
                 college: collegeId,
-                _id: { $ne: id },
+                slug: { $ne: slug },
             })
                 .populate('college')
                 .limit(5)
@@ -51,20 +51,43 @@ module.exports = {
         }
     },
 
-    fetchProductById: async (req, res) => {
+    // fetchProductById: async (req, res) => {
+    //     try {
+    //         const { id } = req.params;
+    //         const product = await Store.findOne({ _id: id, status: true });
+    //         if (!product) {
+    //             return res
+    //                 .status(404)
+    //                 .json({ message: 'Product not found or inactive' });
+    //         }
+    //         await Store.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
+    //         res.json(product);
+    //     } catch (err) {
+    //         console.error(err);
+    //         res.status(500).json({ message: 'Error fetching products' });
+    //     }
+    // },
+
+    fetchPyqBySlug: async (req, res) => {
+        const { slug } = req.params;
         try {
-            const { id } = req.params;
-            const product = await Store.findOne({ _id: id, status: true });
+            const product = await Store.findOneAndUpdate(
+                { slug: slug, status: true },
+                { $inc: { clickCount: 1 } },
+                { new: true }
+            );
             if (!product) {
                 return res
                     .status(404)
                     .json({ message: 'Product not found or inactive' });
             }
-            await Store.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
-            res.json(product);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ message: 'Error fetching products' });
+
+            res.status(200).json(product);
+        } catch (e) {
+            console.error(e);
+            res.status(500).json({
+                message: 'Some error occurred on the server',
+            });
         }
     },
 
@@ -90,6 +113,24 @@ module.exports = {
 
             let owner = req.user.id;
 
+            const createSlug = (name) => {
+                return `${name}`
+                    .toLowerCase()
+                    .replace(/[^a-z0-9 -]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+            };
+
+            let slug = createSlug(name);
+            let existingProduct = await Store.findOne({ slug });
+            let counter = 1;
+
+            while (existingProduct) {
+                slug = `${createSlug(name)}-${counter}`;
+                existingProduct = await Store.findOne({ slug });
+                counter++;
+            }
+
             const newProduct = new Store({
                 name,
                 price,
@@ -98,6 +139,7 @@ module.exports = {
                 telegram,
                 owner,
                 college,
+                slug,
                 available: available === 'true',
                 image: { url, filename },
             });
