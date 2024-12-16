@@ -11,6 +11,14 @@ module.exports = {
         res.render('seniors/new.ejs', { colleges });
     },
     createSenior: async (req, res) => {
+        const createSlug = (name) => {
+            return `${name}`
+                .toLowerCase()
+                .replace(/[^a-z0-9 -]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+        };
+
         const {
             name,
             domain,
@@ -22,6 +30,19 @@ module.exports = {
             college,
             status,
         } = req.body;
+
+        let slug = createSlug(name);
+
+        let existingSenior = await Seniors.findOne({ slug });
+
+        let counter = 1;
+
+        while (existingSenior) {
+            slug = `${createSlug(name)}-${counter}`;
+            existingSenior = await Seniors.findOne({ slug });
+            counter++;
+        }
+
         const newSenior = new Seniors({
             name,
             domain,
@@ -30,6 +51,7 @@ module.exports = {
             telegram,
             owner,
             year,
+            slug,
             college,
             status,
         });

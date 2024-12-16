@@ -42,6 +42,7 @@ const seniorSchema = new mongoose.Schema(
         status: { type: Boolean, default: false },
         priority: { type: Number, default: 10 },
         clickCount: { type: Number, default: 0 },
+        slug: { type: String, unique: true, required: true },
     },
     { timestamps: true }
 );
