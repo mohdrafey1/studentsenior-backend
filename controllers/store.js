@@ -44,6 +44,24 @@ module.exports = {
                 available,
             } = req.body;
 
+            const createSlug = (name) => {
+                return `${name}`
+                    .toLowerCase()
+                    .replace(/[^a-z0-9 -]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+            };
+
+            let slug = createSlug(name);
+            let existingProduct = await Store.findOne({ slug });
+            let counter = 1;
+
+            while (existingProduct) {
+                slug = `${createSlug(name)}-${counter}`;
+                existingProduct = await Store.findOne({ slug });
+                counter++;
+            }
+
             const newProduct = new Store({
                 name,
                 price,
@@ -52,12 +70,13 @@ module.exports = {
                 telegram,
                 owner,
                 college,
-                status: status === 'true', // Convert status to boolean
-                available: available === 'true', // Convert available to boolean
+                slug,
+                status: status === 'true',
+                available: available === 'true',
                 image: { url, filename },
             });
 
-            newProduct.owner = '66d3972a467ac23a9a5fd127'; // Hardcoded, update dynamically later
+            newProduct.owner = '66d3972a467ac23a9a5fd127';
 
             await newProduct.save();
             req.flash('success', 'Product Created Successfully');

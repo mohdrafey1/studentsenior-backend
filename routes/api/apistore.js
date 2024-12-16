@@ -24,12 +24,14 @@ router.get(
 );
 
 router.get(
-    '/suggested/:collegeId/:id',
+    '/suggested/:collegeId/:slug',
     validateApiKey,
     apiStoreController.fetchSuggestedProducts
 );
 
-router.get('/:id', validateApiKey, apiStoreController.fetchProductById);
+// router.get('/:id', validateApiKey, apiStoreController.fetchProductById);
+
+router.get('/:slug', validateApiKey, apiStoreController.fetchPyqBySlug);
 
 router.get(
     '/affiliate',
