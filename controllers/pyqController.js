@@ -119,7 +119,15 @@ exports.create = async (req, res) => {
 
         req.flash('success', 'PYQ Created Successfully');
         return res.redirect(`/pyqs`);
-    } catch (err) {
+    } catch (error) {
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyPattern)[0];
+            const value = error.keyValue[field];
+            return res.status(400).json({
+                success: false,
+                message: `Duplicate entry for ${field}: '${value}'. Please use a unique value. or this pyq is already added may be please check , if not added change the title little bit to change the slug`,
+            });
+        }
         res.status(500).send('Server Error');
     }
 };
