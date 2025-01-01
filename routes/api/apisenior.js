@@ -7,15 +7,20 @@ const { verifyToken } = require('../../utils/verifyUser.js');
 const apiSeniorController = require('../../controllers/api/senior.js');
 
 // Fetch all pyq and send as JSON
-router.get('/', validateApiKey, apiSeniorController.fetchSenior);
+router.get('/', validateApiKey, wrapAsync(apiSeniorController.fetchSenior));
 
 router.get(
     '/college/:collegeId',
     validateApiKey,
-    apiSeniorController.fetchSeniorByCollege
+    wrapAsync(apiSeniorController.fetchSeniorByCollege)
 );
 
-router.get('/:id', validateApiKey, apiSeniorController.fetchSeniorById);
+// router.get('/:id', validateApiKey, apiSeniorController.fetchSeniorById); //discard later
+router.get(
+    '/:slug',
+    validateApiKey,
+    wrapAsync(apiSeniorController.fetchSeniorBySlug)
+);
 
 // Create a new pyq
 router.post(
@@ -25,8 +30,8 @@ router.post(
     wrapAsync(apiSeniorController.createSenior)
 );
 
-router.put('/:id', verifyToken, apiSeniorController.updateSenior);
+router.put('/:id', verifyToken, wrapAsync(apiSeniorController.updateSenior));
 
-router.delete('/:id', verifyToken, apiSeniorController.deleteSenior);
+router.delete('/:id', verifyToken, wrapAsync(apiSeniorController.deleteSenior));
 
 module.exports = router;

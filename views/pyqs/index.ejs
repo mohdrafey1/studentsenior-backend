@@ -84,15 +84,17 @@
         </form>
 
         <!-- Remove Filter Button -->
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2 mb-4">
             <form method="GET" action="/pyqs" class="mb-4">
                 <button type="submit" class="btn btn-secondary">Remove Filter</button>
             </form>
 
-            <div> <a href="/pyqs/new" class="btn btn-primary mb-3">Add New PYQ</a></div>
+            <div>
+                <a href="/pyqs/new" class="btn btn-primary mb-3">Add New PYQ</a>
+            </div>
         </div>
 
-
+        <!-- Table for PYQs -->
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
@@ -132,7 +134,7 @@
                                 <%= pyq.status ? 'Approved' : 'Pending' %>
                             </td>
                             <td>
-                                <a href="/pyqs/<%= pyq._id %>" class="btn btn-info btn-sm">View</a>
+                                <a href="/pyqs/<%= pyq._id %>" class="btn btn-info btn-sm m-1">View</a>
                                 <form action="/pyqs/<%= pyq._id %>?_method=DELETE" method="POST"
                                     style="display:inline;">
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -147,13 +149,11 @@
         <!-- Pagination Controls -->
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
-
                 <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
                     <a class="page-link" href="pyqs?page=<%= currentPage - 1 %>&limit=15" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-
                 <% if (totalPages <=5) { %>
                     <% for (let i=1; i <=totalPages; i++) { %>
                         <li class="page-item <%= currentPage === i ? 'active' : '' %>">
@@ -163,11 +163,8 @@
                         </li>
                         <% } %>
                             <% } else { %>
-
                                 <% if (currentPage> 2) { %>
-                                    <li class="page-item">
-                                        <a class="page-link" href="pyqs?page=1&limit=15">1</a>
-                                    </li>
+                                    <li class="page-item"><a class="page-link" href="pyqs?page=1&limit=15">1</a></li>
                                     <% if (currentPage> 3) { %>
                                         <li class="page-item disabled"><a class="page-link">...</a></li>
                                         <% } %>
@@ -181,66 +178,22 @@
                                                     </li>
                                                     <% } %>
                                                         <% if (currentPage < totalPages - 1) { %>
-                                                            <% if (currentPage < totalPages - 2) { %>
-                                                                <li class="page-item disabled"><a
-                                                                        class="page-link">...</a></li>
+                                                            <li class="page-item disabled"><a class="page-link">...</a>
+                                                            </li>
+                                                            <li class="page-item"><a class="page-link"
+                                                                    href="pyqs?page=<%= totalPages %>&limit=15">
+                                                                    <%= totalPages %>
+                                                                </a></li>
+                                                            <% } %>
                                                                 <% } %>
-                                                                    <li class="page-item">
+                                                                    <li
+                                                                        class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
                                                                         <a class="page-link"
-                                                                            href="pyqs?page=<%= totalPages %>&limit=15">
-                                                                            <%= totalPages %>
+                                                                            href="pyqs?page=<%= currentPage + 1 %>&limit=15"
+                                                                            aria-label="Next">
+                                                                            <span aria-hidden="true">&raquo;</span>
                                                                         </a>
                                                                     </li>
-                                                                    <% } %>
-                                                                        <% } %>
-
-                                                                            <!-- Next Button -->
-                                                                            <li
-                                                                                class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-                                                                                <a class="page-link"
-                                                                                    href="pyqs?page=<%= currentPage + 1 %>&limit=15"
-                                                                                    aria-label="Next">
-                                                                                    <span
-                                                                                        aria-hidden="true">&raquo;</span>
-                                                                                </a>
-                                                                            </li>
             </ul>
         </nav>
-
     </div>
-
-    <style>
-        @media (max-width: 767px) {
-            h1 {
-                font-size: 1.25rem;
-            }
-
-            table {
-                font-size: 0.85rem;
-            }
-
-            .table td,
-            .table th {
-                padding: 0.35rem;
-            }
-
-            .btn {
-                font-size: 0.75rem;
-                padding: 0.25rem 0.5rem;
-            }
-
-
-        }
-
-        @media (max-width: 480px) {
-            table {
-                font-size: 0.5rem;
-            }
-
-            .table td,
-            .table th {
-                padding: 0.1rem;
-            }
-
-        }
-    </style>

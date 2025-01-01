@@ -1,46 +1,52 @@
 const PYQ = require('../../models/PYQ');
+const PyqRequest = require('../../models/PyqRequest');
+const { errorHandler } = require('../../utils/error');
 
 // Fetch all PYQs with status true
 module.exports.fetchPyq = async (req, res) => {
-    try {
-        const pyqs = await PYQ.find({ status: true });
-        res.json(pyqs);
-    } catch (err) {
-        console.error('Error fetching PYQs:', err);
-        res.status(500).json({ message: 'Error fetching PYQs' });
-    }
+    const pyqs = await PYQ.find({ status: true });
+    res.json(pyqs);
 };
 
 module.exports.fetchPyqByCollege = async (req, res) => {
-    try {
-        const { collegeId } = req.params;
-        const pyqs = await PYQ.find({ status: true, college: collegeId }).sort({
-            createdAt: -1,
-        });
+    const { collegeId } = req.params;
+    const pyqs = await PYQ.find({ status: true, college: collegeId }).sort({
+        createdAt: -1,
+    });
 
-        return res.status(200).json(pyqs);
-    } catch (err) {
-        console.error('Error fetching PYQs:', err);
-        return res
-            .status(500)
-            .json({ message: 'Some error occurred on the server' });
-    }
+    return res.status(200).json(pyqs);
 };
 
-module.exports.fetchPyqById = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const pyq = await PYQ.findOne({ _id: id, status: true });
-        if (!pyq) {
-            return res.status(404).json({ message: 'Pyq not found' });
-        }
-        await PYQ.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
+// module.exports.fetchPyqById = async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         const pyq = await PYQ.findOne({ _id: id, status: true });
+//         if (!pyq) {
+//             return res.status(404).json({ message: 'Pyq not found' });
+//         }
+//         await PYQ.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
 
-        res.status(200).json(pyq);
-    } catch (e) {
-        console.error(e);
-        res.status(500).json({ message: 'Some error occurred on the server' });
+//         res.status(200).json(pyq);
+//     } catch (e) {
+//         console.error(e);
+//         res.status(500).json({ message: 'Some error occurred on the server' });
+//     }
+// };
+
+module.exports.fetchPyqBySlug = async (req, res) => {
+    const { slug } = req.params;
+
+    const pyq = await PYQ.findOneAndUpdate(
+        { slug: slug, status: true },
+        { $inc: { clickCount: 1 } },
+        { new: true }
+    );
+
+    if (!pyq) {
+        return next(errorHandler(404, 'PYQ not found'));
     }
+
+    res.status(200).json(pyq);
 };
 
 //fetch related papers
@@ -64,13 +70,8 @@ module.exports.fetchRelatedPapers = async (req, res) => {
         query._id = { $ne: pyqId };
     }
 
-    try {
-        const relatedPapers = await PYQ.find(query).limit(6);
-        res.json(relatedPapers);
-    } catch (error) {
-        res.status(500).send('Error fetching related papers');
-        console.log(error);
-    }
+    const relatedPapers = await PYQ.find(query).limit(6);
+    res.json(relatedPapers);
 };
 
 module.exports.fetchPyqBundle = async (req, res) => {
@@ -92,13 +93,37 @@ module.exports.fetchPyqBundle = async (req, res) => {
         query.branch = { $in: branches };
     }
 
-    try {
-        const bundlePyq = await PYQ.find(query);
-        res.json(bundlePyq);
-    } catch (error) {
-        res.status(500).send('Error fetching related papers');
-        console.log(error);
-    }
+    const bundlePyq = await PYQ.find(query);
+    res.json(bundlePyq);
+};
+
+module.exports.requestPyq = async (req, res) => {
+    const {
+        subject,
+        semester,
+        year,
+        branch,
+        examType,
+        college,
+        description,
+        whatsapp,
+    } = req.body;
+
+    const newRequest = new PyqRequest({
+        subject,
+        semester,
+        year,
+        branch,
+        examType,
+        college,
+        description,
+        whatsapp,
+    });
+    await newRequest.save();
+
+    res.status(201).json({
+        message: 'Request sent successfull , we will provide you pyq soon',
+    });
 };
 
 // Create a new PYQ
@@ -115,7 +140,6 @@ module.exports.fetchPyqBundle = async (req, res) => {
 //         college,
 //     } = req.body;
 
-//     try {
 //         const newPYQ = new PYQ({
 //             subjectName,
 //             subjectCode,
@@ -133,8 +157,3 @@ module.exports.fetchPyqBundle = async (req, res) => {
 //         res.json({
 //             description: 'PYQ submitted successfully and is pending approval.',
 //         });
-//     } catch (err) {
-//         console.error('Error creating PYQ:', err);
-//         res.status(500).json({ Message: 'Error creating PYQ' });
-//     }
-// };

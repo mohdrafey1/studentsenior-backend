@@ -12,12 +12,21 @@ const branchController = {
         res.render('branchCourse/branches/new', { courses });
     },
     async create(req, res) {
-        try {
-            await Branch.create(req.body);
-            res.redirect('/branches');
-        } catch (error) {
-            res.status(400).send('Error creating branch');
+        const { branchName, branchCode, course } = req.body;
+
+        const newBranch = await Branch.create({
+            branchName,
+            branchCode,
+            course,
+        });
+
+        if (newBranch) {
+            await Course.findByIdAndUpdate(course, {
+                $inc: { totalBranch: 1 },
+            });
         }
+
+        res.redirect('/branches');
     },
     async edit(req, res) {
         const branch = await Branch.findById(req.params.id);
@@ -25,12 +34,8 @@ const branchController = {
         res.render('branchCourse/branches/edit', { branch, courses });
     },
     async update(req, res) {
-        try {
-            await Branch.findByIdAndUpdate(req.params.id, req.body);
-            res.redirect('/branches');
-        } catch (error) {
-            res.status(400).send('Error updating branch');
-        }
+        await Branch.findByIdAndUpdate(req.params.id, req.body);
+        res.redirect('/branches');
     },
     async delete(req, res) {
         const branch = await Branch.findById(req.params.id);

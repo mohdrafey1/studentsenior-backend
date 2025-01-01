@@ -5,21 +5,16 @@ module.exports.signupForm = (req, res) => {
 };
 
 module.exports.signup = async (req, res) => {
-    try {
-        let { username, email, password, college } = req.body;
-        let newUser = new User({ email, username, college });
-        const registererdUser = await User.register(newUser, password);
-        req.login(registererdUser, (err) => {
-            if (err) {
-                return next(err);
-            }
-            req.flash('succcess', 'Welcome to Studetent Senior ');
-            res.redirect('/');
-        });
-    } catch (e) {
-        req.flash('error', e.message);
-        res.redirect('/secret/signup');
-    }
+    let { username, email, password, college } = req.body;
+    let newUser = new User({ email, username, college });
+    const registererdUser = await User.register(newUser, password);
+    req.login(registererdUser, (err) => {
+        if (err) {
+            return next(err);
+        }
+        req.flash('succcess', 'Welcome to Studetent Senior ');
+        res.redirect('/');
+    });
 };
 
 module.exports.loginForm = (req, res) => {

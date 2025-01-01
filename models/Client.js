@@ -28,6 +28,18 @@ const clientSchema = new mongoose.Schema(
         college: {
             type: String,
         },
+        rewardPoints: {
+            type: Number,
+            default: 0,
+        },
+        rewardRedeemed: {
+            type: Number,
+            default: 0,
+        },
+        rewardBalance: {
+            type: Number,
+            default: 0,
+        },
     },
     { timestamps: true }
 );

@@ -11,6 +11,14 @@ module.exports = {
         res.render('seniors/new.ejs', { colleges });
     },
     createSenior: async (req, res) => {
+        const createSlug = (name) => {
+            return `${name}`
+                .toLowerCase()
+                .replace(/[^a-z0-9 -]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+        };
+
         const {
             name,
             domain,
@@ -22,6 +30,19 @@ module.exports = {
             college,
             status,
         } = req.body;
+
+        let slug = createSlug(name);
+
+        let existingSenior = await Seniors.findOne({ slug });
+
+        let counter = 1;
+
+        while (existingSenior) {
+            slug = `${createSlug(name)}-${counter}`;
+            existingSenior = await Seniors.findOne({ slug });
+            counter++;
+        }
+
         const newSenior = new Seniors({
             name,
             domain,
@@ -30,6 +51,7 @@ module.exports = {
             telegram,
             owner,
             year,
+            slug,
             college,
             status,
         });
@@ -62,9 +84,23 @@ module.exports = {
         res.render('seniors/edit', { senior, colleges });
     },
     editSenior: async (req, res) => {
-        try {
-            const { id } = req.params;
-            const {
+        const { id } = req.params;
+        const {
+            name,
+            domain,
+            branch,
+            year,
+            whatsapp,
+            telegram,
+            college,
+            status,
+            profilePicture,
+        } = req.body;
+
+        // Find the senior by ID and update the details
+        const updatedSenior = await Seniors.findByIdAndUpdate(
+            id,
+            {
                 name,
                 domain,
                 branch,
@@ -72,41 +108,21 @@ module.exports = {
                 whatsapp,
                 telegram,
                 college,
-                status,
                 profilePicture,
-            } = req.body;
-
-            // Find the senior by ID and update the details
-            const updatedSenior = await Seniors.findByIdAndUpdate(
-                id,
-                {
-                    name,
-                    domain,
-                    branch,
-                    year,
-                    whatsapp,
-                    telegram,
-                    college,
-                    profilePicture,
-                    status: status === 'true', // Convert status to boolean
-                },
-                {
-                    new: true,
-                }
-            );
-
-            if (!updatedSenior) {
-                req.flash('error', 'Senior not found');
-                return res.redirect('/seniors');
+                status: status === 'true', // Convert status to boolean
+            },
+            {
+                new: true,
             }
+        );
 
-            req.flash('success', 'Senior updated successfully');
-            res.redirect(`/seniors/${id}`);
-        } catch (err) {
-            console.error(err);
-            req.flash('error', 'Error updating senior');
-            res.redirect(`/seniors/${req.params.id}/edit`);
+        if (!updatedSenior) {
+            req.flash('error', 'Senior not found');
+            return res.redirect('/seniors');
         }
+
+        req.flash('success', 'Senior updated successfully');
+        res.redirect(`/seniors/${id}`);
     },
 
     deleteSenior: async (req, res) => {

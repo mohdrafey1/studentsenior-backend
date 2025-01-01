@@ -21,7 +21,7 @@ const cookieParser = require('cookie-parser');
 //dashboard router
 const home = require('./routes/home.js');
 const toggleStatus = require('./routes/toggleStatus.js');
-const collegeRouter = require('./routes/college');
+const collegeRoutes = require('./routes/college.route.js');
 const userRouter = require('./routes/user.js');
 const notesRouter = require('./routes/notes.js');
 const seniorRouter = require('./routes/senior.js');
@@ -33,6 +33,7 @@ const pyqRouter = require('./routes/pyqRoutes.js');
 const groupRouter = require('./routes/whatsappGroup.js');
 const courseRoutes = require('./routes/branchcourse/course.js');
 const branchRoutes = require('./routes/branchcourse/branch.js');
+const subjectRoutes = require('./routes/subjects.route.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/apicollege.js');
@@ -138,7 +139,7 @@ app.use('/', home);
 //dashboard routes
 app.use('/', userRouter);
 app.use('/whatsappgroup', groupRouter);
-app.use('/colleges', collegeRouter);
+app.use('/colleges', collegeRoutes);
 app.use('/pyqs', pyqRouter);
 app.use('/notes', notesRouter);
 app.use('/seniors', seniorRouter);
@@ -149,6 +150,7 @@ app.use('/toggle-status', toggleStatus);
 app.use('/contactus', contactUsRouter);
 app.use('/courses', courseRoutes);
 app.use('/branches', branchRoutes);
+app.use('/subjects', subjectRoutes);
 
 //frontend api routes
 app.use('/api/colleges', apicollegeRouter);
@@ -168,9 +170,13 @@ app.all('*', (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    let { statusCode = 500, message = 'something went wrong' } = err;
-    res.status(statusCode).render('error.ejs', { err });
-    // res.status(statusCode).send(message);
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+    res.status(statusCode).json({
+        success: false,
+        message,
+        statusCode,
+    });
 });
 
 app.listen(8080, () => {

@@ -11,32 +11,29 @@ const Notes = require('../models/Notes');
 const { GetOpportunity, GiveOpportunity } = require('../models/Opportunity.js');
 const { isLoggedIn } = require('../middleware.js');
 const authorizeRole = require('../utils/rolePermission.js');
+const wrapAsync = require('../utils/wrapAsync.js');
 
 router.put(
     '/:type/:id',
     isLoggedIn,
     authorizeRole('admin'),
-    async (req, res) => {
+    wrapAsync(async (req, res) => {
         const { type, id } = req.params;
         const { status } = req.body;
 
-        try {
-            let model;
-            if (type === 'pyq') model = PYQ;
-            else if (type === 'senior') model = Senior;
-            else if (type === 'college') model = Colleges;
-            else if (type === 'product') model = Store;
-            else if (type === 'note') model = Notes;
-            else if (type === 'group') model = Groups;
-            else if (type === 'getOpportunity') model = GetOpportunity;
-            else if (type === 'giveOpportunity') model = GiveOpportunity;
+        let model;
+        if (type === 'pyq') model = PYQ;
+        else if (type === 'senior') model = Senior;
+        else if (type === 'college') model = Colleges;
+        else if (type === 'product') model = Store;
+        else if (type === 'note') model = Notes;
+        else if (type === 'group') model = Groups;
+        else if (type === 'getOpportunity') model = GetOpportunity;
+        else if (type === 'giveOpportunity') model = GiveOpportunity;
 
-            await model.findByIdAndUpdate(id, { status });
-            res.json({ success: true });
-        } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
-        }
-    }
+        await model.findByIdAndUpdate(id, { status });
+        res.json({ success: true });
+    })
 );
 
 module.exports = router;

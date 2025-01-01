@@ -1,13 +1,8 @@
 const Colleges = require('../models/Colleges');
 
 module.exports.index = async (req, res) => {
-    try {
-        const allColleges = await Colleges.find({});
-        res.render('colleges/colleges', { allColleges });
-    } catch (err) {
-        console.error('Error fetching colleges:', err);
-        res.status(500).send('Error fetching colleges');
-    }
+    const allColleges = await Colleges.find({});
+    res.render('colleges/colleges', { allColleges });
 };
 
 module.exports.collegeForm = (req, res) => {
@@ -72,7 +67,7 @@ module.exports.editCollege = async (req, res) => {
 
 module.exports.deleteCollege = async (req, res) => {
     let { id } = req.params;
-    let deleteCollege = await Colleges.findByIdAndDelete(id);
+    await Colleges.findByIdAndDelete(id);
     req.flash('success', 'Delete Successfully');
     // console.log(deleteCollege);
     res.redirect('/colleges');

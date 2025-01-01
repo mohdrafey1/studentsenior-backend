@@ -17,6 +17,7 @@ module.exports.pyqSchema = Joi.object({
     examType: Joi.string().required(),
     link: Joi.string().uri().required(),
     college: Joi.string().required(),
+    slug: Joi.string().required(),
     status: Joi.boolean().default(false),
 });
 

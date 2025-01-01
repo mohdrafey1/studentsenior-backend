@@ -4,7 +4,7 @@ const authorizeRole = require('../utils/rolePermission.js');
 const wrapAsync = require('../utils/wrapAsync.js');
 const { isLoggedIn, isOwner, validateColleges } = require('../middleware.js');
 
-const collegeController = require('../controllers/college.js');
+const collegeController = require('../controllers/college.controller.js');
 
 router
     .route('/')
@@ -17,7 +17,7 @@ router
     );
 
 //new
-router.get('/new', isLoggedIn, collegeController.collegeForm);
+router.get('/new', isLoggedIn, wrapAsync(collegeController.collegeForm));
 
 router
     .route('/:id')

@@ -11,6 +11,10 @@ const CourseSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
+        totalBranch: {
+            type: Number,
+            default: 0,
+        },
     },
     { timestamps: true }
 );
@@ -30,6 +34,14 @@ const BranchSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Course',
             required: true,
+        },
+        totalSubject: {
+            type: Number,
+            default: 0,
+        },
+        totalSenior: {
+            type: Number,
+            default: 0,
         },
     },
     { timestamps: true }

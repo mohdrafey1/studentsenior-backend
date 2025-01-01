@@ -1,6 +1,7 @@
 const PYQ = require('../models/PYQ');
 const Colleges = require('../models/Colleges');
 const { Branch, Course } = require('../models/CourseBranch');
+const PyqRequest = require('../models/PyqRequest');
 
 // Index - List all approved PYQs for a specific college
 exports.index = async (req, res) => {
@@ -43,43 +44,33 @@ exports.index = async (req, res) => {
         query.examType = new RegExp(examType, 'i');
     }
 
-    try {
-        const totalPYQs = await PYQ.countDocuments(query);
-        const pyqs = await PYQ.find(query)
-            .populate('college')
-            .sort({ createdAt: -1 })
-            .skip(perPage * (page - 1))
-            .limit(perPage);
+    const totalPYQs = await PYQ.countDocuments(query);
+    const pyqs = await PYQ.find(query)
+        .populate('college')
+        .sort({ createdAt: -1 })
+        .skip(perPage * (page - 1))
+        .limit(perPage);
 
-        res.render('pyqs/index', {
-            pyqs: pyqs,
-            currentPage: page,
-            totalPages: Math.ceil(totalPYQs / perPage),
-            filters: req.query,
-            colleges,
-        });
-    } catch (err) {
-        console.error(err);
-        res.redirect('/');
-    }
+    res.render('pyqs/index', {
+        pyqs: pyqs,
+        currentPage: page,
+        totalPages: Math.ceil(totalPYQs / perPage),
+        filters: req.query,
+        colleges,
+    });
 };
 
 // Show form to add new PYQ
 exports.new = async (req, res) => {
-    try {
-        const colleges = await Colleges.find();
-        const courses = await Course.find();
-        const branches = await Branch.find();
-        return res.render('pyqs/new', {
-            title: 'Add New PYQ',
-            colleges,
-            courses,
-            branches,
-        });
-    } catch (error) {
-        console.error('Error:', error);
-        return res.status(500).send('Server Error');
-    }
+    const colleges = await Colleges.find();
+    const courses = await Course.find();
+    const branches = await Branch.find();
+    return res.render('pyqs/new', {
+        title: 'Add New PYQ',
+        colleges,
+        courses,
+        branches,
+    });
 };
 
 // Create - Add new PYQ
@@ -95,6 +86,7 @@ exports.create = async (req, res) => {
             examType,
             link,
             college,
+            slug,
             status,
         } = req.body;
 
@@ -110,13 +102,22 @@ exports.create = async (req, res) => {
             examType,
             link,
             college,
+            slug,
             status,
         });
         await newPYQ.save();
 
         req.flash('success', 'PYQ Created Successfully');
         return res.redirect(`/pyqs`);
-    } catch (err) {
+    } catch (error) {
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyPattern)[0];
+            const value = error.keyValue[field];
+            return res.status(400).json({
+                success: false,
+                message: `Duplicate entry for ${field}: '${value}'. Please use a unique value. or this pyq is already added may be please check , if not added change the title little bit to change the slug`,
+            });
+        }
         res.status(500).send('Server Error');
     }
 };
@@ -147,61 +148,84 @@ module.exports.edit = async (req, res) => {
 
 // edit
 module.exports.editPyq = async (req, res) => {
-    try {
-        const { id } = req.params;
-        let {
-            college,
-            subjectName,
-            subjectCode,
-            semester,
-            year,
-            course,
-            branch,
-            examType,
-            link,
-            status,
-        } = req.body;
+    const { id } = req.params;
+    let {
+        college,
+        subjectName,
+        subjectCode,
+        semester,
+        year,
+        course,
+        branch,
+        examType,
+        link,
+        slug,
+        status,
+    } = req.body;
 
-        // Convert the branch field from a comma-separated string to an array
-        if (branch) {
-            branch = branch.split(',').map((item) => item.trim());
-        }
-
-        // Create an object to update
-        const updateData = {
-            college,
-            subjectName,
-            subjectCode,
-            semester,
-            year,
-            course,
-            branch,
-            examType,
-            link,
-            status: status === 'true',
-        };
-
-        // Update the PYQ document
-        const updatedPYQ = await PYQ.findByIdAndUpdate(id, updateData, {
-            new: true,
-        });
-
-        if (!updatedPYQ) {
-            req.flash('error', 'PYQ not found');
-            return res.redirect('/pyqs');
-        }
-
-        req.flash('success', 'Updated Successfully');
-        res.redirect(`/pyqs/${id}`);
-    } catch (err) {
-        console.error(err);
-        req.flash('error', 'Error updating PYQ');
-        res.redirect(`/pyqs/${id}/edit`);
+    // Convert the branch field from a comma-separated string to an array
+    if (branch) {
+        branch = branch.split(',').map((item) => item.trim());
     }
+
+    // Create an object to update
+    const updateData = {
+        college,
+        subjectName,
+        subjectCode,
+        semester,
+        year,
+        course,
+        branch,
+        examType,
+        link,
+        slug,
+        status: status === 'true',
+    };
+
+    // Update the PYQ document
+    const updatedPYQ = await PYQ.findByIdAndUpdate(id, updateData, {
+        new: true,
+    });
+
+    if (!updatedPYQ) {
+        req.flash('error', 'PYQ not found');
+        return res.redirect('/pyqs');
+    }
+
+    req.flash('success', 'Updated Successfully');
+    res.redirect(`/pyqs/${id}`);
 };
 
 // Delete - Remove a PYQ
 exports.delete = async (req, res) => {
     await PYQ.findByIdAndDelete(req.params.id);
     res.redirect(`/pyqs`);
+};
+
+exports.requestedPyq = async (req, res) => {
+    const requestedPyqs = await PyqRequest.find({})
+        .populate('college')
+        .sort({ createdAt: -1 });
+    res.render('pyqs/requestedPyqs', { requestedPyqs });
+};
+
+exports.deleteRequestedPyq = async (req, res) => {
+    const { reqId } = req.params;
+    console.log(reqId);
+    await PyqRequest.findByIdAndDelete(reqId);
+    req.flash('success', 'Requested PYQ deleted successfully.');
+    res.redirect('/pyqs/s/requested-pyqs');
+};
+
+exports.updateRequestedPyqStatus = async (req, res) => {
+    const { reqId } = req.params;
+    const { status } = req.body;
+
+    await PyqRequest.findByIdAndUpdate(reqId, {
+        status: status === 'true',
+    });
+
+    req.flash('success', 'PYQ status updated successfully.');
+    res.redirect('/pyqs/s/requested-pyqs');
 };
