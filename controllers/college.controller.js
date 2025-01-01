@@ -1,7 +1,7 @@
 const Colleges = require('../models/Colleges');
 
 module.exports.index = async (req, res) => {
-    const allColleges = await College.find({});
+    const allColleges = await Colleges.find({});
     res.render('colleges/colleges', { allColleges });
 };
 

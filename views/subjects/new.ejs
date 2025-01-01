@@ -1,0 +1,28 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container my-5">
+        <h1 class="text-primary mb-4">Add New Subject</h1>
+
+        <form action="/subjects" method="POST">
+            <div class="mb-3">
+                <label for="subjectName" class="form-label">Subject Name</label>
+                <input type="text" class="form-control" id="subjectName" name="subjectName" required>
+            </div>
+            <div class="mb-3">
+                <label for="subjectCode" class="form-label">Subject Code</label>
+                <input type="text" class="form-control" id="subjectCode" name="subjectCode" required>
+            </div>
+            <div class="mb-3">
+                <label for="branch" class="form-label">Branch</label>
+                <select class="form-select" id="branch" name="branch">
+                    <option value="" disabled selected>Select a branch</option>
+                    <% branches.forEach(branch=> { %>
+                        <option value="<%= branch._id %>">
+                            <%= branch.branchName %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success">Add Subject</button>
+        </form>
+    </div>

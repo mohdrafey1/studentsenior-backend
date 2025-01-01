@@ -1,0 +1,50 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-primary">Subjects</h1>
+            <a href="/subjects/new" class="btn btn-success">Add New Subject</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Subject Name</th>
+                        <th scope="col">Subject Code</th>
+                        <th scope="col">Branch</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (allSubjects.length> 0) { %>
+                        <% allSubjects.forEach(subject=> { %>
+                            <tr>
+                                <td>
+                                    <%= subject.subjectName %>
+                                </td>
+                                <td>
+                                    <%= subject.subjectCode %>
+                                </td>
+                                <td>
+                                    <%= subject.branch?.branchName || "N/A" %>
+                                </td>
+                                <td>
+                                    <a href="/subjects/<%= subject._id %>/edit"
+                                        class="btn btn-primary btn-sm me-2">Edit</a>
+                                    <form action="/subjects/<%= subject._id %>?_method=DELETE" method="POST"
+                                        class="d-inline">
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="4" class="text-center">No subjects available</td>
+                                    </tr>
+                                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
