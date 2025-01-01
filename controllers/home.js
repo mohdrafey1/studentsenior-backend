@@ -12,72 +12,61 @@ const ContactUs = require('../models/ContactUs.js');
 const PyqRequest = require('../models/PyqRequest.js');
 
 module.exports.home = async (req, res) => {
-    try {
-        const totalUsers = await User.countDocuments();
-        const totalClients = await Client.countDocuments();
-        const totalPYQs = await PYQ.countDocuments();
-        const totalColleges = await Colleges.countDocuments();
-        const totalGroups = await Groups.countDocuments();
-        const totalNotes = await Notes.countDocuments();
-        const totalSeniors = await Senior.countDocuments();
-        const totalProduct = await Store.countDocuments();
-        const totalPost = await Post.countDocuments();
-        const totalGetCommunity = await GetOpportunity.countDocuments();
-        const totalGiveCommunity = await GiveOpportunity.countDocuments();
-        const totalMessages = await ContactUs.countDocuments();
-        const totalRequestedPyqs = await PyqRequest.countDocuments();
+    const totalUsers = await User.countDocuments();
+    const totalClients = await Client.countDocuments();
+    const totalPYQs = await PYQ.countDocuments();
+    const totalColleges = await Colleges.countDocuments();
+    const totalGroups = await Groups.countDocuments();
+    const totalNotes = await Notes.countDocuments();
+    const totalSeniors = await Senior.countDocuments();
+    const totalProduct = await Store.countDocuments();
+    const totalPost = await Post.countDocuments();
+    const totalGetCommunity = await GetOpportunity.countDocuments();
+    const totalGiveCommunity = await GiveOpportunity.countDocuments();
+    const totalMessages = await ContactUs.countDocuments();
+    const totalRequestedPyqs = await PyqRequest.countDocuments();
 
-        // Fetch recent 5 entries for each category
-        const recentPYQs = await PYQ.find().sort({ createdAt: -1 }).limit(5);
-        const recentSeniors = await Senior.find()
-            .sort({ createdAt: -1 })
-            .limit(5);
-        const recentProducts = await Store.find()
-            .sort({ createdAt: -1 })
-            .limit(5);
-        const recentColleges = await Colleges.find()
-            .sort({ createdAt: -1 })
-            .limit(5);
-        const recentNotes = await Notes.find().sort({ createdAt: -1 }).limit(5);
-        const recentPosts = await Post.find().sort({ createdAt: -1 }).limit(5);
-        const recentGroups = await Groups.find()
-            .sort({ createdAt: -1 })
-            .limit(5);
-        const recentGetOpportunity = await GetOpportunity.find()
-            .sort({ createdAt: -1 })
-            .limit(5);
-        const recentGiveOpportunity = await GiveOpportunity.find()
-            .sort({ createdAt: -1 })
-            .limit(5);
+    // Fetch recent 5 entries for each category
+    const recentPYQs = await PYQ.find().sort({ createdAt: -1 }).limit(5);
+    const recentSeniors = await Senior.find().sort({ createdAt: -1 }).limit(5);
+    const recentProducts = await Store.find().sort({ createdAt: -1 }).limit(5);
+    const recentColleges = await Colleges.find()
+        .sort({ createdAt: -1 })
+        .limit(5);
+    const recentNotes = await Notes.find().sort({ createdAt: -1 }).limit(5);
+    const recentPosts = await Post.find().sort({ createdAt: -1 }).limit(5);
+    const recentGroups = await Groups.find().sort({ createdAt: -1 }).limit(5);
+    const recentGetOpportunity = await GetOpportunity.find()
+        .sort({ createdAt: -1 })
+        .limit(5);
+    const recentGiveOpportunity = await GiveOpportunity.find()
+        .sort({ createdAt: -1 })
+        .limit(5);
 
-        res.render('index', {
-            totalUsers,
-            totalClients,
-            totalPYQs,
-            totalColleges,
-            totalGroups,
-            totalNotes,
-            totalSeniors,
-            totalProduct,
-            totalPost,
-            totalGetCommunity,
-            totalGiveCommunity,
-            totalMessages,
-            totalRequestedPyqs,
-            recentPYQs,
-            recentSeniors,
-            recentProducts,
-            recentColleges,
-            recentNotes,
-            recentGroups,
-            recentPosts,
-            recentGetOpportunity,
-            recentGiveOpportunity,
-        });
-    } catch (error) {
-        console.error('Error fetching totals and recent items:', error);
-        res.status(500).send('Internal Server Error');
-    }
+    res.render('index', {
+        totalUsers,
+        totalClients,
+        totalPYQs,
+        totalColleges,
+        totalGroups,
+        totalNotes,
+        totalSeniors,
+        totalProduct,
+        totalPost,
+        totalGetCommunity,
+        totalGiveCommunity,
+        totalMessages,
+        totalRequestedPyqs,
+        recentPYQs,
+        recentSeniors,
+        recentProducts,
+        recentColleges,
+        recentNotes,
+        recentGroups,
+        recentPosts,
+        recentGetOpportunity,
+        recentGiveOpportunity,
+    });
 };
 
 module.exports.user = async (req, res) => {

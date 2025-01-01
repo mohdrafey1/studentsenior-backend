@@ -36,39 +36,33 @@ module.exports = {
         res.render('whatsappgroup/edit', { group, colleges });
     },
     editGroup: async (req, res) => {
-        try {
-            const { id } = req.params;
-            let { college, title, info, domain, link, status } = req.body;
+        const { id } = req.params;
+        let { college, title, info, domain, link, status } = req.body;
 
-            const updateData = {
-                college,
-                title,
-                info,
-                domain,
-                link,
-                status: status === 'true',
-            };
+        const updateData = {
+            college,
+            title,
+            info,
+            domain,
+            link,
+            status: status === 'true',
+        };
 
-            const updatedGroup = await WhatsappGroup.findByIdAndUpdate(
-                id,
-                updateData,
-                {
-                    new: true,
-                }
-            );
-
-            if (!updatedGroup) {
-                req.flash('error', 'PYQ not found');
-                return res.redirect('/whatsappgroup');
+        const updatedGroup = await WhatsappGroup.findByIdAndUpdate(
+            id,
+            updateData,
+            {
+                new: true,
             }
+        );
 
-            req.flash('success', 'Updated Successfully');
-            res.redirect(`/whatsappgroup`);
-        } catch (err) {
-            console.error(err);
-            req.flash('error', 'Error updating PYQ');
-            res.redirect(`/whatsappgroup/${id}/edit`);
+        if (!updatedGroup) {
+            req.flash('error', 'PYQ not found');
+            return res.redirect('/whatsappgroup');
         }
+
+        req.flash('success', 'Updated Successfully');
+        res.redirect(`/whatsappgroup`);
     },
     deleteGroup: async (req, res) => {
         await WhatsappGroup.findByIdAndDelete(req.params.id);

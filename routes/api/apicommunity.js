@@ -3,64 +3,69 @@ const router = express.Router();
 const communityControllers = require('../../controllers/api/community');
 const { verifyToken } = require('../../utils/verifyUser');
 const { validateApiKey } = require('../../middleware.js');
+const wrapAsync = require('../../utils/wrapAsync.js');
 
-router.get('/posts', validateApiKey, communityControllers.fetchPost);
+router.get('/posts', validateApiKey, wrapAsync(communityControllers.fetchPost));
 
 router.get(
     '/posts/college/:collegeId',
     validateApiKey,
-    communityControllers.fetchPostByCollege
+    wrapAsync(communityControllers.fetchPostByCollege)
 );
 
-router.get('/posts/:id', validateApiKey, communityControllers.fetchPostbyId);
+router.get(
+    '/posts/:id',
+    validateApiKey,
+    wrapAsync(communityControllers.fetchPostbyId)
+);
 
 router.post(
     '/posts',
     validateApiKey,
     verifyToken,
-    communityControllers.createPost
+    wrapAsync(communityControllers.createPost)
 );
 
 router.put(
     '/posts/:id',
     validateApiKey,
     verifyToken,
-    communityControllers.updatePost
+    wrapAsync(communityControllers.updatePost)
 );
 
 router.delete(
     '/posts/:id',
     validateApiKey,
     verifyToken,
-    communityControllers.deletePost
+    wrapAsync(communityControllers.deletePost)
 );
 
 router.post(
     '/posts/:postId/comments',
     validateApiKey,
     verifyToken,
-    communityControllers.createComment
+    wrapAsync(communityControllers.createComment)
 );
 
 router.put(
     '/posts/:postId/comments/:commentId',
     validateApiKey,
     verifyToken,
-    communityControllers.updateComment
+    wrapAsync(communityControllers.updateComment)
 );
 
 router.delete(
     '/posts/:postId/comments/:commentId',
     validateApiKey,
     verifyToken,
-    communityControllers.deleteComment
+    wrapAsync(communityControllers.deleteComment)
 );
 
 router.post(
     '/posts/:id/like',
     validateApiKey,
     verifyToken,
-    communityControllers.likePost
+    wrapAsync(communityControllers.likePost)
 );
 
 // router.post('/posts/:id/unlike', verifyToken, communityControllers.unlikePost);
@@ -69,7 +74,7 @@ router.post(
     '/posts/:postId/comments/:commentId/like',
     validateApiKey,
     verifyToken,
-    communityControllers.likeComment
+    wrapAsync(communityControllers.likeComment)
 );
 
 module.exports = router;

@@ -6,12 +6,12 @@ const { validateColleges, validateApiKey } = require('../../middleware.js');
 
 const apiCollegeController = require('../../controllers/api/college.js');
 
-router.get('/', validateApiKey, apiCollegeController.fetchCollege);
+router.get('/', validateApiKey, wrapAsync(apiCollegeController.fetchCollege));
 
 router.get(
     '/:collegeId',
     validateApiKey,
-    apiCollegeController.fetchCollegeById
+    wrapAsync(apiCollegeController.fetchCollegeById)
 );
 
 router.post(

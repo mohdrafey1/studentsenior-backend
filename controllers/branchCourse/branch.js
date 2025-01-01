@@ -12,12 +12,8 @@ const branchController = {
         res.render('branchCourse/branches/new', { courses });
     },
     async create(req, res) {
-        try {
-            await Branch.create(req.body);
-            res.redirect('/branches');
-        } catch (error) {
-            res.status(400).send('Error creating branch');
-        }
+        await Branch.create(req.body);
+        res.redirect('/branches');
     },
     async edit(req, res) {
         const branch = await Branch.findById(req.params.id);
@@ -25,20 +21,12 @@ const branchController = {
         res.render('branchCourse/branches/edit', { branch, courses });
     },
     async update(req, res) {
-        try {
-            await Branch.findByIdAndUpdate(req.params.id, req.body);
-            res.redirect('/branches');
-        } catch (error) {
-            res.status(400).send('Error updating branch');
-        }
+        await Branch.findByIdAndUpdate(req.params.id, req.body);
+        res.redirect('/branches');
     },
     async delete(req, res) {
-        try {
-            await Branch.findByIdAndDelete(req.params.id);
-            res.redirect('/branches');
-        } catch (error) {
-            res.status(400).send('Error deleting branch');
-        }
+        await Branch.findByIdAndDelete(req.params.id);
+        res.redirect('/branches');
     },
 };
 

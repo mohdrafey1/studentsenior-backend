@@ -38,44 +38,31 @@ module.exports = {
         res.render('notes/edit', { notes, colleges });
     },
     editNotes: async (req, res) => {
-        try {
-            const { id } = req.params;
-            let {
-                subjectName,
-                description,
-                by,
-                link,
-                college,
-                status,
-                target,
-            } = req.body;
+        const { id } = req.params;
+        let { subjectName, description, by, link, college, status, target } =
+            req.body;
 
-            const updateData = {
-                subjectName,
-                description,
-                by,
-                target,
-                link,
-                college,
-                status: status === 'true',
-            };
+        const updateData = {
+            subjectName,
+            description,
+            by,
+            target,
+            link,
+            college,
+            status: status === 'true',
+        };
 
-            const updatedNotes = await Notes.findByIdAndUpdate(id, updateData, {
-                new: true,
-            });
+        const updatedNotes = await Notes.findByIdAndUpdate(id, updateData, {
+            new: true,
+        });
 
-            if (!updatedNotes) {
-                req.flash('error', 'Notes not found');
-                return res.redirect('/notes');
-            }
-
-            req.flash('success', 'Updated Successfully');
-            res.redirect(`/notes`);
-        } catch (err) {
-            console.error(err);
-            req.flash('error', 'Error updating Notes');
-            res.redirect(`/notes/${id}/edit`);
+        if (!updatedNotes) {
+            req.flash('error', 'Notes not found');
+            return res.redirect('/notes');
         }
+
+        req.flash('success', 'Updated Successfully');
+        res.redirect(`/notes`);
     },
     deleteNotes: async (req, res) => {
         await Notes.findByIdAndDelete(req.params.id);

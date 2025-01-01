@@ -1,15 +1,8 @@
 const Post = require('../models/Post');
 
 module.exports.fetchPost = async (req, res) => {
-    try {
-        let allPost = await Post.find({})
-            .populate('college')
-            .populate('author');
-        res.render('community/index', { allPost });
-    } catch (err) {
-        console.error('Something error Occured', err);
-        res.redirect('/');
-    }
+    let allPost = await Post.find({}).populate('college').populate('author');
+    res.render('community/index', { allPost });
 };
 
 module.exports.showPost = async (req, res) => {
@@ -43,19 +36,10 @@ module.exports.editPostForm = async (req, res) => {
 module.exports.editPost = async (req, res) => {
     const { id } = req.params;
     const { content, isAnonymous } = req.body;
-    try {
-        await Post.findByIdAndUpdate(
-            id,
-            { content, isAnonymous },
-            { new: true }
-        );
-        req.flash('success', 'Post Updated Successfully');
-        res.redirect(`/community/${id}`);
-    } catch (err) {
-        console.error('Error occurred', err);
-        req.flash('error', 'Something went wrong');
-        res.redirect(`/community/${id}`);
-    }
+
+    await Post.findByIdAndUpdate(id, { content, isAnonymous }, { new: true });
+    req.flash('success', 'Post Updated Successfully');
+    res.redirect(`/community/${id}`);
 };
 
 module.exports.deletePost = async (req, res) => {
@@ -68,32 +52,26 @@ module.exports.deletePost = async (req, res) => {
 module.exports.deleteComment = async (req, res) => {
     const { postId, commentId } = req.params;
 
-    try {
-        const post = await Post.findById(postId);
-        // if (!post) {
-        //     return res.status(404).json({ message: 'Post not found' });
-        // }
+    const post = await Post.findById(postId);
+    // if (!post) {
+    //     return res.status(404).json({ message: 'Post not found' });
+    // }
 
-        // const comment = post.comments.id(commentId);
-        // if (!comment) {
-        //     return res.status(404).json({ message: 'Comment not found' });
-        // }
+    // const comment = post.comments.id(commentId);
+    // if (!comment) {
+    //     return res.status(404).json({ message: 'Comment not found' });
+    // }
 
-        // if (comment.author.toString() !== req.user.id) {
-        //     return res.status(403).json({
-        //         description: 'You are not authorized to delete this comment',
-        //     });
-        // }
+    // if (comment.author.toString() !== req.user.id) {
+    //     return res.status(403).json({
+    //         description: 'You are not authorized to delete this comment',
+    //     });
+    // }
 
-        // Remove the comment by pulling it out of the array
-        post.comments.pull({ _id: commentId });
-        await post.save();
+    // Remove the comment by pulling it out of the array
+    post.comments.pull({ _id: commentId });
+    await post.save();
 
-        req.flash('success', 'comment deleted successfully');
-        res.redirect(`/community/${postId}`);
-    } catch (err) {
-        console.error('Error deleting comment:', err);
-        req.flash('error', 'error deleting comment');
-        res.redirect(`/community/${postId}`);
-    }
+    req.flash('success', 'comment deleted successfully');
+    res.redirect(`/community/${postId}`);
 };
