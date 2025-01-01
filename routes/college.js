@@ -17,7 +17,7 @@ router
     );
 
 //new
-router.get('/new', isLoggedIn, collegeController.collegeForm);
+router.get('/new', isLoggedIn, wrapAsync(collegeController.collegeForm));
 
 router
     .route('/:id')

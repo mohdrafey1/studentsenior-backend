@@ -6,12 +6,13 @@ const {
     signout,
 } = require('../../controllers/api/auth');
 const { validateApiKey } = require('../../middleware.js');
+const wrapAsync = require('../../utils/wrapAsync.js');
 
 const router = express.Router();
 
-router.post('/signup', validateApiKey, signup);
-router.post('/signin', validateApiKey, signin);
-router.post('/google', validateApiKey, google);
-router.get('/signout', signout);
+router.post('/signup', validateApiKey, wrapAsync(signup));
+router.post('/signin', validateApiKey, wrapAsync(signin));
+router.post('/google', validateApiKey, wrapAsync(google));
+router.get('/signout', wrapAsync(signout));
 
 module.exports = router;

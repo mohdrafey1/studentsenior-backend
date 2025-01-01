@@ -8,6 +8,7 @@ const communityController = require('../controllers/community');
 router.get('/', isLoggedIn, wrapAsync(communityController.fetchPost));
 
 router.get('/:id', isLoggedIn, wrapAsync(communityController.showPost));
+
 router.delete(
     '/:id',
     isLoggedIn,
@@ -33,7 +34,7 @@ router.delete(
     '/community/:postId/comments/:commentId',
     isLoggedIn,
     authorizeRole('admin'),
-    communityController.deleteComment
+    wrapAsync(communityController.deleteComment)
 );
 
 module.exports = router;

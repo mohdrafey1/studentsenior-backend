@@ -4,65 +4,66 @@ const router = express.Router();
 const opportunityController = require('../../controllers/api/opportunity');
 const { verifyToken } = require('../../utils/verifyUser');
 const { validateApiKey } = require('../../middleware');
+const wrapAsync = require('../../utils/wrapAsync');
 
 router.get(
     '/getopportunities',
     validateApiKey,
-    opportunityController.getOpportunities
+    wrapAsync(opportunityController.getOpportunities)
 );
 
 router.get(
     '/getopportunities/college/:collegeId',
     validateApiKey,
-    opportunityController.getOpportunitiesByCollege
+    wrapAsync(opportunityController.getOpportunitiesByCollege)
 );
 
 router.post(
     '/getopportunities',
     verifyToken,
-    opportunityController.createGetOpportunities
+    wrapAsync(opportunityController.createGetOpportunities)
 );
 
 router.put(
     '/getopportunities/:id',
     verifyToken,
-    opportunityController.updateGetOpportunities
+    wrapAsync(opportunityController.updateGetOpportunities)
 );
 
 router.delete(
     '/getopportunities/:id',
     verifyToken,
-    opportunityController.deleteGetOpportunities
+    wrapAsync(opportunityController.deleteGetOpportunities)
 );
 
 router.get(
     '/giveopportunities',
     validateApiKey,
-    opportunityController.giveOpportunities
+    wrapAsync(opportunityController.giveOpportunities)
 );
 
 router.get(
     '/giveopportunities/college/:collegeId',
     validateApiKey,
-    opportunityController.giveOpportunities
+    wrapAsync(opportunityController.giveOpportunities)
 );
 
 router.post(
     '/giveopportunities',
     verifyToken,
-    opportunityController.createGiveOpportunities
+    wrapAsync(opportunityController.createGiveOpportunities)
 );
 
 router.put(
     '/giveopportunities/:id',
     verifyToken,
-    opportunityController.updateGiveOpportunities
+    wrapAsync(opportunityController.updateGiveOpportunities)
 );
 
 router.delete(
     '/giveopportunities/:id',
     verifyToken,
-    opportunityController.deleteGiveOpportunities
+    wrapAsync(opportunityController.deleteGiveOpportunities)
 );
 
 module.exports = router;

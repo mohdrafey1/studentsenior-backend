@@ -6,30 +6,34 @@ const { validateApiKey } = require('../../middleware.js');
 const apiPyqController = require('../../controllers/api/pyq.js');
 
 // Fetch all pyq and send as JSON
-router.get('/', validateApiKey, apiPyqController.fetchPyq);
+router.get('/', validateApiKey, wrapAsync(apiPyqController.fetchPyq));
 
 router.get(
     '/college/:collegeId',
     validateApiKey,
-    apiPyqController.fetchPyqByCollege
+    wrapAsync(apiPyqController.fetchPyqByCollege)
 );
 
 router.get(
     '/:collegeId/bundle',
     validateApiKey,
-    apiPyqController.fetchPyqBundle
+    wrapAsync(apiPyqController.fetchPyqBundle)
 );
 
 // router.get('/:id', validateApiKey, apiPyqController.fetchPyqById); // discard later
-router.get('/:slug', validateApiKey, apiPyqController.fetchPyqBySlug);
+router.get(
+    '/:slug',
+    validateApiKey,
+    wrapAsync(apiPyqController.fetchPyqBySlug)
+);
 
 router.get(
     '/:collegeId/:pyqId/related-pyqs',
     validateApiKey,
-    apiPyqController.fetchRelatedPapers
+    wrapAsync(apiPyqController.fetchRelatedPapers)
 );
 
-router.post('/request-pyq', apiPyqController.requestPyq);
+router.post('/request-pyq', wrapAsync(apiPyqController.requestPyq));
 
 // Create a new pyq
 // router.post('/', wrapAsync(apiPyqController.createPyq));

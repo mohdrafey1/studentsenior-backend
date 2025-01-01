@@ -6,12 +6,12 @@ const { validateApiKey, validateGroup } = require('../../middleware.js');
 const apiGroupController = require('../../controllers/api/group.js');
 
 // all pyq
-router.get('/', validateApiKey, apiGroupController.fetchGroups);
+router.get('/', validateApiKey, wrapAsync(apiGroupController.fetchGroups));
 
 router.get(
     '/college/:collegeId',
     validateApiKey,
-    apiGroupController.fetchGroupsByCollege
+    wrapAsync(apiGroupController.fetchGroupsByCollege)
 );
 
 // Create a new pyq

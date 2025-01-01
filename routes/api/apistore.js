@@ -15,28 +15,32 @@ const upload = multer({
 const apiStoreController = require('../../controllers/api/store.js');
 
 // Fetch all pyq
-router.get('/', validateApiKey, apiStoreController.fetchProducts);
+router.get('/', validateApiKey, wrapAsync(apiStoreController.fetchProducts));
 
 router.get(
     '/college/:collegeId',
     validateApiKey,
-    apiStoreController.fetchProductByCollege
+    wrapAsync(apiStoreController.fetchProductByCollege)
 );
 
 router.get(
     '/suggested/:collegeId/:slug',
     validateApiKey,
-    apiStoreController.fetchSuggestedProducts
+    wrapAsync(apiStoreController.fetchSuggestedProducts)
 );
 
 // router.get('/:id', validateApiKey, apiStoreController.fetchProductById);
 
-router.get('/:slug', validateApiKey, apiStoreController.fetchPyqBySlug);
+router.get(
+    '/:slug',
+    validateApiKey,
+    wrapAsync(apiStoreController.fetchPyqBySlug)
+);
 
 router.get(
     '/affiliate',
     validateApiKey,
-    apiStoreController.fetchAffiliateProducts
+    wrapAsync(apiStoreController.fetchAffiliateProducts)
 );
 
 // Create a new pyq
@@ -51,9 +55,9 @@ router.put(
     '/:id',
     verifyToken,
     upload.single('image'),
-    apiStoreController.updateProduct
+    wrapAsync(apiStoreController.updateProduct)
 );
 
-router.delete('/:id', verifyToken, apiStoreController.deleteProduct);
+router.delete('/:id', verifyToken, wrapAsync(apiStoreController.deleteProduct));
 
 module.exports = router;

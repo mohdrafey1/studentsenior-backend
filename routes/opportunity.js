@@ -3,57 +3,67 @@ const router = express.Router();
 const opportunityController = require('../controllers/opportunity');
 const { validateOpportunity, isLoggedIn } = require('../middleware');
 const authorizeRole = require('../utils/rolePermission.js');
+const wrapAsync = require('../utils/wrapAsync.js');
 
-router.get('/getopportunities', opportunityController.getOpportunities);
+router.get(
+    '/getopportunities',
+    wrapAsync(opportunityController.getOpportunities)
+);
 
 router.get(
     '/getopportunities/new',
     isLoggedIn,
     // authorizeRole('admin'),
-    opportunityController.createGetOpportunitiesform
+    wrapAsync(opportunityController.createGetOpportunitiesform)
 );
 
-router.get('/getopportunities/:id', opportunityController.showGetOpportunities);
+router.get(
+    '/getopportunities/:id',
+    wrapAsync(opportunityController.showGetOpportunities)
+);
 
 router.post(
     '/getopportunities',
     isLoggedIn,
     authorizeRole('admin'),
     validateOpportunity,
-    opportunityController.createGetOpportunities
+    wrapAsync(opportunityController.createGetOpportunities)
 );
 
 router.get(
     '/getopportunities/:id/edit',
     isLoggedIn,
     authorizeRole('admin'),
-    opportunityController.editGetOpportunities
+    wrapAsync(opportunityController.editGetOpportunities)
 );
 
 router.put(
     '/getopportunities/:id',
     isLoggedIn,
     authorizeRole('admin'),
-    opportunityController.updateGetOpportunities
+    wrapAsync(opportunityController.updateGetOpportunities)
 );
 
 router.delete(
     '/getopportunities/:id',
     isLoggedIn,
     authorizeRole('admin'),
-    opportunityController.deleteGetOpportunities
+    wrapAsync(opportunityController.deleteGetOpportunities)
 );
 
-router.get('/giveopportunities', opportunityController.giveOpportunities);
+router.get(
+    '/giveopportunities',
+    wrapAsync(opportunityController.giveOpportunities)
+);
 
 router.get(
     '/giveopportunities/new',
-    opportunityController.createGiveOpportunitiesform
+    wrapAsync(opportunityController.createGiveOpportunitiesform)
 );
 
 router.get(
     '/giveopportunities/:id',
-    opportunityController.showGiveOpportunities
+    wrapAsync(opportunityController.showGiveOpportunities)
 );
 
 router.post(
@@ -61,28 +71,28 @@ router.post(
     isLoggedIn,
     authorizeRole('admin'),
     validateOpportunity,
-    opportunityController.createGiveOpportunities
+    wrapAsync(opportunityController.createGiveOpportunities)
 );
 
 router.get(
     '/giveopportunities/:id/edit',
     isLoggedIn,
     authorizeRole('admin'),
-    opportunityController.editGiveOpportunities
+    wrapAsync(opportunityController.editGiveOpportunities)
 );
 
 router.put(
     '/giveopportunities/:id',
     isLoggedIn,
     authorizeRole('admin'),
-    opportunityController.updateGiveOpportunities
+    wrapAsync(opportunityController.updateGiveOpportunities)
 );
 
 router.delete(
     '/giveopportunities/:id',
     isLoggedIn,
     authorizeRole('admin'),
-    opportunityController.deleteGiveOpportunities
+    wrapAsync(opportunityController.deleteGiveOpportunities)
 );
 
 module.exports = router;

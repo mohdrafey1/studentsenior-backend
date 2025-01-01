@@ -3,20 +3,13 @@ const Colleges = require('../models/Colleges');
 
 module.exports = {
     getOpportunities: async (req, res) => {
-        try {
-            const allGetOpportunities = await GetOpportunity.find({})
-                .populate('college')
-                .populate('owner');
+        const allGetOpportunities = await GetOpportunity.find({})
+            .populate('college')
+            .populate('owner');
 
-            res.render('opportunity/getOpportunity/index.ejs', {
-                allGetOpportunities,
-            });
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({
-                message: 'Unable to Fetch Get Opportunities',
-            });
-        }
+        res.render('opportunity/getOpportunity/index.ejs', {
+            allGetOpportunities,
+        });
     },
 
     createGetOpportunitiesform: async (req, res) => {
@@ -28,26 +21,19 @@ module.exports = {
         const { name, description, college, whatsapp, email, status } =
             req.body;
 
-        try {
-            let owner = req.user.id;
-            const newGetOpportunity = new GetOpportunity({
-                name,
-                description,
-                college,
-                whatsapp,
-                email,
-                owner,
-                status,
-            });
-            await newGetOpportunity.save();
-            req.flash('success', 'Get Opportunity Created Successfully');
-            return res.redirect(`/opportunity/getopportunities`);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({
-                message: 'Error Adding Get Opportunity',
-            });
-        }
+        let owner = req.user.id;
+        const newGetOpportunity = new GetOpportunity({
+            name,
+            description,
+            college,
+            whatsapp,
+            email,
+            owner,
+            status,
+        });
+        await newGetOpportunity.save();
+        req.flash('success', 'Get Opportunity Created Successfully');
+        return res.redirect(`/opportunity/getopportunities`);
     },
 
     showGetOpportunities: async (req, res) => {
@@ -78,35 +64,30 @@ module.exports = {
     },
 
     updateGetOpportunities: async (req, res) => {
-        try {
-            const id = req.params.id;
-            const { name, description, college, whatsapp, email, status } =
-                req.body;
+        const id = req.params.id;
+        const { name, description, college, whatsapp, email, status } =
+            req.body;
 
-            const updatedGetOpportunity =
-                await GetOpportunity.findByIdAndUpdate(
-                    id,
-                    {
-                        name,
-                        description,
-                        college,
-                        whatsapp,
-                        email,
-                        status,
-                    },
-                    { new: true }
-                );
+        const updatedGetOpportunity = await GetOpportunity.findByIdAndUpdate(
+            id,
+            {
+                name,
+                description,
+                college,
+                whatsapp,
+                email,
+                status,
+            },
+            { new: true }
+        );
 
-            if (!updatedGetOpportunity) {
-                req.flash('error', 'opportunity not found!');
-                return res.redirect(`/opportunity/getopportunities`);
-            }
-
-            req.flash('success', 'Get Opportunity Updated Successfully');
-            return res.redirect(`/opportunity/getopportunities/${id}`);
-        } catch (error) {
-            res.status(500).json({ message: 'Error updating Get Opportunity' });
+        if (!updatedGetOpportunity) {
+            req.flash('error', 'opportunity not found!');
+            return res.redirect(`/opportunity/getopportunities`);
         }
+
+        req.flash('success', 'Get Opportunity Updated Successfully');
+        return res.redirect(`/opportunity/getopportunities/${id}`);
     },
 
     deleteGetOpportunities: async (req, res) => {
@@ -115,19 +96,13 @@ module.exports = {
     },
 
     giveOpportunities: async (req, res) => {
-        try {
-            const allGiveOpportunities = await GiveOpportunity.find({})
-                .populate('college')
-                .populate('owner');
+        const allGiveOpportunities = await GiveOpportunity.find({})
+            .populate('college')
+            .populate('owner');
 
-            res.render('opportunity/giveOpportunity/index.ejs', {
-                allGiveOpportunities,
-            });
-        } catch (error) {
-            res.status(500).json({
-                message: 'Unable to Fetch Give Opportunity',
-            });
-        }
+        res.render('opportunity/giveOpportunity/index.ejs', {
+            allGiveOpportunities,
+        });
     },
 
     createGiveOpportunitiesform: async (req, res) => {
@@ -139,25 +114,19 @@ module.exports = {
         const { name, description, college, whatsapp, email, status } =
             req.body;
 
-        try {
-            let owner = req.user.id;
-            const newGiveOpportunity = new GiveOpportunity({
-                name,
-                description,
-                college,
-                whatsapp,
-                email,
-                owner,
-                status,
-            });
-            await newGiveOpportunity.save();
-            req.flash('success', 'Get Opportunity Created Successfully');
-            return res.redirect(`/opportunity/giveopportunities`);
-        } catch (error) {
-            res.status(500).json({
-                message: 'Error Adding Give Opportunity',
-            });
-        }
+        let owner = req.user.id;
+        const newGiveOpportunity = new GiveOpportunity({
+            name,
+            description,
+            college,
+            whatsapp,
+            email,
+            owner,
+            status,
+        });
+        await newGiveOpportunity.save();
+        req.flash('success', 'Get Opportunity Created Successfully');
+        return res.redirect(`/opportunity/giveopportunities`);
     },
 
     showGiveOpportunities: async (req, res) => {
@@ -188,44 +157,35 @@ module.exports = {
     },
 
     updateGiveOpportunities: async (req, res) => {
-        try {
-            const id = req.params.id;
-            const {
+        const id = req.params.id;
+        const {
+            name,
+            description,
+            college,
+            whatsapp,
+            email,
+            status = true,
+        } = req.body;
+
+        const updatedGiveOpportunity = await GiveOpportunity.findByIdAndUpdate(
+            id,
+            {
                 name,
                 description,
                 college,
                 whatsapp,
                 email,
-                status = true,
-            } = req.body;
+                status,
+            },
+            { new: true }
+        );
 
-            const updatedGiveOpportunity =
-                await GiveOpportunity.findByIdAndUpdate(
-                    id,
-                    {
-                        name,
-                        description,
-                        college,
-                        whatsapp,
-                        email,
-                        status,
-                    },
-                    { new: true }
-                );
-
-            if (!updatedGiveOpportunity) {
-                return res
-                    .status(404)
-                    .json({ message: 'Opportunity not found' });
-            }
-
-            req.flash('success', 'Get Opportunity Updated Successfully');
-            return res.redirect(`/opportunity/giveopportunities/${id}`);
-        } catch (error) {
-            res.status(500).json({
-                message: 'Error updating Give Opportunity',
-            });
+        if (!updatedGiveOpportunity) {
+            return res.status(404).json({ message: 'Opportunity not found' });
         }
+
+        req.flash('success', 'Get Opportunity Updated Successfully');
+        return res.redirect(`/opportunity/giveopportunities/${id}`);
     },
 
     deleteGiveOpportunities: async (req, res) => {
