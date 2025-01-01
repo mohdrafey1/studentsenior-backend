@@ -33,12 +33,17 @@ const branchController = {
         }
     },
     async delete(req, res) {
-        try {
-            await Branch.findByIdAndDelete(req.params.id);
-            res.redirect('/branches');
-        } catch (error) {
-            res.status(400).send('Error deleting branch');
+        const branch = await Branch.findById(req.params.id);
+
+        if (branch.course) {
+            await Course.findByIdAndUpdate(branch.course, {
+                $inc: { totalBranch: -1 },
+            });
         }
+        await Branch.findByIdAndDelete(req.params.id);
+
+        req.flash('success', 'Branch Deleted Successfully');
+        res.redirect('/branches');
     },
 };
 
