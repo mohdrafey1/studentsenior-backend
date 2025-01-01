@@ -12,7 +12,20 @@ const branchController = {
         res.render('branchCourse/branches/new', { courses });
     },
     async create(req, res) {
-        await Branch.create(req.body);
+        const { branchName, branchCode, course } = req.body;
+
+        const newBranch = await Branch.create({
+            branchName,
+            branchCode,
+            course,
+        });
+
+        if (newBranch) {
+            await Course.findByIdAndUpdate(course, {
+                $inc: { totalBranch: 1 },
+            });
+        }
+
         res.redirect('/branches');
     },
     async edit(req, res) {
@@ -25,7 +38,16 @@ const branchController = {
         res.redirect('/branches');
     },
     async delete(req, res) {
-        await Branch.findByIdAndDelete(req.params.id);
+        const branch = await Branch.findById(req.params.id);
+
+        if (branch) {
+            await Course.findByIdAndUpdate(branch.course, {
+                $inc: { totalBranch: -1 },
+            });
+
+            await branch.delete();
+        }
+
         res.redirect('/branches');
     },
 };

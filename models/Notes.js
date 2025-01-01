@@ -2,13 +2,29 @@ const mongoose = require('mongoose');
 
 const NotesSchema = new mongoose.Schema(
     {
-        subjectName: { type: String, required: true },
-        link: { type: String, required: true },
-        description: { type: String, required: true },
-        target: { type: String, required: true },
-        by: {
+        subject: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Subject',
+            required: true,
+        },
+        slug: {
+            type: String,
+            unique: true,
+        },
+        title: {
+            type: String,
+            required: true,
+        },
+        fileUrl: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+        },
+        owner: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'Client',
             required: true,
         },
         college: {
@@ -16,9 +32,19 @@ const NotesSchema = new mongoose.Schema(
             ref: 'College',
             required: true,
         },
-        status: { type: Boolean, default: false },
+        status: {
+            type: Boolean,
+            default: false,
+        },
+        rewardPoints: {
+            type: Number,
+            default: 5,
+            min: 0,
+        },
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+    }
 );
 
 module.exports = mongoose.model('Notes', NotesSchema);
