@@ -47,6 +47,7 @@ const apiStoreRouter = require('./routes/api/apistore.js');
 const apiCommunityRouter = require('./routes/api/apicommunity.js');
 const apiOpportunityRouter = require('./routes/api/apiopportunity.js');
 const apiContactUsRouter = require('./routes/api/apicontactus.js');
+const resourceApiRoutes = require('./routes/api/resource.api.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -164,6 +165,7 @@ app.use('/api/store', apiStoreRouter);
 app.use('/api/community', apiCommunityRouter);
 app.use('/api/opportunity', apiOpportunityRouter);
 app.use('/api/contactus', apiContactUsRouter);
+app.use('/api/resource', resourceApiRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

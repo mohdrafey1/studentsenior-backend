@@ -11,10 +11,8 @@ const upload = multer({
 
 const apiNotesController = require('../../controllers/api/notes.controller.js');
 
-router.get('/', validateApiKey, wrapAsync(apiNotesController.fetchNotes));
-
 router.get(
-    '/college/:collegeId',
+    '/:subjectId/:collegeId',
     validateApiKey,
     wrapAsync(apiNotesController.fetchNotesByCollege)
 );
@@ -26,5 +24,7 @@ router.post(
     // validateNotes,
     wrapAsync(apiNotesController.createNotes)
 );
+
+router.delete('/:id', validateApiKey, wrapAsync(apiNotesController.deleteNote));
 
 module.exports = router;
