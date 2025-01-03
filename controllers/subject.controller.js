@@ -3,7 +3,9 @@ const { Branch } = require('../models/CourseBranch.js');
 const { errorHandler } = require('../utils/error.js');
 
 module.exports.getSubjects = async (req, res) => {
-    const allSubjects = await Subject.find({}).populate('branch');
+    const allSubjects = await Subject.find({})
+        .populate('branch')
+        .sort({ createdAt: -1 });
     res.render('subjects/index.ejs', { allSubjects });
 };
 
