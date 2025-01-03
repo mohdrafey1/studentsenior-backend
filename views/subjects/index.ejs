@@ -12,6 +12,7 @@
                     <tr>
                         <th scope="col">Subject Name</th>
                         <th scope="col">Subject Code</th>
+                        <th scope="col">Sem</th>
                         <th scope="col">Branch</th>
                         <th scope="col">Actions</th>
                     </tr>
@@ -25,6 +26,9 @@
                                 </td>
                                 <td>
                                     <%= subject.subjectCode %>
+                                </td>
+                                <td>
+                                    <%= subject.semester %>
                                 </td>
                                 <td>
                                     <%= subject.branch?.branchName || "N/A" %>

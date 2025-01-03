@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const wrapAsync = require('../../utils/wrapAsync.js');
 const branchController = require('../../controllers/branchCourse/branch');
 
-router.get('/', branchController.index);
-router.get('/new', branchController.new);
-router.post('/', branchController.create);
-router.get('/:id/edit', branchController.edit);
-router.post('/:id', branchController.update);
-router.post('/:id/delete', branchController.delete);
+router.get('/', wrapAsync(branchController.index));
+router.get('/new', wrapAsync(branchController.new));
+router.post('/', wrapAsync(branchController.create));
+router.get('/:id/edit', wrapAsync(branchController.edit));
+router.post('/:id', wrapAsync(branchController.update));
+router.post('/:id/delete', wrapAsync(branchController.delete));
 
 module.exports = router;

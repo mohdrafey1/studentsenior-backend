@@ -1,4 +1,5 @@
 const { Branch, Course } = require('../../models/CourseBranch');
+const { errorHandler } = require('../../utils/error');
 
 const branchController = {
     async index(req, res) {
@@ -11,9 +12,18 @@ const branchController = {
         const courses = await Course.find();
         res.render('branchCourse/branches/new', { courses });
     },
-    async create(req, res) {
+    async create(req, res, next) {
         const { branchName, branchCode, course } = req.body;
 
+        const existingBranch = await Branch.findOne({ branchCode });
+        if (existingBranch) {
+            return next(
+                errorHandler(
+                    401,
+                    `Branch code '${branchCode}' is already in use. Please use a different code.`
+                )
+            );
+        }
         const newBranch = await Branch.create({
             branchName,
             branchCode,
@@ -28,15 +38,18 @@ const branchController = {
 
         res.redirect('/branches');
     },
+
     async edit(req, res) {
         const branch = await Branch.findById(req.params.id);
         const courses = await Course.find();
         res.render('branchCourse/branches/edit', { branch, courses });
     },
+
     async update(req, res) {
         await Branch.findByIdAndUpdate(req.params.id, req.body);
         res.redirect('/branches');
     },
+
     async delete(req, res) {
         const branch = await Branch.findById(req.params.id);
 

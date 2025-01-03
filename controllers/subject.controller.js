@@ -1,5 +1,6 @@
 const Subject = require('../models/Subjects');
 const { Branch } = require('../models/CourseBranch.js');
+const { errorHandler } = require('../utils/error.js');
 
 module.exports.getSubjects = async (req, res) => {
     const allSubjects = await Subject.find({}).populate('branch');
@@ -12,13 +13,27 @@ module.exports.addSubjectForm = async (req, res) => {
     res.render('subjects/new.ejs', { subject, branches });
 };
 
-module.exports.addSubject = async (req, res) => {
-    const { subjectName, subjectCode, branch } = req.body;
+module.exports.addSubject = async (req, res, next) => {
+    const { subjectName, subjectCode, semester, branch } = req.body;
+
+    const existingSubject = await Subject.findOne({
+        subjectName: subjectName,
+        subjectCode: subjectCode,
+        semester: semester,
+        branch: branch,
+    });
+
+    if (existingSubject) {
+        return next(
+            errorHandler(401, 'This subject is already added in this branch')
+        );
+    }
 
     const newSubject = new Subject({
         subjectCode,
         subjectName,
         branch,
+        semester,
     });
 
     if (branch) {
@@ -46,11 +61,11 @@ module.exports.editSubjectForm = async (req, res) => {
 
 module.exports.editSubject = async (req, res) => {
     const { id } = req.params;
-    const { subjectName, subjectCode } = req.body;
+    const { subjectName, subjectCode, semester } = req.body;
 
     const updatedSubject = await Subject.findByIdAndUpdate(
         id,
-        { subjectName, subjectCode },
+        { subjectName, subjectCode, semester },
         { new: true }
     );
 

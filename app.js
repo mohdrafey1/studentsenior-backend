@@ -23,7 +23,7 @@ const home = require('./routes/home.js');
 const toggleStatus = require('./routes/toggleStatus.js');
 const collegeRoutes = require('./routes/college.route.js');
 const userRouter = require('./routes/user.js');
-const notesRouter = require('./routes/notes.js');
+const notesRoutes = require('./routes/notes.route.js');
 const seniorRouter = require('./routes/senior.js');
 const storeRouter = require('./routes/store.js');
 const communityRouter = require('./routes/community.js');
@@ -39,7 +39,7 @@ const subjectRoutes = require('./routes/subjects.route.js');
 const apicollegeRouter = require('./routes/api/apicollege.js');
 const apiPyqRouter = require('./routes/api/apiPyq.js');
 const apiGroupRouter = require('./routes/api/apigroup.js');
-const apiNotesRouter = require('./routes/api/apinotes.js');
+const notesApiRoutes = require('./routes/api/notes.api.js');
 const userRoutes = require('./routes/api/apiuser.js');
 const authRoutes = require('./routes/api/apiauth.js');
 const apiSeniorRouter = require('./routes/api/apisenior.js');
@@ -141,7 +141,7 @@ app.use('/', userRouter);
 app.use('/whatsappgroup', groupRouter);
 app.use('/colleges', collegeRoutes);
 app.use('/pyqs', pyqRouter);
-app.use('/notes', notesRouter);
+app.use('/notes', notesRoutes);
 app.use('/seniors', seniorRouter);
 app.use('/store', storeRouter);
 app.use('/community', communityRouter);
@@ -156,7 +156,7 @@ app.use('/subjects', subjectRoutes);
 app.use('/api/colleges', apicollegeRouter);
 app.use('/api/pyqs', apiPyqRouter);
 app.use('/api/whatsappgroup', apiGroupRouter);
-app.use('/api/notes', apiNotesRouter);
+app.use('/api/notes', notesApiRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/seniors', apiSeniorRouter);
@@ -170,6 +170,7 @@ app.all('*', (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+    // console.log(err);
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
     res.status(statusCode).json({
