@@ -11,7 +11,7 @@ module.exports = {
             .populate('owner', 'username')
             .populate('subject', 'subjectName');
 
-        console.log(notes);
+        // console.log(notes);
 
         res.render('notes/index.ejs', { notes });
     },

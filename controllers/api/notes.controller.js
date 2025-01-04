@@ -13,18 +13,21 @@ module.exports.fetchNotesByCollege = async (req, res) => {
         subject: subjectId,
         college: collegeId,
         status: true,
-    });
+    })
+        .populate('subject')
+        .populate('owner', 'username');
 
     res.status(200).json(notes);
 };
 
 // Create a new Notes
 module.exports.createNotes = async (req, res, next) => {
-    const { subject, description, title, college, owner } = req.body;
+    const { subject, description, title, college } = req.body;
     const file = req.file;
+    let owner = req.user.id;
 
     if (!file) {
-        return next(errorHandler(401, 'No file uploaded'));
+        return next(errorHandler(404, 'No file uploaded'));
     }
 
     const fileName = `${title}-${Date.now()}.pdf`;

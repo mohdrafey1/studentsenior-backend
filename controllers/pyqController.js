@@ -212,7 +212,7 @@ exports.requestedPyq = async (req, res) => {
 
 exports.deleteRequestedPyq = async (req, res) => {
     const { reqId } = req.params;
-    console.log(reqId);
+    // console.log(reqId);
     await PyqRequest.findByIdAndDelete(reqId);
     req.flash('success', 'Requested PYQ deleted successfully.');
     res.redirect('/pyqs/s/requested-pyqs');

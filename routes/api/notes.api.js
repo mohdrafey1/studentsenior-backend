@@ -2,7 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const router = express.Router();
 const wrapAsync = require('../../utils/wrapAsync.js');
-const { validateApiKey, validateNotes } = require('../../middleware.js');
+const { validateApiKey } = require('../../middleware.js');
+const { verifyToken } = require('../../utils/verifyUser.js');
 
 const upload = multer({
     storage: multer.memoryStorage(),
@@ -21,6 +22,7 @@ router.get(
 router.post(
     '/',
     upload.single('file'),
+    verifyToken,
     // validateNotes,
     wrapAsync(apiNotesController.createNotes)
 );
