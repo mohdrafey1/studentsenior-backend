@@ -107,3 +107,33 @@ module.exports.deleteNote = async (req, res, next) => {
 
     res.json({ message: 'Note deleted successfully' });
 };
+
+module.exports.likeNote = async (req, res) => {
+    const userId = req.user.id;
+    const noteId = req.params.id;
+
+    const note = await Notes.findById(noteId);
+    if (!note) {
+        return next(errorHandler(404, 'note not found'));
+    }
+
+    const hasLiked = note.likes.includes(userId);
+
+    if (hasLiked) {
+        note.likes = note.likes.filter(
+            (id) => id.toString() !== userId.toString()
+        );
+        await note.save();
+        return res.json({
+            message: 'note unliked!',
+            likes: note.likes.length,
+        });
+    } else {
+        note.likes.push(userId);
+        await note.save();
+        return res.json({
+            message: 'note liked!',
+            likes: note.likes.length,
+        });
+    }
+};

@@ -27,6 +27,18 @@ router.post(
     wrapAsync(apiNotesController.createNotes)
 );
 
-router.delete('/:id', validateApiKey, wrapAsync(apiNotesController.deleteNote));
+router.delete(
+    '/:id',
+    verifyToken,
+    validateApiKey,
+    wrapAsync(apiNotesController.deleteNote)
+);
+
+router.post(
+    '/:id/like',
+    validateApiKey,
+    verifyToken,
+    wrapAsync(apiNotesController.likeNote)
+);
 
 module.exports = router;

@@ -12,6 +12,8 @@ module.exports.getBranches = async (req, res) => {
 };
 
 module.exports.getSubjects = async (req, res) => {
-    const subjects = await Subject.find({ branch: req.params.branch });
+    const subjects = await Subject.find({ branch: req.params.branch }).sort({
+        subjectName: 1,
+    });
     res.status(200).json(subjects);
 };
