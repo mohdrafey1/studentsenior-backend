@@ -1,7 +1,7 @@
-const User = require('../models/User');
+const User = require("../models/User");
 
 module.exports.signupForm = (req, res) => {
-    res.render('users/signup.ejs');
+    res.render("users/signup.ejs");
 };
 
 module.exports.signup = async (req, res) => {
@@ -12,30 +12,30 @@ module.exports.signup = async (req, res) => {
         if (err) {
             return next(err);
         }
-        req.flash('succcess', 'Welcome to Studetent Senior ');
-        res.redirect('/');
+        req.flash("succcess", "Welcome to Studetent Senior ");
+        res.redirect("/");
     });
 };
 
 module.exports.loginForm = (req, res) => {
-    res.render('users/login.ejs');
+    res.render("users/login.ejs");
 };
 
 module.exports.login = async (req, res) => {
-    let redirectUrl = res.locals.redirectUrl || '/';
+    let redirectUrl = res.locals.redirectUrl || "/";
     res.redirect(redirectUrl);
 };
 
 module.exports.profile = async (req, res) => {
-    res.render('users/profile.ejs');
+    res.render("users/profile.ejs");
 };
 
-module.exports.logout = (req, res) => {
+module.exports.logout = (req, res, next) => {
     req.logout((err) => {
         if (err) {
             next(err);
         }
-        req.flash('success', 'you are logged out');
-        return res.redirect('/');
+        req.flash("success", "you are logged out");
+        return res.redirect("/");
     });
 };

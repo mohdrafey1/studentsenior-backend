@@ -1,49 +1,49 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
-    <div class="container py-5">
-        <h3 class="my-4 text-center">All Seniors</h3>
+<div class="container py-5">
+    <h3 class="my-4 text-center">All Seniors</h3>
+    <div class="d-flex justify-content-between">
         <a href="/seniors/new" class="btn btn-primary mb-3">Add New Senior</a>
-
-        <!-- Table layout for displaying seniors -->
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Branch</th>
-                        <th>Year</th>
-                        <th>Expertise</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (allSenior.length> 0) { %>
-                        <% allSenior.forEach(senior=> { %>
-                            <tr>
-                                <td>
-                                    <%= senior.name %>
-                                </td>
-                                <td>
-                                    <%= senior.branch %>
-                                </td>
-                                <td>
-                                    <%= senior.year %>
-                                </td>
-                                <td>
-                                    <%= senior.domain || 'Not specified' %>
-                                </td>
-                                <td>
-                                    <a href="/seniors/<%= senior._id %>" class="btn btn-primary btn-sm">View Details</a>
-                                </td>
-                            </tr>
-                            <% }) %>
-                                <% } else { %>
-                                    <!-- Message when no seniors are available -->
-                                    <tr>
-                                        <td colspan="5" class="text-center">No seniors available at the moment.</td>
-                                    </tr>
-                                    <% } %>
-                </tbody>
-            </table>
-        </div>
+        <a href="/" class="btn btn-warning mb-3">Back</a>
     </div>
+
+    <!-- Table layout for displaying seniors -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Branch</th>
+                    <th>Year</th>
+                    <th>Expertise</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (allSenior.length> 0) { %> <% allSenior.forEach(senior=> {
+                %>
+                <tr>
+                    <td><%= senior.name %></td>
+                    <td><%= senior.branch %></td>
+                    <td><%= senior.year %></td>
+                    <td><%= senior.domain || 'Not specified' %></td>
+                    <td>
+                        <a
+                            href="/seniors/<%= senior._id %>"
+                            class="btn btn-primary btn-sm"
+                            >View Details</a
+                        >
+                    </td>
+                </tr>
+                <% }) %> <% } else { %>
+                <!-- Message when no seniors are available -->
+                <tr>
+                    <td colspan="5" class="text-center">
+                        No seniors available at the moment.
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>

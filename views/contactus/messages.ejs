@@ -1,38 +1,40 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
-    <div class="container my-4">
-        <h3 class="text-center mb-4">All Messages</h3>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Subject</th>
-                        <th>Email</th>
-                        <th>Description</th>
-                        <th class="text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% messages.forEach(message=> { %>
-                        <tr>
-                            <td>
-                                <%= message.subject %>
-                            </td>
-                            <td>
-                                <%= message.description %>
-                            </td>
-                            <td>
-                                <%= message.email %>
-                            </td>
-                            <td class="text-center">
-                                <form action="/contactus/<%= message._id %>?_method=DELETE" method="POST"
-                                    style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <% }) %>
-                </tbody>
-            </table>
-        </div>
+<div class="container my-4">
+    <h3 class="text-center mb-4">All Messages</h3>
+    <div class="d-flex mb-2 justify-content-end">
+        <a href="/" class="btn btn-warning">Back</a>
     </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Subject</th>
+                    <th>Email</th>
+                    <th>Description</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% messages.forEach(message=> { %>
+                <tr>
+                    <td><%= message.subject %></td>
+                    <td><%= message.description %></td>
+                    <td><%= message.email %></td>
+                    <td class="text-center">
+                        <form
+                            action="/contactus/<%= message._id %>?_method=DELETE"
+                            method="POST"
+                            style="display: inline"
+                        >
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
