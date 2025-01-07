@@ -2,12 +2,16 @@ const { Branch, Course } = require('../../models/CourseBranch');
 const Subject = require('../../models/Subjects.js');
 
 module.exports.getCourses = async (req, res) => {
-    const courses = await Course.find({});
+    const courses = await Course.find({}).sort({
+        courseName: 1,
+    });
     res.status(200).json(courses);
 };
 
 module.exports.getBranches = async (req, res) => {
-    const branches = await Branch.find({ course: req.params.course });
+    const branches = await Branch.find({ course: req.params.course }).sort({
+        branchName: 1,
+    });
     res.status(200).json(branches);
 };
 
