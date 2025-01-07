@@ -1,18 +1,39 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
-    <div class="container my-5">
-        <h1 class="text-primary mb-4">Edit Course</h1>
-        <form action="/courses/<%= course._id %>" method="POST" class="shadow p-4 bg-light rounded">
-            <div class="mb-3">
-                <label for="courseName" class="form-label">Course Name:</label>
-                <input type="text" id="courseName" name="courseName" value="<%= course.courseName %>"
-                    class="form-control" placeholder="Enter course name" required />
-            </div>
-            <div class="mb-3">
-                <label for="courseCode" class="form-label">Course Code:</label>
-                <input type="text" id="courseCode" name="courseCode" value="<%= course.courseCode %>"
-                    class="form-control" placeholder="Enter course code" required />
-            </div>
+<div class="container my-5">
+    <h1 class="text-primary mb-4">Edit Course</h1>
+    <form
+        action="/courses/<%= course._id %>"
+        method="POST"
+        class="shadow p-4 bg-light rounded"
+    >
+        <div class="mb-3">
+            <label for="courseName" class="form-label">Course Name:</label>
+            <input
+                type="text"
+                id="courseName"
+                name="courseName"
+                value="<%= course.courseName %>"
+                class="form-control"
+                placeholder="Enter course name"
+                required
+            />
+        </div>
+        <div class="mb-3">
+            <label for="courseCode" class="form-label">Course Code:</label>
+            <input
+                type="text"
+                id="courseCode"
+                name="courseCode"
+                value="<%= course.courseCode %>"
+                class="form-control"
+                placeholder="Enter course code"
+                required
+            />
+        </div>
+        <div class="d-grid gap-2 d-md-block">
             <button type="submit" class="btn btn-primary">Update</button>
-        </form>
-    </div>
+            <a href="/courses" class="btn btn-warning">Back</a>
+        </div>
+    </form>
+</div>
