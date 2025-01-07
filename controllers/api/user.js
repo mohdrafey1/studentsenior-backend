@@ -9,6 +9,15 @@ module.exports.updateUser = async (req, res, next) => {
         return next(errorHandler(401, 'You can update only your account!'));
     }
 
+    if (req.body.username) {
+        const existingUser = await Client.findOne({
+            username: req.body.username,
+        });
+        if (existingUser && existingUser._id.toString() !== req.params.id) {
+            return next(errorHandler(400, 'Username already exists!'));
+        }
+    }
+
     if (req.body.password) {
         req.body.password = bcryptjs.hashSync(req.body.password, 10);
     }

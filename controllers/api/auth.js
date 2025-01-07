@@ -3,6 +3,18 @@ const bcryptjs = require('bcryptjs');
 const { errorHandler } = require('../../utils/error.js');
 const jwt = require('jsonwebtoken');
 
+const generateUniqueUsername = async (baseUsername) => {
+    let username = baseUsername;
+    let counter = 1;
+
+    while (await Client.findOne({ username })) {
+        username = `${baseUsername}${counter}`;
+        counter++;
+    }
+
+    return username;
+};
+
 module.exports.signup = async (req, res, next) => {
     const { username, email, password, phone, college } = req.body;
     const existingUser = await Client.findOne({ email });
@@ -46,7 +58,10 @@ module.exports.signin = async (req, res, next) => {
 };
 
 module.exports.google = async (req, res, next) => {
-    const user = await Client.findOne({ email: req.body.email });
+    const { email, name, photo } = req.body;
+
+    let user = await Client.findOne({ email });
+
     if (user) {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
         const { password: hashedPassword, ...rest } = user._doc;
@@ -60,17 +75,19 @@ module.exports.google = async (req, res, next) => {
             .status(200)
             .json(rest);
     } else {
+        const baseUsername = name.split(' ').join('').toLowerCase();
+        const username = await generateUniqueUsername(baseUsername);
+
         const generatedPassword =
             Math.random().toString(36).slice(-8) +
             Math.random().toString(36).slice(-8);
         const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+
         const newUser = new Client({
-            username:
-                req.body.name.split(' ').join('').toLowerCase() +
-                Math.random().toString(36).slice(-8),
-            email: req.body.email,
+            username,
+            email,
             password: hashedPassword,
-            profilePicture: req.body.photo,
+            profilePicture: photo,
         });
         await newUser.save();
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
