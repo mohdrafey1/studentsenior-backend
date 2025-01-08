@@ -77,25 +77,37 @@ module.exports.user = async (req, res) => {
 module.exports.client = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
+    const username = req.query.username || '';
+    const minRewardPoints = parseInt(req.query.minRewardPoints) || 0;
 
     const startIndex = (page - 1) * limit;
 
-    try {
-        const totalClients = await Client.countDocuments();
-
-        const allClient = await Client.find({})
-            .sort({ createdAt: -1 })
-            .skip(startIndex)
-            .limit(limit);
-
-        const totalPages = Math.ceil(totalClients / limit);
-
-        res.render('home/client.ejs', {
-            allClient,
-            currentPage: page,
-            totalPages,
-        });
-    } catch (error) {
-        res.status(500).send('Error fetching clients');
+    const filter = {};
+    if (username) {
+        filter.username = new RegExp(username, 'i');
     }
+    if (minRewardPoints) {
+        filter.rewardPoints = { $gte: minRewardPoints };
+    }
+
+    const totalClients = await Client.countDocuments(filter);
+
+    const allClient = await Client.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(startIndex)
+        .limit(limit);
+
+    const totalPages = Math.ceil(totalClients / limit);
+
+    const filterParams = `&username=${username}&minRewardPoints=${minRewardPoints}`;
+
+    res.render('home/client.ejs', {
+        allClient,
+        currentPage: page,
+        totalPages,
+        limit,
+        username,
+        minRewardPoints,
+        filterParams,
+    });
 };

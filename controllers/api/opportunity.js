@@ -21,8 +21,8 @@ module.exports = {
             college: collegeId,
         })
             .sort({ createdAt: -1 })
-            .populate('college')
-            .populate('owner');
+            .populate('college', 'name')
+            .populate('owner', 'username');
 
         res.json(allGetOpportunities);
     },
@@ -95,16 +95,16 @@ module.exports = {
         });
     },
 
-    giveOpportunities: async (req, res) => {
-        const allGiveOpportunities = await GiveOpportunity.find({
-            status: true,
-            isDeleted: false,
-        })
-            .populate('college')
-            .populate('owner');
+    // giveOpportunities: async (req, res) => {
+    //     const allGiveOpportunities = await GiveOpportunity.find({
+    //         status: true,
+    //         isDeleted: false,
+    //     })
+    //         .populate('college', 'name')
+    //         .populate('owner', 'username');
 
-        res.json(allGiveOpportunities);
-    },
+    //     res.json(allGiveOpportunities);
+    // },
 
     giveOpportunities: async (req, res) => {
         const { collegeId } = req.params;
@@ -115,8 +115,8 @@ module.exports = {
             college: collegeId,
         })
             .sort({ createdAt: -1 })
-            .populate('college')
-            .populate('owner');
+            .populate('college', 'name')
+            .populate('owner', 'username');
 
         res.json(allGiveOpportunities);
     },

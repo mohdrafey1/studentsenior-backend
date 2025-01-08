@@ -1,0 +1,63 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container my-5">
+        <!-- Header with Title and Actions -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-primary">Transactions</h1>
+            <div class="d-flex gap-2">
+                <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Points</th>
+                        <th scope="col">Resource Type</th>
+                        <th scope="col">Resource ID</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (transactions.length> 0) { %>
+                        <% transactions.forEach(transaction=> { %>
+                            <tr>
+                                <td>
+                                    <%= transaction.user.username %>
+                                </td>
+                                <td>
+                                    <% if (transaction.type==='earn' ) { %>
+                                        <span class="badge bg-success">Earn</span>
+                                        <% } else if (transaction.type==='redeem' ) { %>
+                                            <span class="badge bg-warning">Redeem</span>
+                                            <% } else { %>
+                                                <span class="badge bg-danger">Reduction</span>
+                                                <% } %>
+                                </td>
+                                <td>
+                                    <%= transaction.points %>
+                                </td>
+                                <td class="text-capitalize">
+                                    <%= transaction.resourceType %>
+                                </td>
+                                <td>
+                                    <%= transaction.resourceId %>
+                                </td>
+                                <td>
+                                    <%= new Date(transaction.createdAt).toLocaleString() %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">No transactions found.</td>
+                                    </tr>
+                                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>

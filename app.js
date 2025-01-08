@@ -34,6 +34,7 @@ const groupRouter = require('./routes/whatsappGroup.js');
 const courseRoutes = require('./routes/branchcourse/course.js');
 const branchRoutes = require('./routes/branchcourse/branch.js');
 const subjectRoutes = require('./routes/subjects.route.js');
+const transactionRoutes = require('./routes/dashboard/transaction.route.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/apicollege.js');
@@ -152,6 +153,7 @@ app.use('/contactus', contactUsRouter);
 app.use('/courses', courseRoutes);
 app.use('/branches', branchRoutes);
 app.use('/subjects', subjectRoutes);
+app.use('/transactions', transactionRoutes);
 
 //frontend api routes
 app.use('/api/colleges', apicollegeRouter);

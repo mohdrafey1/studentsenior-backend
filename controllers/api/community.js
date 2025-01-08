@@ -4,7 +4,7 @@ const { errorHandler } = require('../../utils/error');
 module.exports.fetchPost = async (req, res) => {
     const posts = await Post.find()
         .populate('college')
-        .populate('author')
+        .populate('author', 'username profilePicture')
         .populate({
             path: 'comments',
             populate: {
@@ -20,12 +20,14 @@ module.exports.fetchPostByCollege = async (req, res) => {
         .sort({
             createdAt: -1,
         })
-        .populate('college')
-        .populate('author')
+        .populate('college', 'name')
+        .populate('author', 'username profilePicture')
         .populate({
             path: 'comments',
+            select: 'content createdAt',
             populate: {
                 path: 'author',
+                select: 'username profilePicture',
             },
         });
 
