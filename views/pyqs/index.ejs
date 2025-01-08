@@ -136,13 +136,15 @@
                             </td>
                             <td>
                                 <a href="/pyqs/<%= pyq._id %>" class="btn btn-info btn-sm m-1">View</a>
-                                <form action="/pyqs/<%= pyq._id %>?_method=DELETE" method="POST"
-                                    style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#deletePyqModal-<%= pyq._id %>">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
-                        <% }) %>
+                        <%- include('../includes/deleteConfirmationModal', { modalId: `deletePyqModal-${pyq._id}`,
+                            action: `/pyqs/${pyq._id}?_method=DELETE`, }); %>
+                            <% }) %>
                 </tbody>
             </table>
         </div>
