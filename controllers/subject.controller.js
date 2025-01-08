@@ -3,10 +3,29 @@ const { Branch } = require('../models/CourseBranch.js');
 const { errorHandler } = require('../utils/error.js');
 
 module.exports.getSubjects = async (req, res) => {
-    const allSubjects = await Subject.find({})
+    const { branch, search } = req.query;
+
+    // Build the query dynamically
+    const query = {};
+    if (branch && branch.trim() !== '') {
+        query.branch = branch;
+    }
+    if (search && search.trim() !== '') {
+        query.subjectName = { $regex: search, $options: 'i' };
+    }
+
+    const allSubjects = await Subject.find(query)
         .populate('branch')
-        .sort({ createdAt: -1 });
-    res.render('subjects/index.ejs', { allSubjects });
+        .sort({ branchName: -1 });
+
+    const branches = await Branch.find({});
+
+    res.render('subjects/index.ejs', {
+        allSubjects,
+        branches,
+        selectedBranch: branch || '',
+        search: search || '',
+    });
 };
 
 module.exports.addSubjectForm = async (req, res) => {

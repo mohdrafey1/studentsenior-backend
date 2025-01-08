@@ -2,7 +2,7 @@ const { Course } = require('../../models/CourseBranch');
 
 const courseController = {
     async index(req, res) {
-        const courses = await Course.find().sort({ createdAt: -1 });
+        const courses = await Course.find().sort({ courseName: 1 });
         res.render('branchCourse/courses/index', { courses });
     },
 

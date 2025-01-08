@@ -3,11 +3,28 @@ const { errorHandler } = require('../../utils/error');
 
 const branchController = {
     async index(req, res) {
-        const branches = await Branch.find()
+        const { course, search } = req.query;
+
+        const query = {};
+        if (course && course.trim() !== '') {
+            query.course = course;
+        }
+        if (search && search.trim() !== '') {
+            query.branchName = { $regex: search, $options: 'i' };
+        }
+
+        const branches = await Branch.find(query)
             .populate('course')
-            .sort({ createdAt: -1 });
-        res.render('branchCourse/branches/index', { branches });
+            .sort({ branchName: -1 });
+        const courses = await Course.find();
+        res.render('branchCourse/branches/index', {
+            branches,
+            courses,
+            selectedCourse: course || '',
+            search,
+        });
     },
+
     async new(req, res) {
         const courses = await Course.find();
         res.render('branchCourse/branches/new', { courses });
