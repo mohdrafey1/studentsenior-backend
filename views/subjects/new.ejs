@@ -1,117 +1,97 @@
 <% layout("/layouts/boilerplate.ejs") %>
-<style>
-    .dropdown-container {
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        max-height: 200px;
-        overflow-y: auto;
-        background: white;
-        position: relative;
-    }
+    <style>
+        .dropdown-container {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            position: relative;
+        }
 
-    .dropdown-item {
-        padding: 8px;
-        cursor: pointer;
-    }
+        .dropdown-item {
+            padding: 8px;
+            cursor: pointer;
+        }
 
-    .dropdown-item:hover {
-        background-color: #f0f0f0;
-    }
-</style>
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
 
-<div class="container my-5">
-    <div class="d-flex justify-content-between">
-        <h1 class="text-primary mb-4">Add New Subject</h1>
-        <a href="subjects" class="btn btn-warning">Back</a>
-    </div>
-
-    <form action="/subjects" method="POST">
-        <div class="mb-3">
-            <label for="subjectName" class="form-label">Subject Name</label>
-            <input
-                type="text"
-                class="form-control"
-                id="subjectName"
-                name="subjectName"
-                required
-            />
+    <div class="container my-5">
+        <div class="d-flex justify-content-between">
+            <h1 class="text-primary mb-4">Add New Subject</h1>
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
         </div>
-        <div class="mb-3">
-            <label for="subjectCode" class="form-label">Subject Code</label>
-            <input
-                type="text"
-                class="form-control"
-                id="subjectCode"
-                name="subjectCode"
-                required
-            />
-        </div>
-        <div class="mb-3">
-            <label for="semester">semester</label>
-            <select id="semester" name="semester" class="form-control" required>
-                <option value="">Select Sem</option>
-                <option value="1">1st sem</option>
-                <option value="2">2nd Sem</option>
-                <option value="3">3rd Sem</option>
-                <option value="4">4th Sem</option>
-                <option value="5">5th Sem</option>
-                <option value="6">6th Sem</option>
-                <option value="7">7th Sem</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="branch" class="form-label">Branch</label>
-            <!-- Search Field -->
-            <input
-                type="text"
-                id="branchSearch"
-                class="form-control mb-2"
-                placeholder="Search for a branch..."
-                onkeyup="filterBranches()"
-            />
 
-            <!-- Dropdown Wrapper -->
-            <div class="dropdown-container">
-                <% branches.forEach(branch=> { %>
-                <div
-                    class="dropdown-item branch-option"
-                    data-value="<%= branch._id %>"
-                    onclick="selectBranch('<%= branch._id %>', '<%= branch.branchName %>')"
-                >
-                    <%= branch.branchName %>
+        <form action="/subjects" method="POST">
+            <div class="mb-3">
+                <label for="subjectName" class="form-label">Subject Name</label>
+                <input type="text" class="form-control" id="subjectName" name="subjectName" required />
+            </div>
+            <div class="mb-3">
+                <label for="subjectCode" class="form-label">Subject Code</label>
+                <input type="text" class="form-control" id="subjectCode" name="subjectCode" required />
+            </div>
+            <div class="mb-3">
+                <label for="semester">semester</label>
+                <select id="semester" name="semester" class="form-control" required>
+                    <option value="">Select Sem</option>
+                    <option value="1">1st sem</option>
+                    <option value="2">2nd Sem</option>
+                    <option value="3">3rd Sem</option>
+                    <option value="4">4th Sem</option>
+                    <option value="5">5th Sem</option>
+                    <option value="6">6th Sem</option>
+                    <option value="7">7th Sem</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="branch" class="form-label">Branch</label>
+                <!-- Search Field -->
+                <input type="text" id="branchSearch" class="form-control mb-2" placeholder="Search for a branch..."
+                    onkeyup="filterBranches()" />
+
+                <!-- Dropdown Wrapper -->
+                <div class="dropdown-container">
+                    <% branches.forEach(branch=> { %>
+                        <div class="dropdown-item branch-option" data-value="<%= branch._id %>"
+                            onclick="selectBranch('<%= branch._id %>', '<%= branch.branchName %>')">
+                            <%= branch.branchName %>
+                        </div>
+                        <% }) %>
                 </div>
-                <% }) %>
+
+                <!-- Hidden Input for Submission -->
+                <input type="hidden" id="branch" name="branch" required />
             </div>
 
-            <!-- Hidden Input for Submission -->
-            <input type="hidden" id="branch" name="branch" required />
-        </div>
+            <button type="submit" class="btn btn-success">Add Subject</button>
+        </form>
+    </div>
 
-        <button type="submit" class="btn btn-success">Add Subject</button>
-    </form>
-</div>
+    <script>
+        function filterBranches() {
+            const searchInput = document
+                .getElementById("branchSearch")
+                .value.toLowerCase();
+            const branchOptions = document.querySelectorAll(".branch-option");
 
-<script>
-    function filterBranches() {
-        const searchInput = document
-            .getElementById("branchSearch")
-            .value.toLowerCase();
-        const branchOptions = document.querySelectorAll(".branch-option");
+            branchOptions.forEach((option) => {
+                const branchName = option.textContent.toLowerCase();
+                if (branchName.includes(searchInput)) {
+                    option.style.display = "";
+                } else {
+                    option.style.display = "none";
+                }
+            });
+        }
 
-        branchOptions.forEach((option) => {
-            const branchName = option.textContent.toLowerCase();
-            if (branchName.includes(searchInput)) {
-                option.style.display = "";
-            } else {
-                option.style.display = "none";
-            }
-        });
-    }
-
-    function selectBranch(id, name) {
-        // Set the selected branch value
-        const searchInput = document.getElementById("branchSearch");
-        searchInput.value = name; // Update search box with selected branch name
-        document.getElementById("branch").value = id; // Set hidden input for submission
-    }
-</script>
+        function selectBranch(id, name) {
+            // Set the selected branch value
+            const searchInput = document.getElementById("branchSearch");
+            searchInput.value = name; // Update search box with selected branch name
+            document.getElementById("branch").value = id; // Set hidden input for submission
+        }
+    </script>

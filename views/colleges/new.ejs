@@ -1,63 +1,41 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
-<body>
-    <div class="container my-5">
-        <div class="d-flex justify-content-between">
-            <h3 class="mb-4">Add The College</h3>
-            <a href="/colleges" class="btn btn-warning">Back</a>
+    <body>
+        <div class="container my-5">
+            <div class="d-flex justify-content-between">
+                <h3 class="mb-4">Add The College</h3>
+                <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+            </div>
+
+            <form action="/colleges" method="POST">
+                <div class="mb-3">
+                    <label for="collegeName" class="form-label">College Name</label>
+                    <input type="text" class="form-control" id="collegeName" name="name"
+                        placeholder="Enter college name" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="collegeDescription" class="form-label">College Description</label>
+                    <textarea class="form-control" id="collegeDescription" name="description"
+                        placeholder="Enter college description" rows="3" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="collegeLocation" class="form-label">College Location</label>
+                    <input type="text" class="form-control" id="collegeLocation" name="location"
+                        placeholder="Enter college location" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status" required>
+                        <option value="">Select</option>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add College</button>
+            </form>
         </div>
-
-        <form action="/colleges" method="POST">
-            <div class="mb-3">
-                <label for="collegeName" class="form-label">College Name</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="collegeName"
-                    name="name"
-                    placeholder="Enter college name"
-                    required
-                />
-            </div>
-
-            <div class="mb-3">
-                <label for="collegeDescription" class="form-label"
-                    >College Description</label
-                >
-                <textarea
-                    class="form-control"
-                    id="collegeDescription"
-                    name="description"
-                    placeholder="Enter college description"
-                    rows="3"
-                    required
-                ></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="collegeLocation" class="form-label"
-                    >College Location</label
-                >
-                <input
-                    type="text"
-                    class="form-control"
-                    id="collegeLocation"
-                    name="location"
-                    placeholder="Enter college location"
-                    required
-                />
-            </div>
-
-            <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select class="form-select" id="status" name="status" required>
-                    <option value="">Select</option>
-                    <option value="true">True</option>
-                    <option value="false">False</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Add College</button>
-        </form>
-    </div>
-</body>
+    </body>

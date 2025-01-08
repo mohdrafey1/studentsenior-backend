@@ -1,132 +1,125 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
-<div class="container py-5">
-    <h3 class="my-4 text-center">All Products</h3>
-    <div class="d-flex justify-content-center gap-3 mb-4">
-        <a href="/store/new" class="btn btn-primary">Add New Product</a>
-        <a href="/store/newAffiliate" class="btn btn-primary"
-            >Add New Affiliate Product</a
-        >
+    <div class="container py-5">
+        <h3 class="my-4 text-center">All Products</h3>
+        <div class="d-flex justify-content-center gap-3 mb-4">
+            <a href="/store/new" class="btn btn-primary">Add New Product</a>
+            <a href="/store/newAffiliate" class="btn btn-primary">Add New Affiliate Product</a>
 
-        <a href="/" class="btn btn-warning">Back</a>
-    </div>
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+        </div>
 
-    <!-- Table layout for displaying regular store products -->
-    <h4 class="text-center">Store Products</h4>
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if (store.length> 0) { %> <% store.forEach((item, index)=> {
-                %>
-                <tr>
-                    <th scope="row"><%= index + 1 %></th>
-                    <td>
-                        <img
-                            src="<%= item.image.url %>"
-                            alt="<%= item.name %>'s Image"
-                            style="max-width: 100px"
-                            onerror="this.onerror=null; this.src='/path-to-default-image.jpg';"
-                        />
-                    </td>
-                    <td><%= item.name %></td>
-                    <td>₹ <%= item.price %></td>
-                    <td><%= item.description || 'Not specified' %></td>
-                    <td>
-                        <a
-                            href="/store/<%= item._id %>/edit"
-                            class="btn btn-sm btn-warning"
-                            >Edit</a
-                        >
-                        <form
-                            action="/store/<%= item._id %>?_method=DELETE"
-                            method="POST"
-                            class="d-inline-block"
-                        >
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                <% }) %> <% } else { %>
-                <tr>
-                    <td colspan="6" class="text-center">
-                        No Store Products available at the moment.
-                    </td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
+        <!-- Table layout for displaying regular store products -->
+        <h4 class="text-center">Store Products</h4>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (store.length> 0) { %> <% store.forEach((item, index)=> {
+                            %>
+                            <tr>
+                                <th scope="row">
+                                    <%= index + 1 %>
+                                </th>
+                                <td>
+                                    <img src="<%= item.image.url %>" alt="<%= item.name %>'s Image"
+                                        style="max-width: 100px"
+                                        onerror="this.onerror=null; this.src='/path-to-default-image.jpg';" />
+                                </td>
+                                <td>
+                                    <%= item.name %>
+                                </td>
+                                <td>₹ <%= item.price %>
+                                </td>
+                                <td>
+                                    <%= item.description || 'Not specified' %>
+                                </td>
+                                <td>
+                                    <a href="/store/<%= item._id %>/edit" class="btn btn-sm btn-warning">Edit</a>
+                                    <form action="/store/<%= item._id %>?_method=DELETE" method="POST"
+                                        class="d-inline-block">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            No Store Products available at the moment.
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Table layout for displaying affiliate products -->
-    <h4 class="text-center mt-5">Affiliate Products</h4>
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Link</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if (affiliateProduct.length> 0) { %> <%
-                affiliateProduct.forEach((item, index)=> { %>
-                <tr>
-                    <th scope="row"><%= index + 1 %></th>
-                    <td>
-                        <img
-                            src="<%= item.image || '/path-to-default-image.jpg' %>"
-                            alt="<%= item.name %>'s Image"
-                            style="max-width: 100px"
-                        />
-                    </td>
-                    <td><%= item.name %></td>
-                    <td>₹ <%= item.price %></td>
-                    <td><%= item.description || 'Not specified' %></td>
-                    <td>
-                        <a
-                            href="<%= item.link %>"
-                            target="_blank"
-                            class="btn btn-sm btn-link"
-                            >View Product</a
-                        >
-                    </td>
-                    <td>
-                        <form
-                            action="/store/affiliate/<%= item._id %>?_method=DELETE"
-                            method="POST"
-                            class="d-inline-block"
-                        >
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                <% }) %> <% } else { %>
-                <tr>
-                    <td colspan="7" class="text-center">
-                        No Affiliate Products available at the moment.
-                    </td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
+        <!-- Table layout for displaying affiliate products -->
+        <h4 class="text-center mt-5">Affiliate Products</h4>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Link</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (affiliateProduct.length> 0) { %> <% affiliateProduct.forEach((item, index)=> { %>
+                            <tr>
+                                <th scope="row">
+                                    <%= index + 1 %>
+                                </th>
+                                <td>
+                                    <img src="<%= item.image || '/path-to-default-image.jpg' %>"
+                                        alt="<%= item.name %>'s Image" style="max-width: 100px" />
+                                </td>
+                                <td>
+                                    <%= item.name %>
+                                </td>
+                                <td>₹ <%= item.price %>
+                                </td>
+                                <td>
+                                    <%= item.description || 'Not specified' %>
+                                </td>
+                                <td>
+                                    <a href="<%= item.link %>" target="_blank" class="btn btn-sm btn-link">View
+                                        Product</a>
+                                </td>
+                                <td>
+                                    <form action="/store/affiliate/<%= item._id %>?_method=DELETE" method="POST"
+                                        class="d-inline-block">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            No Affiliate Products available at the moment.
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>

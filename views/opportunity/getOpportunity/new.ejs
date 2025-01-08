@@ -1,82 +1,62 @@
 <% layout('/layouts/boilerplate.ejs') %>
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between">
-        <h1>Add New Opportunity</h1>
-        <a href="/opportunity/getopportunities" class="btn btn-warning">Back</a>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between">
+            <h1>Add New Opportunity</h1>
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+        </div>
+        <form action="/opportunity/getopportunities" method="POST">
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" required />
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control"></textarea>
+            </div>
+
+            <!-- College -->
+            <div class="form-group">
+                <label for="college">Select College</label>
+                <select id="college" name="college" class="form-control" required>
+                    <option value="">Select College</option>
+                    <% colleges.forEach(college=> { %>
+                        <option value="<%= college._id %>">
+                            <%= college.name %>
+                        </option>
+                        <% }); %>
+                </select>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status" required>
+                    <option value="">Select</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
+
+            <!-- WhatsApp Number -->
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp Number</label>
+                <input type="text" id="whatsapp" name="whatsapp" class="form-control"
+                    placeholder="Enter 10-digit number" required />
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address" />
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary mt-3">
+                Add Opportunity
+            </button>
+        </form>
     </div>
-    <form action="/opportunity/getopportunities" method="POST">
-        <!-- Name -->
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input
-                type="text"
-                id="name"
-                name="name"
-                class="form-control"
-                required
-            />
-        </div>
-
-        <!-- Description -->
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea
-                id="description"
-                name="description"
-                class="form-control"
-            ></textarea>
-        </div>
-
-        <!-- College -->
-        <div class="form-group">
-            <label for="college">Select College</label>
-            <select id="college" name="college" class="form-control" required>
-                <option value="">Select College</option>
-                <% colleges.forEach(college=> { %>
-                <option value="<%= college._id %>"><%= college.name %></option>
-                <% }); %>
-            </select>
-        </div>
-
-        <!-- Status -->
-        <div class="form-group">
-            <label for="status">Status</label>
-            <select class="form-control" id="status" name="status" required>
-                <option value="">Select</option>
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
-            </select>
-        </div>
-
-        <!-- WhatsApp Number -->
-        <div class="form-group">
-            <label for="whatsapp">WhatsApp Number</label>
-            <input
-                type="text"
-                id="whatsapp"
-                name="whatsapp"
-                class="form-control"
-                placeholder="Enter 10-digit number"
-                required
-            />
-        </div>
-
-        <!-- Email -->
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input
-                type="email"
-                id="email"
-                name="email"
-                class="form-control"
-                placeholder="Enter email address"
-            />
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary mt-3">
-            Add Opportunity
-        </button>
-    </form>
-</div>

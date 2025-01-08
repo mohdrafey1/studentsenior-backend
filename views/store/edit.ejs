@@ -3,7 +3,7 @@
     <div class="container mt-4">
         <div class="d-flex justify-content-between">
             <h1>Edit Product</h1>
-        <a href="/store" class="btn btn-warning">Back</a>
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
         </div>
         <form action="/store/<%= store._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
             <!-- College Selection -->

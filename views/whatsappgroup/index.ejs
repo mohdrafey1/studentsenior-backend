@@ -1,108 +1,88 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
-<div
-    class="d-flex flex-column flex-md-row justify-content-between align-items-center my-4"
->
-    <h1 class="h3 mb-3 mb-md-0">WhatsApp Groups Management</h1>
-    <div class="d-grid gap-2 d-md-block">
-        <a href="/whatsappgroup/new" class="btn btn-primary">Add New Group</a>
-        <a href="/" class="btn btn-warning">Back</a>
-    </div>
-</div>
-
-<!-- Responsive Table Container for larger screens -->
-<div class="table-responsive d-none d-md-block">
-    <table class="table table-hover table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th>Title</th>
-                <th>College Name</th>
-                <th>Info</th>
-                <th>Status</th>
-                <th class="text-center">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% Groups.forEach(group=> { %>
-            <tr>
-                <td><%= group.title %></td>
-                <td><%= group.college.name %></td>
-                <td class="text-truncate" style="max-width: 150px">
-                    <%= group.info %>
-                </td>
-                <td><%= group.status ? 'Approved' : 'Pending' %></td>
-                <td class="text-center">
-                    <a
-                        target="_blank"
-                        href="<%= group.link %>"
-                        class="btn btn-success btn-sm mb-1"
-                        >View</a
-                    >
-                    <a
-                        href="/whatsappgroup/<%= group._id %>/edit"
-                        class="btn btn-info btn-sm mb-1"
-                        >Edit</a
-                    >
-                    <form
-                        action="/whatsappgroup/<%= group._id %>?_method=DELETE"
-                        method="POST"
-                        style="display: inline"
-                    >
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            <% }) %>
-        </tbody>
-    </table>
-</div>
-
-<!-- Mobile-friendly card layout for smaller screens -->
-<div class="d-block d-md-none">
-    <% Groups.forEach(group=> { %>
-    <div class="card mb-3">
-        <div class="card-body">
-            <h5 class="card-title">
-                <strong>Title:</strong>
-                <%= group.title %>
-            </h5>
-            <p class="card-text">
-                <strong>College Name:</strong>
-                <%= group.college.name %>
-            </p>
-            <p class="card-text">
-                <strong>Info:</strong>
-                <%= group.info %>
-            </p>
-            <p class="card-text">
-                <strong>Status:</strong>
-                <%= group.status ? 'Approved' : 'Pending' %>
-            </p>
-            <div class="d-flex justify-content-between">
-                <a
-                    target="_blank"
-                    href="<%= group.link %>"
-                    class="btn btn-success btn-sm"
-                    >View</a
-                >
-                <a
-                    href="/whatsappgroup/<%= group._id %>/edit"
-                    class="btn btn-info btn-sm"
-                    >Edit</a
-                >
-                <form
-                    action="/whatsappgroup/<%= group._id %>?_method=DELETE"
-                    method="POST"
-                    style="display: inline"
-                >
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        Delete
-                    </button>
-                </form>
-            </div>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center my-4">
+        <h1 class="h3 mb-3 mb-md-0">WhatsApp Groups Management</h1>
+        <div class="d-grid gap-2 d-md-block">
+            <a href="/whatsappgroup/new" class="btn btn-primary">Add New Group</a>
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
         </div>
     </div>
-    <% }) %>
-</div>
+
+    <!-- Responsive Table Container for larger screens -->
+    <div class="table-responsive d-none d-md-block">
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>College Name</th>
+                    <th>Info</th>
+                    <th>Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% Groups.forEach(group=> { %>
+                    <tr>
+                        <td>
+                            <%= group.title %>
+                        </td>
+                        <td>
+                            <%= group.college.name %>
+                        </td>
+                        <td class="text-truncate" style="max-width: 150px">
+                            <%= group.info %>
+                        </td>
+                        <td>
+                            <%= group.status ? 'Approved' : 'Pending' %>
+                        </td>
+                        <td class="text-center">
+                            <a target="_blank" href="<%= group.link %>" class="btn btn-success btn-sm mb-1">View</a>
+                            <a href="/whatsappgroup/<%= group._id %>/edit" class="btn btn-info btn-sm mb-1">Edit</a>
+                            <form action="/whatsappgroup/<%= group._id %>?_method=DELETE" method="POST"
+                                style="display: inline">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile-friendly card layout for smaller screens -->
+    <div class="d-block d-md-none">
+        <% Groups.forEach(group=> { %>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <strong>Title:</strong>
+                        <%= group.title %>
+                    </h5>
+                    <p class="card-text">
+                        <strong>College Name:</strong>
+                        <%= group.college.name %>
+                    </p>
+                    <p class="card-text">
+                        <strong>Info:</strong>
+                        <%= group.info %>
+                    </p>
+                    <p class="card-text">
+                        <strong>Status:</strong>
+                        <%= group.status ? 'Approved' : 'Pending' %>
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        <a target="_blank" href="<%= group.link %>" class="btn btn-success btn-sm">View</a>
+                        <a href="/whatsappgroup/<%= group._id %>/edit" class="btn btn-info btn-sm">Edit</a>
+                        <form action="/whatsappgroup/<%= group._id %>?_method=DELETE" method="POST"
+                            style="display: inline">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+    </div>

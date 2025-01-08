@@ -4,7 +4,7 @@
         <div class="container my-5">
             <div class="d-flex justify-content-between">
                 <h3 class="mb-4 text-center">Edit The College</h3>
-            <a href="/colleges/<%= college._id %> " class="btn btn-warning">Back</a>
+                <a href="javascript:history.back()" class="btn btn-warning">Back</a>
             </div>
             <form method="POST" action="/colleges/<%= college._id %>?_method=PUT">
                 <div class="mb-3">
@@ -34,7 +34,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update College</button>
-               
+
             </form>
         </div>
     </body>

@@ -1,70 +1,60 @@
 <% layout('/layouts/boilerplate.ejs') %>
 
-<div class="container mt-4">
-    <h1><%= getOpportunity.name %> Details</h1>
+    <div class="container mt-4">
+        <h1>
+            <%= getOpportunity.name %> Details
+        </h1>
 
-    <!-- Opportunity Details -->
-    <ul class="list-group mb-4">
-        <li class="list-group-item">
-            <strong>Description:</strong>
-            <%= getOpportunity.description || 'Not provided' %>
-        </li>
+        <!-- Opportunity Details -->
+        <ul class="list-group mb-4">
+            <li class="list-group-item">
+                <strong>Description:</strong>
+                <%= getOpportunity.description || 'Not provided' %>
+            </li>
 
-        <li class="list-group-item">
-            <strong>Owner:</strong>
-            <%= getOpportunity.owner ? getOpportunity.owner.username :
-            'Not-provided' %>
-        </li>
+            <li class="list-group-item">
+                <strong>Owner:</strong>
+                <%= getOpportunity.owner ? getOpportunity.owner.username : 'Not-provided' %>
+            </li>
 
-        <li class="list-group-item">
-            <strong>College:</strong>
-            <%= getOpportunity.college ? getOpportunity.college.name :
-            'Not-linked to a college' %>
-        </li>
+            <li class="list-group-item">
+                <strong>College:</strong>
+                <%= getOpportunity.college ? getOpportunity.college.name : 'Not-linked to a college' %>
+            </li>
 
-        <li class="list-group-item">
-            <strong>Status:</strong>
-            <%= getOpportunity.status ? 'Active' : 'Inactive' %>
-        </li>
+            <li class="list-group-item">
+                <strong>Status:</strong>
+                <%= getOpportunity.status ? 'Active' : 'Inactive' %>
+            </li>
 
-        <li class="list-group-item">
-            <strong>WhatsApp:</strong>
-            <%= getOpportunity.whatsapp || 'Not provided' %>
-        </li>
+            <li class="list-group-item">
+                <strong>WhatsApp:</strong>
+                <%= getOpportunity.whatsapp || 'Not provided' %>
+            </li>
 
-        <li class="list-group-item">
-            <strong>Email:</strong>
-            <%= getOpportunity.email || 'Not provided' %>
-        </li>
+            <li class="list-group-item">
+                <strong>Email:</strong>
+                <%= getOpportunity.email || 'Not provided' %>
+            </li>
 
-        <!-- Soft delete status -->
-        <% if (getOpportunity.isDeleted) { %>
-        <li class="list-group-item">
-            <strong>Deleted At:</strong>
-            <%= getOpportunity.deletedAt ?
-            getOpportunity.deletedAt.toLocaleDateString() : 'N/A' %>
-        </li>
-        <% } %>
-    </ul>
+            <!-- Soft delete status -->
+            <% if (getOpportunity.isDeleted) { %>
+                <li class="list-group-item">
+                    <strong>Deleted At:</strong>
+                    <%= getOpportunity.deletedAt ? getOpportunity.deletedAt.toLocaleDateString() : 'N/A' %>
+                </li>
+                <% } %>
+        </ul>
 
-    <!-- Edit and Delete Buttons -->
-    <div class="d-flex justify-content-between">
-        <div class="d-flex justify-content-between gap-2">
-            <a
-                href="/opportunity/getopportunities/<%= getOpportunity._id %>/edit"
-                class="btn btn-success"
-                >Edit</a
-            >
-            <a href="/opportunity/getopportunities" class="btn btn-warning"
-                >Back</a
-            >
+        <!-- Edit and Delete Buttons -->
+        <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between gap-2">
+                <a href="/opportunity/getopportunities/<%= getOpportunity._id %>/edit" class="btn btn-success">Edit</a>
+                <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+            </div>
+            <form action="/opportunity/getopportunities/<%= getOpportunity._id %>?_method=DELETE" method="POST"
+                class="d-inline">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
         </div>
-        <form
-            action="/opportunity/getopportunities/<%= getOpportunity._id %>?_method=DELETE"
-            method="POST"
-            class="d-inline"
-        >
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
     </div>
-</div>
