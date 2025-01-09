@@ -2,6 +2,9 @@
 
     <div class="container my-5">
         <h1 class="text-primary mb-4">Requested Previous Year Question Papers</h1>
+        <div class="d-flex mb-2 justify-content-end">
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+        </div>
 
         <% if (requestedPyqs.length===0) { %>
             <p class="text-muted">No requests found.</p>

@@ -2,34 +2,72 @@
 
     <div class="container my-4">
         <h3 class="text-center mb-4">All Clients</h3>
+        <!-- Back Button -->
 
+        <!-- Filters Section -->
+        <form method="GET" class="mb-4">
+            <div class="row g-3">
+                <!-- Search by Username -->
+                <div class="col-md-4">
+                    <input type="text" name="username" value="<%= username || '' %>" class="form-control"
+                        placeholder="Search by username">
+                </div>
+
+                <!-- Minimum Reward Points -->
+                <div class="col-md-4">
+                    <input type="number" name="minRewardPoints" value="<%= minRewardPoints || '' %>"
+                        class="form-control" placeholder="Minimum reward points">
+                </div>
+
+                <!-- Filter Button -->
+                <div class="col-md-4 gap-2 ">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="/client" class="btn btn-secondary">Remove Filter</a>
+                    <a href="javascript:history.back()" class="btn btn-warning ">Back</a>
+                </div>
+
+            </div>
+        </form>
+
+
+        <!-- Table -->
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
-                <thead class="thead-dark">
+                <thead class="table-dark">
                     <tr>
                         <th>User Name</th>
                         <th>Email</th>
+                        <th>Reward Points</th>
                         <th>College Name</th>
                         <th>Phone</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% allClient.forEach(client=> { %>
-                        <tr>
-                            <td>
-                                <%= client.username %>
-                            </td>
-                            <td>
-                                <%= client.email %>
-                            </td>
-                            <td>
-                                <%= client.college %>
-                            </td>
-                            <td>
-                                <%= client.phone %>
-                            </td>
-                        </tr>
-                        <% }) %>
+                    <% if (allClient.length> 0) { %>
+                        <% allClient.forEach(client=> { %>
+                            <tr>
+                                <td>
+                                    <%= client.username %>
+                                </td>
+                                <td>
+                                    <%= client.email %>
+                                </td>
+                                <td>
+                                    <%= client.rewardPoints %>
+                                </td>
+                                <td>
+                                    <%= client.college %>
+                                </td>
+                                <td>
+                                    <%= client.phone %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted">No clients found.</td>
+                                    </tr>
+                                    <% } %>
                 </tbody>
             </table>
         </div>

@@ -28,11 +28,18 @@
             </ul>
             <% if(currUser && currUser._id.equals(college.owner._id)) { %>
                 <div class="d-flex justify-content-between">
-                    <a href="/colleges/<%= college._id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/colleges/<%= college._id %>?_method=DELETE" method="POST" class="d-inline">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                    <div>
+                        <a href="/colleges/<%= college._id %>/edit" class="btn btn-success">Edit</a>
+                        <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+                    </div>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#deleteCollegeModal">
+                        Delete
+                    </button>
                 </div>
-                <% } %>
+                <%- include("../includes/deleteConfirmationModal", { modalId: "deleteCollegeModal" , action:
+                    `/colleges/${college._id}?_method=DELETE`, }); %>
+                    <% } %>
+
         </div>
     </body>

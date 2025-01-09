@@ -2,7 +2,10 @@
 
     <div class="container py-5">
         <h3 class="my-4 text-center">All Seniors</h3>
-        <a href="/seniors/new" class="btn btn-primary mb-3">Add New Senior</a>
+        <div class="d-flex justify-content-between">
+            <a href="/seniors/new" class="btn btn-primary mb-3">Add New Senior</a>
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+        </div>
 
         <!-- Table layout for displaying seniors -->
         <div class="table-responsive">
@@ -17,8 +20,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (allSenior.length> 0) { %>
-                        <% allSenior.forEach(senior=> { %>
+                    <% if (allSenior.length> 0) { %> <% allSenior.forEach(senior=> {
+                            %>
                             <tr>
                                 <td>
                                     <%= senior.name %>
@@ -40,7 +43,9 @@
                                 <% } else { %>
                                     <!-- Message when no seniors are available -->
                                     <tr>
-                                        <td colspan="5" class="text-center">No seniors available at the moment.</td>
+                                        <td colspan="5" class="text-center">
+                                            No seniors available at the moment.
+                                        </td>
                                     </tr>
                                     <% } %>
                 </tbody>

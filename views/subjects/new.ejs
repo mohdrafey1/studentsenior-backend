@@ -1,28 +1,126 @@
 <% layout("/layouts/boilerplate.ejs") %>
+    <style>
+        .dropdown-container {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            position: relative;
+        }
+
+        .dropdown-item {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
 
     <div class="container my-5">
-        <h1 class="text-primary mb-4">Add New Subject</h1>
+        <div class="d-flex justify-content-between">
+            <h1 class="text-primary mb-4">Add New Subject</h1>
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+        </div>
 
         <form action="/subjects" method="POST">
             <div class="mb-3">
                 <label for="subjectName" class="form-label">Subject Name</label>
-                <input type="text" class="form-control" id="subjectName" name="subjectName" required>
+                <input type="text" class="form-control" id="subjectName" name="subjectName" required />
             </div>
             <div class="mb-3">
                 <label for="subjectCode" class="form-label">Subject Code</label>
-                <input type="text" class="form-control" id="subjectCode" name="subjectCode" required>
+                <input type="text" class="form-control" id="subjectCode" name="subjectCode" required />
+            </div>
+            <div class="mb-3">
+                <label for="semester">semester</label>
+                <select id="semester" name="semester" class="form-control" required>
+                    <option value="">Select Sem</option>
+                    <option value="1">1st sem</option>
+                    <option value="2">2nd Sem</option>
+                    <option value="3">3rd Sem</option>
+                    <option value="4">4th Sem</option>
+                    <option value="5">5th Sem</option>
+                    <option value="6">6th Sem</option>
+                    <option value="7">7th Sem</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="branch" class="form-label">Branch</label>
-                <select class="form-select" id="branch" name="branch">
-                    <option value="" disabled selected>Select a branch</option>
+                <!-- Search Field -->
+                <input type="text" id="branchSearch" class="form-control mb-2" placeholder="Search for a branch..."
+                    oninput="filterBranches()" autocomplete="off" />
+
+                <!-- Dropdown Wrapper -->
+                <div id="branchDropdown" class="dropdown-container" style="display: none;">
                     <% branches.forEach(branch=> { %>
-                        <option value="<%= branch._id %>">
+                        <div class="dropdown-item branch-option" data-value="<%= branch._id %>"
+                            onclick="selectBranch('<%= branch._id %>', '<%= branch.branchName %>')">
                             <%= branch.branchName %>
-                        </option>
+                        </div>
                         <% }) %>
-                </select>
+                </div>
+
+                <!-- Hidden Input for Submission -->
+                <input type="hidden" id="branch" name="branch" required />
             </div>
+
+
             <button type="submit" class="btn btn-success">Add Subject</button>
         </form>
     </div>
+
+    <script>
+        // Dropdown filtering logic
+        function filterBranches() {
+            const searchInput = document.getElementById("branchSearch").value.toLowerCase();
+            const branchDropdown = document.getElementById("branchDropdown");
+            const branchOptions = document.querySelectorAll(".branch-option");
+
+            // Show dropdown if there are matches
+            let hasMatch = false;
+            branchOptions.forEach((option) => {
+                const branchName = option.textContent.toLowerCase();
+                if (branchName.includes(searchInput)) {
+                    option.style.display = "";
+                    hasMatch = true;
+                } else {
+                    option.style.display = "none";
+                }
+            });
+
+            branchDropdown.style.display = hasMatch ? "block" : "none";
+        }
+
+        // Branch selection logic
+        function selectBranch(id, name) {
+            const searchInput = document.getElementById("branchSearch");
+            const branchDropdown = document.getElementById("branchDropdown");
+
+            // Update search box and hidden input
+            searchInput.value = name;
+            document.getElementById("branch").value = id;
+
+            // Hide dropdown
+            branchDropdown.style.display = "none";
+        }
+
+        // Close dropdown on outside click
+        document.addEventListener("click", (e) => {
+            const dropdown = document.getElementById("branchDropdown");
+            const searchInput = document.getElementById("branchSearch");
+            if (!dropdown.contains(e.target) && e.target !== searchInput) {
+                dropdown.style.display = "none";
+            }
+        });
+
+        // Open dropdown on focus
+        document.getElementById("branchSearch").addEventListener("focus", () => {
+            const branchDropdown = document.getElementById("branchDropdown");
+            if (document.getElementById("branchSearch").value.trim()) {
+                branchDropdown.style.display = "block";
+            }
+        });
+    </script>

@@ -3,7 +3,10 @@
     <div class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="text-primary">Courses</h1>
-            <a href="/courses/new" class="btn btn-success">Add New Course</a>
+            <div class="d-flex justify-content-between gap-2">
+                <a href="/courses/new" class="btn btn-success">Add</a>
+                <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+            </div>
         </div>
 
         <div class="table-responsive">
@@ -12,6 +15,7 @@
                     <tr>
                         <th scope="col">Course Name</th>
                         <th scope="col">Course Code</th>
+                        <th scope="col">Total Branch</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -25,10 +29,20 @@
                                 <%= course.courseCode %>
                             </td>
                             <td>
-                                <a href="/courses/<%= course._id %>/edit" class="btn btn-primary btn-sm me-2">Edit</a>
-                                <form action="/courses/<%= course._id %>/delete" method="POST" class="d-inline">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
+                                <a href="/branches?course=<%- course._id %>&search=" class="text-primary">
+                                    <%= course.totalBranch %>
+                                </a>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="/courses/<%= course._id %>/edit"
+                                        class="btn btn-primary btn-sm me-2">Edit</a>
+                                    <form action="/courses/<%= course._id %>/delete" method="POST" class="d-inline">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         <% }) %>

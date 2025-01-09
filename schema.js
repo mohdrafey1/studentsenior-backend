@@ -31,12 +31,12 @@ module.exports.groupSchema = Joi.object({
 });
 
 module.exports.notesSchema = Joi.object({
-    subjectName: Joi.string().required(),
-    description: Joi.string().required(),
-    link: Joi.string().uri().required(),
-    target: Joi.string().required(),
+    subject: Joi.string().required(),
+    title: Joi.string().required(),
+    fileUrl: Joi.string().uri().required(),
     college: Joi.string().required(),
     status: Joi.boolean().default(false),
+    owner: Joi.string().required(),
 });
 
 module.exports.seniorSchema = Joi.object({

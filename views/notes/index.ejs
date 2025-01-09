@@ -2,7 +2,7 @@
 
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center my-4">
         <h1 class="h3 mb-3 mb-md-0">Notes Management</h1>
-        <a href="/notes/new" class="btn btn-primary">Add New Notes</a>
+        <a href="javascript:history.back()" class="btn btn-warning">Back</a>
     </div>
 
     <!-- Responsive Table Container -->
@@ -12,7 +12,7 @@
                 <tr>
                     <th>Subject Name</th>
                     <th>College Name</th>
-                    <th>Description</th>
+                    <th>Added by</th>
                     <th>Status</th>
                     <th class="text-center">Actions</th>
                 </tr>
@@ -21,22 +21,24 @@
                 <% notes.forEach(note=> { %>
                     <tr>
                         <td>
-                            <%= note.subjectName %>
+                            <%= note.subject.subjectName %>
                         </td>
                         <td>
                             <%= note.college.name %>
                         </td>
-                        <td class="text-truncate" style="max-width: 150px;">
-                            <%= note.description %>
+                        <td class="text-truncate" style="max-width: 150px">
+                            <%= note.owner.username %>
                         </td>
                         <td>
                             <%= note.status ? 'Approved' : 'Pending' %>
                         </td>
                         <td class="text-center">
-                            <a target="_blank" href="<%= note.link %>" class="btn btn-success btn-sm mb-1">View</a>
+                            <a target="_blank" href="<%= note.fileUrl %>" class="btn btn-success btn-sm mb-1">View</a>
                             <a href="/notes/<%= note._id %>/edit" class="btn btn-info btn-sm mb-1">Edit</a>
-                            <form action="/notes/<%= note._id %>?_method=DELETE" method="POST" style="display:inline;">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            <form action="/notes/<%= note._id %>?_method=DELETE" method="POST" style="display: inline">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -50,14 +52,17 @@
         <% notes.forEach(note=> { %>
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title"><strong>Subject Name:</strong>
-                        <%= note.subjectName %>
+                    <h5 class="card-title">
+                        <strong>Subject Name:</strong>
+                        <%= note.subject.subjectName %>
                     </h5>
-                    <p class="card-text"><strong>College Name:</strong>
+                    <p class="card-text">
+                        <strong>College Name:</strong>
                         <%= note.college.name %>
                     </p>
-                    <p class="card-text text-truncate"><strong>Description:</strong>
-                        <%= note.description %>
+                    <p class="card-text text-truncate">
+                        <strong>Added by:</strong>
+                        <%= note.owner.username %>
                     </p>
                     <p class="card-text">
                         <strong>Status:</strong>
@@ -66,10 +71,12 @@
                         </span>
                     </p>
                     <div class="d-flex justify-content-between">
-                        <a target="_blank" href="<%= note.link %>" class="btn btn-success btn-sm">View</a>
+                        <a target="_blank" href="<%= note.fileUrl %>" class="btn btn-success btn-sm">View</a>
                         <a href="/notes/<%= note._id %>/edit" class="btn btn-info btn-sm">Edit</a>
-                        <form action="/notes/<%= note._id %>?_method=DELETE" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        <form action="/notes/<%= note._id %>?_method=DELETE" method="POST" style="display: inline">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
                         </form>
                     </div>
                 </div>

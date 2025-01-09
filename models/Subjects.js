@@ -9,7 +9,10 @@ const subjectSchema = new mongoose.Schema(
         subjectCode: {
             type: String,
             required: true,
-            unique: true,
+        },
+        semester: {
+            type: Number,
+            required: true,
         },
         branch: {
             type: mongoose.Schema.Types.ObjectId,

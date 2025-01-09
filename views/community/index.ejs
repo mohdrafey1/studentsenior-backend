@@ -1,6 +1,9 @@
 <% layout('/layouts/boilerplate.ejs') %>
     <div class="container py-4">
         <h3 class="m-4 text-center">All Community Posts</h3>
+        <div class="d-flex mb-2 justify-content-end">
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+        </div>
 
         <!-- Table layout for displaying Community Posts -->
         <div class="table-responsive">
@@ -15,14 +18,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (allPost.length> 0) { %>
-                        <% allPost.forEach((post, index)=> { %>
+                    <% if (allPost.length> 0) { %> <% allPost.forEach((post, index)=> { %>
                             <tr>
                                 <th scope="row">
                                     <%= index + 1 %>
                                 </th>
                                 <td>
-                                    <%= post.content.length> 80 ? post.content.slice(0, 80) + '...' : post.content %>
+                                    <%= post.content.length> 80 ? post.content.slice(0, 80)
+                                        + '...' : post.content %>
                                 </td>
                                 <td>
                                     <%= post.author.username %>
@@ -34,14 +37,17 @@
                                     <a href="/community/<%= post._id %>" class="btn btn-sm btn-success m-1">View</a>
                                     <form action="/community/<%= post._id %>?_method=DELETE" method="POST"
                                         class="d-inline-block">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Delete
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
                             <% }) %>
                                 <% } else { %>
                                     <tr>
-                                        <td colspan="5" class="text-center">No community posts available at the moment.
+                                        <td colspan="5" class="text-center">
+                                            No community posts available at the moment.
                                         </td>
                                     </tr>
                                     <% } %>

@@ -406,31 +406,7 @@
                         </div>
                     </div>
 
-                    <!-- Recent Notes -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-header bg-info text-white">
-                                Recent Notes
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <% recentNotes.forEach(note=> { %>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <a href="/notes" class="text-decoration-none hover-item">
-                                            <%= note.subjectName %>
-                                        </a>
-                                        <!-- Toggle Button -->
-                                        <div class="form-check form-switch">
-                                            <label class="form-check-label"
-                                                for="noteSwitch<%= note._id %>">Status</label>
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="noteSwitch<%= note._id %>" <%=note.status ? 'checked' : '' %>
-                                            onchange="toggleStatus('<%= note._id %>', this.checked, 'note')">
-                                        </div>
-                                    </li>
-                                    <% }); %>
-                            </ul>
-                        </div>
-                    </div>
+
 
                     <!-- Recent Groups -->
                     <div class="col-md-6 mb-4">

@@ -5,6 +5,8 @@
         <div class="d-flex justify-content-center gap-3 mb-4">
             <a href="/store/new" class="btn btn-primary">Add New Product</a>
             <a href="/store/newAffiliate" class="btn btn-primary">Add New Affiliate Product</a>
+
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
         </div>
 
         <!-- Table layout for displaying regular store products -->
@@ -22,16 +24,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (store.length> 0) { %>
-                        <% store.forEach((item, index)=> { %>
+                    <% if (store.length> 0) { %> <% store.forEach((item, index)=> {
+                            %>
                             <tr>
                                 <th scope="row">
                                     <%= index + 1 %>
                                 </th>
                                 <td>
                                     <img src="<%= item.image.url %>" alt="<%= item.name %>'s Image"
-                                        style="max-width: 100px;"
-                                        onerror="this.onerror=null; this.src='/path-to-default-image.jpg';">
+                                        style="max-width: 100px"
+                                        onerror="this.onerror=null; this.src='/path-to-default-image.jpg';" />
                                 </td>
                                 <td>
                                     <%= item.name %>
@@ -45,14 +47,17 @@
                                     <a href="/store/<%= item._id %>/edit" class="btn btn-sm btn-warning">Edit</a>
                                     <form action="/store/<%= item._id %>?_method=DELETE" method="POST"
                                         class="d-inline-block">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Delete
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
                             <% }) %>
                                 <% } else { %>
                                     <tr>
-                                        <td colspan="6" class="text-center">No Store Products available at the moment.
+                                        <td colspan="6" class="text-center">
+                                            No Store Products available at the moment.
                                         </td>
                                     </tr>
                                     <% } %>
@@ -76,15 +81,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (affiliateProduct.length> 0) { %>
-                        <% affiliateProduct.forEach((item, index)=> { %>
+                    <% if (affiliateProduct.length> 0) { %> <% affiliateProduct.forEach((item, index)=> { %>
                             <tr>
                                 <th scope="row">
                                     <%= index + 1 %>
                                 </th>
                                 <td>
                                     <img src="<%= item.image || '/path-to-default-image.jpg' %>"
-                                        alt="<%= item.name %>'s Image" style="max-width: 100px;">
+                                        alt="<%= item.name %>'s Image" style="max-width: 100px" />
                                 </td>
                                 <td>
                                     <%= item.name %>
@@ -101,15 +105,18 @@
                                 <td>
                                     <form action="/store/affiliate/<%= item._id %>?_method=DELETE" method="POST"
                                         class="d-inline-block">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Delete
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
                             <% }) %>
                                 <% } else { %>
                                     <tr>
-                                        <td colspan="7" class="text-center">No Affiliate Products available at the
-                                            moment.</td>
+                                        <td colspan="7" class="text-center">
+                                            No Affiliate Products available at the moment.
+                                        </td>
                                     </tr>
                                     <% } %>
                 </tbody>

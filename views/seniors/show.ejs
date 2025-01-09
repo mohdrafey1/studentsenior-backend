@@ -70,7 +70,10 @@
 
             <!-- Edit and Delete Buttons -->
             <div class="d-flex justify-content-between">
-                <a href="/seniors/<%= senior._id %>/edit" class="btn btn-warning">Edit</a>
+                <div>
+                    <a href="/seniors/<%= senior._id %>/edit" class="btn btn-warning">Edit</a>
+                    <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+                </div>
                 <form action="/seniors/<%= senior._id %>?_method=DELETE" method="POST" class="d-inline">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>

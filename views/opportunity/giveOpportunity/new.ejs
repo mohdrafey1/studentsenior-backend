@@ -1,12 +1,15 @@
 <% layout('/layouts/boilerplate.ejs') %>
 
     <div class="container mt-4">
-        <h1>Add New Opportunity</h1>
+        <div class="d-flex justify-content-between">
+            <h1>Add New Opportunity</h1>
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+        </div>
         <form action="/opportunity/giveopportunities" method="POST">
             <!-- Name -->
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" id="name" name="name" class="form-control" required>
+                <input type="text" id="name" name="name" class="form-control" required />
             </div>
 
             <!-- Description -->
@@ -26,9 +29,7 @@
                         </option>
                         <% }); %>
                 </select>
-
             </div>
-
 
             <!-- Status -->
             <div class="form-group">
@@ -44,16 +45,18 @@
             <div class="form-group">
                 <label for="whatsapp">WhatsApp Number</label>
                 <input type="text" id="whatsapp" name="whatsapp" class="form-control"
-                    placeholder="Enter 10-digit number">
+                    placeholder="Enter 10-digit number" />
             </div>
 
             <!-- Email -->
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address">
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address" />
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary mt-3">Add Opportunity</button>
+            <button type="submit" class="btn btn-primary mt-3">
+                Add Opportunity
+            </button>
         </form>
     </div>

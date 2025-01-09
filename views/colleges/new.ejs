@@ -2,12 +2,16 @@
 
     <body>
         <div class="container my-5">
-            <h3 class="mb-4 text-center">Add The College</h3>
+            <div class="d-flex justify-content-between">
+                <h3 class="mb-4">Add The College</h3>
+                <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+            </div>
+
             <form action="/colleges" method="POST">
                 <div class="mb-3">
                     <label for="collegeName" class="form-label">College Name</label>
                     <input type="text" class="form-control" id="collegeName" name="name"
-                        placeholder="Enter college name" required>
+                        placeholder="Enter college name" required />
                 </div>
 
                 <div class="mb-3">
@@ -19,7 +23,7 @@
                 <div class="mb-3">
                     <label for="collegeLocation" class="form-label">College Location</label>
                     <input type="text" class="form-control" id="collegeLocation" name="location"
-                        placeholder="Enter college location" required>
+                        placeholder="Enter college location" required />
                 </div>
 
                 <div class="mb-3">

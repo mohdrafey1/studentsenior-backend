@@ -9,37 +9,52 @@
                         </h1>
                     </div>
                     <div class="card-body">
-                        <p><strong>Subject Code:</strong>
+                        <p>
+                            <strong>Subject Code:</strong>
                             <%= pyq.subjectCode %>
                         </p>
-                        <p><strong>Semester:</strong>
+                        <p>
+                            <strong>Semester:</strong>
                             <%= pyq.semester %>
                         </p>
-                        <p><strong>Year:</strong>
+                        <p>
+                            <strong>Year:</strong>
                             <%= pyq.year %>
                         </p>
-                        <p><strong>Branch:</strong>
+                        <p>
+                            <strong>Branch:</strong>
                             <%= pyq.branch %>
                         </p>
-                        <p><strong>Course:</strong>
+                        <p>
+                            <strong>Course:</strong>
                             <%= pyq.course %>
                         </p>
-                        <p><strong>Exam Type:</strong>
+                        <p>
+                            <strong>Exam Type:</strong>
                             <%= pyq.examType %>
                         </p>
-                        <p><strong>College:</strong>
+                        <p>
+                            <strong>College:</strong>
                             <%= pyq.college.name %>
                         </p>
-                        <p><strong>PDF Link:</strong> <a href="<%= pyq.link %>" target="_blank"
-                                class="btn btn-primary">View PDF</a></p>
-                        <p><strong>Status:</strong>
+                        <p>
+                            <strong>PDF Link:</strong>
+                            <a href="<%= pyq.link %>" target="_blank" class="btn btn-primary">View PDF</a>
+                        </p>
+                        <p>
+                            <strong>Status:</strong>
                             <%= pyq.status %>
                         </p>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <a href="/pyqs/<%= pyq._id %>/edit" class="btn btn-warning">Edit</a>
+                        <div>
+                            <a href="/pyqs/<%= pyq._id %>/edit" class="btn btn-success">Edit</a>
+                            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+                        </div>
                         <form action="/pyqs/<%= pyq._id %>?_method=DELETE" method="POST">
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger">
+                                Delete
+                            </button>
                         </form>
                     </div>
                 </div>

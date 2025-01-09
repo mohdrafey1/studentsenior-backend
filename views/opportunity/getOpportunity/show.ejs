@@ -14,12 +14,12 @@
 
             <li class="list-group-item">
                 <strong>Owner:</strong>
-                <%= getOpportunity.owner ? getOpportunity.owner.username : 'Not provided' %>
+                <%= getOpportunity.owner ? getOpportunity.owner.username : 'Not-provided' %>
             </li>
 
             <li class="list-group-item">
                 <strong>College:</strong>
-                <%= getOpportunity.college ? getOpportunity.college.name : 'Not linked to a college' %>
+                <%= getOpportunity.college ? getOpportunity.college.name : 'Not-linked to a college' %>
             </li>
 
             <li class="list-group-item">
@@ -48,7 +48,10 @@
 
         <!-- Edit and Delete Buttons -->
         <div class="d-flex justify-content-between">
-            <a href="/opportunity/getopportunities/<%= getOpportunity._id %>/edit" class="btn btn-warning">Edit</a>
+            <div class="d-flex justify-content-between gap-2">
+                <a href="/opportunity/getopportunities/<%= getOpportunity._id %>/edit" class="btn btn-success">Edit</a>
+                <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+            </div>
             <form action="/opportunity/getopportunities/<%= getOpportunity._id %>?_method=DELETE" method="POST"
                 class="d-inline">
                 <button type="submit" class="btn btn-danger">Delete</button>

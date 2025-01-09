@@ -1,6 +1,9 @@
 <% layout("/layouts/boilerplate.ejs") %>
     <div class="container mt-4">
-        <h1>Add New PYQ</h1>
+        <div class="d-flex justify-content-between">
+            <h1>Add New PYQ</h1>
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+        </div>
         <form action="/pyqs" method="POST">
             <!-- College Selection -->
 
@@ -15,7 +18,6 @@
                         <% }) %>
                 </select>
             </div>
-
 
             <!-- Subject Name -->
             <div class="form-group">
@@ -75,8 +77,13 @@
                 <label for="branch-select">Select Branches</label>
                 <input type="text" id="selected-branches" class="form-control" placeholder="Select branches" readonly
                     onclick="toggleDropdown()" />
-                <div id="dropdown" class="dropdown"
-                    style="display: none; border: 1px solid #ccc; padding: 10px; position: absolute; background: white;">
+                <div id="dropdown" class="dropdown" style="
+                    display: none;
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                    position: absolute;
+                    background: white;
+                ">
                     <% branches.forEach(branch=> { %>
                         <div>
                             <input type="checkbox" id="branch_<%= branch.branchCode %>" value="<%= branch.branchCode %>"
@@ -86,8 +93,9 @@
                             </label>
                         </div>
                         <% }) %>
-                            <button type="button" class="btn btn-primary btn-sm mt-2"
-                                onclick="confirmSelection()">OK</button>
+                            <button type="button" class="btn btn-primary btn-sm mt-2" onclick="confirmSelection()">
+                                OK
+                            </button>
                 </div>
             </div>
 
@@ -137,8 +145,9 @@
         let selectedBranchCodes = [];
 
         function toggleDropdown() {
-            const dropdown = document.getElementById('dropdown');
-            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            const dropdown = document.getElementById("dropdown");
+            dropdown.style.display =
+                dropdown.style.display === "none" ? "block" : "none";
         }
 
         function updateSelection(event, branchName) {
@@ -147,19 +156,23 @@
                 selectedBranches.push(branchName);
                 selectedBranchCodes.push(branchCode);
             } else {
-                selectedBranches = selectedBranches.filter(name => name !== branchName);
-                selectedBranchCodes = selectedBranchCodes.filter(code => code !== branchCode);
+                selectedBranches = selectedBranches.filter(
+                    (name) => name !== branchName
+                );
+                selectedBranchCodes = selectedBranchCodes.filter(
+                    (code) => code !== branchCode
+                );
             }
             updateInput();
         }
 
         function updateInput() {
-            const input = document.getElementById('selected-branches');
-            input.value = selectedBranches.join(', ');
+            const input = document.getElementById("selected-branches");
+            input.value = selectedBranches.join(", ");
 
             // Update the hidden input field to include selected branch codes
-            const branchCodesInput = document.getElementById('branchCodes');
-            branchCodesInput.value = selectedBranchCodes.join(',');
+            const branchCodesInput = document.getElementById("branchCodes");
+            branchCodesInput.value = selectedBranchCodes.join(",");
         }
 
         function confirmSelection() {
@@ -168,25 +181,40 @@
 
         // Generate slug dynamically
         function generateSlug() {
-            const subjectName = document.getElementById('subjectName').value.trim().toLowerCase();
-            const subjectCode = document.getElementById('subjectCode').value.trim().toLowerCase();
-            const examType = document.getElementById('examType').value.trim().toLowerCase();
-            const year = document.getElementById('year').value.trim();
+            const subjectName = document
+                .getElementById("subjectName")
+                .value.trim()
+                .toLowerCase();
+            const subjectCode = document
+                .getElementById("subjectCode")
+                .value.trim()
+                .toLowerCase();
+            const examType = document
+                .getElementById("examType")
+                .value.trim()
+                .toLowerCase();
+            const year = document.getElementById("year").value.trim();
 
             if (subjectName && examType && year) {
                 const slug = `${subjectName}-${subjectCode}-${examType}-${year}`
-                    .replace(/[^a-zA-Z0-9\s-]/g, '')
-                    .replace(/\s+/g, '-')
+                    .replace(/[^a-zA-Z0-9\s-]/g, "")
+                    .replace(/\s+/g, "-")
                     .toLowerCase();
-                document.getElementById('slug').value = slug;
+                document.getElementById("slug").value = slug;
             } else {
-                document.getElementById('slug').value = '';
+                document.getElementById("slug").value = "";
             }
         }
 
         // Add event listeners to trigger slug generation
-        document.getElementById('subjectName').addEventListener('input', generateSlug);
-        document.getElementById('subjectCode').addEventListener('input', generateSlug);
-        document.getElementById('examType').addEventListener('change', generateSlug);
-        document.getElementById('year').addEventListener('change', generateSlug);
+        document
+            .getElementById("subjectName")
+            .addEventListener("input", generateSlug);
+        document
+            .getElementById("subjectCode")
+            .addEventListener("input", generateSlug);
+        document
+            .getElementById("examType")
+            .addEventListener("change", generateSlug);
+        document.getElementById("year").addEventListener("change", generateSlug);
     </script>

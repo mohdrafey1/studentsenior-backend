@@ -7,14 +7,24 @@
             <div class="mb-3">
                 <label for="subjectName" class="form-label">Subject Name</label>
                 <input type="text" class="form-control" id="subjectName" name="subjectName"
-                    value="<%= subject.subjectName %>" required>
+                    value="<%= subject.subjectName %>" required />
             </div>
             <div class="mb-3">
                 <label for="subjectCode" class="form-label">Subject Code</label>
                 <input type="text" class="form-control" id="subjectCode" name="subjectCode"
-                    value="<%= subject.subjectCode %>" required>
+                    value="<%= subject.subjectCode %>" required />
+            </div>
+            <div class="mb-3">
+                <label for="semester" class="form-label">semester</label>
+                <input type="text" class="form-control" id="semester" name="semester" value="<%= subject.semester %>"
+                    required />
             </div>
 
-            <button type="submit" class="btn btn-primary">Update Subject</button>
+            <div class="d-grid gap-2 d-md-block">
+                <button type="submit" class="btn btn-primary">
+                    Update Subject
+                </button>
+                <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+            </div>
         </form>
     </div>

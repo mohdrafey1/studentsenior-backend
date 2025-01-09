@@ -36,6 +36,15 @@ const NotesSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
+        clickCount: {
+            type: Number,
+            default: 0,
+        },
+        likes: {
+            type: [mongoose.Schema.Types.ObjectId],
+            ref: 'Client',
+            default: [],
+        },
         rewardPoints: {
             type: Number,
             default: 5,

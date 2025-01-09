@@ -24,7 +24,10 @@
             </ul>
 
             <div class="d-flex justify-content-between">
-                <a href="/community/<%= post._id %>/edit" class="btn btn-warning">Edit</a>
+                <div class="d-flex justify-content-between gap-2">
+                    <a href="/community/<%= post._id %>/edit" class="btn btn-success">Edit</a>
+                    <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+                </div>
                 <form action="/community/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
@@ -43,12 +46,13 @@
                             </div>
                             <form action="/community/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE"
                                 method="POST">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
                             </form>
                         </li>
                         <% }) %>
                 </ul>
             </div>
-
         </div>
     </body>

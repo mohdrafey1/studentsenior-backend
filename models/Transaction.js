@@ -10,7 +10,7 @@ const transactionSchema = new Schema(
         },
         type: {
             type: String,
-            enum: ['earn', 'redeem'],
+            enum: ['earn', 'redeem', 'reduction'],
             required: true,
         },
         points: {

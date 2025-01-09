@@ -1,7 +1,11 @@
 hello<% layout('/layouts/boilerplate.ejs') %>
 
     <div class="container mt-4">
-        <h1>Edit Opportunity</h1>
+        <div class="d-flex justify-content-between">
+            <h1>Edit Opportunity</h1>
+            <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+
+        </div>
         <form action="/opportunity/giveopportunities/<%= giveopportunity._id %>?_method=PUT" method="POST">
             <!-- Name -->
             <div class="form-group">
