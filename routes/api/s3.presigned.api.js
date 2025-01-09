@@ -32,7 +32,7 @@ router.post('/presigned-url', verifyToken, async (req, res) => {
         };
 
         const uploadUrl = await getSignedUrl(s3, new PutObjectCommand(params), {
-            expiresIn: 3600,
+            expiresIn: 600,
         });
 
         console.log(uploadUrl);
