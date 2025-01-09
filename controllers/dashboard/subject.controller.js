@@ -16,7 +16,7 @@ module.exports.getSubjects = async (req, res) => {
 
     const allSubjects = await Subject.find(query)
         .populate('branch')
-        .sort({ branchName: -1 });
+        .sort({ createdAt: -1 });
 
     const branches = await Branch.find({});
 
