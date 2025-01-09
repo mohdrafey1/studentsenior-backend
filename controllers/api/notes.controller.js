@@ -40,19 +40,16 @@ module.exports.fetchNotesByCollege = async (req, res) => {
 
 // Create a new Notes
 module.exports.createNotes = async (req, res, next) => {
-    const { subjectCode, branchCode, description, title, college } = req.body;
-    const file = req.file;
-    let owner = req.user.id;
+    const { subjectCode, branchCode, description, title, college, fileUrl } =
+        req.body;
 
-    if (!file) {
+    if (!fileUrl) {
         return next(errorHandler(404, 'No file uploaded'));
     }
 
     const branch = await Branch.findOne({
         branchCode: { $regex: new RegExp(`^${branchCode}$`, 'i') },
     });
-
-    console.log(branch);
 
     if (!branch) {
         return res.status(404).json({ message: 'Branch not found' });
@@ -69,21 +66,7 @@ module.exports.createNotes = async (req, res, next) => {
 
     let subjectId = subject._id;
 
-    const fileName = `${title}-${Date.now()}.pdf`;
-    const folderName = 'ss-notes/';
-
-    const params = {
-        Bucket: process.env.S3_BUCKET_NAME,
-        Key: `${folderName}${fileName}`,
-        Body: file.buffer,
-        ContentType: 'application/pdf',
-    };
-
-    // Upload the file to S3
-    const uploadResult = await s3.send(new PutObjectCommand(params));
-
-    // Construct the file URL
-    const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${folderName}${fileName}`;
+    let owner = req.user.id;
 
     const user = await Client.findById(owner);
     const slug = (title.replace(/\s+/g, '-') + '-' + user.username).toString();

@@ -49,6 +49,7 @@ const apiCommunityRouter = require('./routes/api/community.api.js');
 const apiOpportunityRouter = require('./routes/api/opportunity.api.js');
 const apiContactUsRouter = require('./routes/api/contactus.api.js');
 const resourceApiRoutes = require('./routes/api/resource.api.js');
+const s3PresignedRoutes = require('./routes/api/s3.presigned.api.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -168,6 +169,7 @@ app.use('/api/community', apiCommunityRouter);
 app.use('/api/opportunity', apiOpportunityRouter);
 app.use('/api/contactus', apiContactUsRouter);
 app.use('/api/resource', resourceApiRoutes);
+app.use('/api/generate', s3PresignedRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
