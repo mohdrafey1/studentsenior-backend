@@ -13,7 +13,7 @@ const upload = multer({
 const apiNotesController = require('../../controllers/api/notes.controller.js');
 
 router.get(
-    '/:subjectId/:collegeId',
+    '/:branchCode/:subjectCode/:collegeId',
     validateApiKey,
     wrapAsync(apiNotesController.fetchNotesByCollege)
 );
