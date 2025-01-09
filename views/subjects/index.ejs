@@ -2,24 +2,35 @@
 
     <div class="container my-5">
         <h1 class="text-primary text-center">Subjects</h1>
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex justify-content-between gap-2">
-                <form action="/subjects" method="GET" class="d-flex align-items-center gap-2">
-                    <!-- Filter by Branch -->
-                    <select name="branch" class="form-select" onchange="this.form.submit()">
-                        <option value="">All Branches</option>
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+            <form action="/subjects" method="GET" class="d-flex align-items-center gap-3">
+                <!-- Filter by Branch with Searchable Dropdown -->
+                <div class="position-relative">
+                    <input type="text" id="branchSearch" class="form-control" placeholder="Search Branch..."
+                        autocomplete="off" oninput="filterBranchDropdown()"
+                        value="<%= selectedBranch && branches.find(branch => branch._id.toString() === selectedBranch)?.branchName || 'All Branches' %>" />
+                    <div id="branchDropdown"
+                        class="dropdown-container border rounded bg-white shadow-sm position-absolute"
+                        style="display: none; max-height: 200px; overflow-y: auto; z-index: 1000;">
+                        <div class="dropdown-item p-2 text-muted" onclick="selectBranch('')" style="cursor: pointer;">
+                            All Branches
+                        </div>
                         <% branches.forEach(branch=> { %>
-                            <option value="<%= branch._id.toString() %>" <%=selectedBranch===branch._id.toString()
-                                ? 'selected' : '' %>>
+                            <div class="dropdown-item p-2 branch-option" data-value="<%= branch._id.toString() %>"
+                                onclick="selectBranch('<%= branch._id.toString() %>')" style="cursor: pointer;">
                                 <%= branch.branchName %>
-                            </option>
+                            </div>
                             <% }) %>
-                    </select>
+                    </div>
+                    <input type="hidden" name="branch" id="selectedBranch" value="<%= selectedBranch %>">
+                </div>
 
-                    <!-- Search by Subject -->
-                    <input type="text" name="search" class="form-control" placeholder="Search by subject name"
-                        value="<%= search %>" oninput="this.form.submit()" />
-                </form>
+                <!-- Search by Subject -->
+                <input type="text" name="search" class="form-control" placeholder="Search by subject name"
+                    value="<%= search %>" oninput="this.form.submit()" />
+            </form>
+
+            <div class="d-flex gap-2 ml-2">
                 <a href="/subjects/new" class="btn btn-success">Add</a>
                 <a href="javascript:history.back()" class="btn btn-warning">Back</a>
             </div>
@@ -37,7 +48,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (allSubjects.length> 0) { %> <% allSubjects.forEach(subject=> { %>
+                    <% if (allSubjects.length> 0) { %>
+                        <% allSubjects.forEach(subject=> { %>
                             <tr>
                                 <td>
                                     <%= subject.subjectName %>
@@ -52,13 +64,12 @@
                                     <%= subject.branch?.branchName || "N/A" %>
                                 </td>
                                 <td>
-                                    <div class="d-flex gap-2"> <a href="/subjects/<%= subject._id %>/edit"
-                                            class="btn btn-primary btn-sm ">Edit</a>
+                                    <div class="d-flex gap-2">
+                                        <a href="/subjects/<%= subject._id %>/edit"
+                                            class="btn btn-primary btn-sm">Edit</a>
                                         <form action="/subjects/<%= subject._id %>?_method=DELETE" method="POST"
                                             class="d-inline">
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                Delete
-                                            </button>
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                         </form>
                                     </div>
                                 </td>
@@ -66,12 +77,63 @@
                             <% }) %>
                                 <% } else { %>
                                     <tr>
-                                        <td colspan="4" class="text-center">
-                                            No subjects available
-                                        </td>
+                                        <td colspan="5" class="text-center">No subjects available</td>
                                     </tr>
                                     <% } %>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <script>
+        function filterBranchDropdown() {
+            const searchInput = document.getElementById("branchSearch").value.toLowerCase();
+            const dropdown = document.getElementById("branchDropdown");
+            const branchOptions = document.querySelectorAll(".branch-option");
+
+            let hasMatch = false;
+            branchOptions.forEach(option => {
+                const branchName = option.textContent.toLowerCase();
+                if (branchName.includes(searchInput)) {
+                    option.style.display = "block";
+                    hasMatch = true;
+                } else {
+                    option.style.display = "none";
+                }
+            });
+
+            dropdown.style.display = hasMatch ? "block" : "none";
+        }
+
+        function selectBranch(branchId) {
+            const branchDropdown = document.getElementById("branchDropdown");
+            const searchInput = document.getElementById("branchSearch");
+
+            if (branchId === '') {
+                searchInput.value = "All Branches";
+            } else {
+                const selectedBranchName = [...document.querySelectorAll(".branch-option")]
+                    .find(option => option.dataset.value === branchId)
+                    ?.textContent;
+
+                searchInput.value = selectedBranchName || "";
+            }
+
+            document.getElementById("selectedBranch").value = branchId;
+            branchDropdown.style.display = "none";
+            searchInput.form.submit();
+        }
+
+        document.addEventListener("click", (e) => {
+            const dropdown = document.getElementById("branchDropdown");
+            const searchInput = document.getElementById("branchSearch");
+            if (!dropdown.contains(e.target) && e.target !== searchInput) {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("branchSearch").addEventListener("focus", () => {
+            const dropdown = document.getElementById("branchDropdown");
+            dropdown.style.display = "block";
+        });
+    </script>
