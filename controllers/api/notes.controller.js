@@ -18,10 +18,14 @@ module.exports.fetchNotesByCollege = async (req, res) => {
         return res.status(404).json({ message: 'Branch not found' });
     }
 
-    const subject = await Subject.findOne({
-        subjectCode: { $regex: new RegExp(`^${subjectCode}$`, 'i') },
-        branch: branch._id,
-    });
+    const subject = await Subject.findOneAndUpdate(
+        {
+            subjectCode: { $regex: new RegExp(`^${subjectCode}$`, 'i') },
+            branch: branch._id,
+        },
+        { $inc: { clickCounts: 1 } },
+        { new: true }
+    );
 
     if (!subject) {
         return res.status(404).json({ message: 'Subject not found' });
@@ -33,7 +37,7 @@ module.exports.fetchNotesByCollege = async (req, res) => {
         status: true,
     })
         .populate('subject', 'subjectName subjectCode')
-        .populate('owner', 'username');
+        .populate('owner', 'username profilePicture');
 
     res.status(200).json(notes);
 };

@@ -27,6 +27,10 @@ const subjectSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        clickCounts: {
+            type: Number,
+            default: 0,
+        },
     },
     { timestamps: true }
 );
