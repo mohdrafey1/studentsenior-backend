@@ -9,7 +9,8 @@ module.exports = {
         let notes = await Notes.find({})
             .populate('college', 'name')
             .populate('owner', 'username')
-            .populate('subject', 'subjectName');
+            .populate('subject', 'subjectName')
+            .sort({ createdAt: -1 });
 
         // console.log(notes);
 

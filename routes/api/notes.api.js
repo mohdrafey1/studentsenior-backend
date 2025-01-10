@@ -34,4 +34,6 @@ router.post(
     wrapAsync(apiNotesController.likeNote)
 );
 
+router.get('/:slug', validateApiKey, wrapAsync(apiNotesController.getNote));
+
 module.exports = router;
