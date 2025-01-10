@@ -4,6 +4,7 @@ const wrapAsync = require('../../utils/wrapAsync.js');
 const { validateApiKey, validateGroup } = require('../../middleware.js');
 
 const apiGroupController = require('../../controllers/api/group.controller.js');
+const { verifyToken } = require('../../utils/verifyUser.js');
 
 // all pyq
 router.get('/', validateApiKey, wrapAsync(apiGroupController.fetchGroups));
@@ -15,6 +16,11 @@ router.get(
 );
 
 // Create a new pyq
-router.post('/', validateGroup, wrapAsync(apiGroupController.createGroup));
+router.post(
+    '/',
+    validateGroup,
+    verifyToken,
+    wrapAsync(apiGroupController.createGroup)
+);
 
 module.exports = router;

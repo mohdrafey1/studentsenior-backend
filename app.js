@@ -57,6 +57,7 @@ const allowedOrigins = [
     'https://studentsenior.com',
     'http://localhost:8080',
     'https://panel.studentsenior.com',
+    'https://studentsenior-frontend-git-new-updates-mohdrafey1.vercel.app',
 ];
 
 app.use(
