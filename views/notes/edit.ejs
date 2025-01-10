@@ -4,8 +4,8 @@
         <form action="/notes/<%= notes._id %>?_method=PUT" method="POST">
 
             <div class="form-group">
-                <label for="subject">Subject</label>
-                <input type="text" id="subject" name="subject" class="form-control" value="<%= notes.slug %>" required>
+                <label for="slug">Slug</label>
+                <input type="text" id="slug" name="slug" class="form-control" value="<%= notes.slug %>" required>
             </div>
 
             <div class="form-group">

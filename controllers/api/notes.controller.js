@@ -73,7 +73,11 @@ module.exports.createNotes = async (req, res, next) => {
     let owner = req.user.id;
 
     const user = await Client.findById(owner);
-    const slug = (title.replace(/\s+/g, '-') + '-' + user.username).toString();
+    const slug = (
+        title.replace(/\s+/g, '-') +
+        '-' +
+        user.username
+    ).toLowerCase();
 
     const newNotes = new Notes({
         subject: subjectId,
@@ -162,4 +166,20 @@ module.exports.likeNote = async (req, res) => {
             likes: note.likes.length,
         });
     }
+};
+
+module.exports.getNote = async (req, res, next) => {
+    const note = await Notes.findOneAndUpdate(
+        { slug: req.params.slug, status: true },
+        { $inc: { clickCounts: 1 } },
+        { new: true }
+    )
+        .populate('subject', 'subjectName subjectCode')
+        .populate('owner', 'username profilePicture');
+
+    if (!note) {
+        return next(errorHandler(403, 'Note not found'));
+    }
+
+    res.json({ note });
 };
