@@ -19,6 +19,14 @@ const CourseSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        totalNotes: {
+            type: Number,
+            default: 0,
+        },
+        totalPyq: {
+            type: Number,
+            default: 0,
+        },
     },
     { timestamps: true }
 );
@@ -48,6 +56,14 @@ const BranchSchema = new mongoose.Schema(
             default: 0,
         },
         clickCounts: {
+            type: Number,
+            default: 0,
+        },
+        totalNotes: {
+            type: Number,
+            default: 0,
+        },
+        totalPyq: {
             type: Number,
             default: 0,
         },
