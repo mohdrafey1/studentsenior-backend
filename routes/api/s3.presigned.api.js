@@ -37,8 +37,6 @@ router.post(
             expiresIn: 600,
         });
 
-        console.log(uploadUrl);
-
         res.json({ uploadUrl, key });
     })
 );

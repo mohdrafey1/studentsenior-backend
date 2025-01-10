@@ -1,11 +1,27 @@
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const Notes = require('../../models/Notes');
-const { Branch } = require('../../models/CourseBranch.js');
+const { Course, Branch } = require('../../models/CourseBranch.js');
 const Subject = require('../../models/Subjects');
 const Client = require('../../models/Client.js');
+const Transaction = require('../../models/Transaction.js');
 const s3 = require('../../config/s3.js');
 const { errorHandler } = require('../../utils/error.js');
+
+const generateUniqueSlug = async (title, username) => {
+    let baseSlug = `${title
+        .replace(/\s+/g, '-')
+        .toLowerCase()}-${username.toLowerCase()}`;
+    let uniqueSlug = baseSlug;
+
+    let count = 0;
+    while (await Notes.findOne({ slug: uniqueSlug })) {
+        count++;
+        uniqueSlug = `${baseSlug}-${count}`;
+    }
+
+    return uniqueSlug;
+};
 
 module.exports.fetchNotesByCollege = async (req, res) => {
     const { subjectCode, branchCode, collegeId } = req.params;
@@ -65,7 +81,7 @@ module.exports.createNotes = async (req, res, next) => {
     });
 
     if (!subject) {
-        return res.status(404).json({ message: 'Subject not found' });
+        return next(errorHandler(403, 'Subject not found'));
     }
 
     let subjectId = subject._id;
@@ -73,11 +89,7 @@ module.exports.createNotes = async (req, res, next) => {
     let owner = req.user.id;
 
     const user = await Client.findById(owner);
-    const slug = (
-        title.replace(/\s+/g, '-') +
-        '-' +
-        user.username
-    ).toLowerCase();
+    const slug = await generateUniqueSlug(title, user.username);
 
     const newNotes = new Notes({
         subject: subjectId,
@@ -89,13 +101,11 @@ module.exports.createNotes = async (req, res, next) => {
         college,
     });
 
-    if (subject) {
-        const subjectNotesCount = await Subject.findById(subject);
-        if (subjectNotesCount) {
-            subjectNotesCount.totalNotes += 1;
-            await subjectNotesCount.save();
-        }
-    }
+    await Subject.findByIdAndUpdate(subjectId, { $inc: { totalNotes: 1 } });
+
+    await Branch.findByIdAndUpdate(branch._id, { $inc: { totalNotes: 1 } });
+
+    await Course.findByIdAndUpdate(branch.course, { $inc: { totalNotes: 1 } });
 
     await newNotes.save();
 
@@ -114,7 +124,7 @@ module.exports.deleteNote = async (req, res, next) => {
         return next(errorHandler(404, 'Note not found'));
     }
 
-    const { fileUrl, subject } = note;
+    const { fileUrl, subject, owner, rewardPoints } = note;
 
     const bucketName = process.env.S3_BUCKET_NAME;
     const region = process.env.AWS_REGION;
@@ -125,14 +135,44 @@ module.exports.deleteNote = async (req, res, next) => {
 
     await s3.send(new DeleteObjectCommand({ Bucket: bucketName, Key: s3Key }));
 
-    if (subject) {
-        const subjectNotesCount = await Subject.findById(subject);
-        if (subjectNotesCount) {
-            subjectNotesCount.totalNotes -= 1;
-            await subjectNotesCount.save();
+    const newSubject = await Subject.findByIdAndUpdate(
+        subject,
+        { $inc: { totalNotes: -1 } },
+        { new: true }
+    );
+
+    const branch = await Branch.findByIdAndUpdate(
+        newSubject.branch,
+        { $inc: { totalNotes: -1 } },
+        { new: true }
+    );
+    if (branch) {
+        await Course.findByIdAndUpdate(branch.course, {
+            $inc: { totalNotes: -1 },
+        });
+    }
+
+    if (owner && rewardPoints > 0) {
+        const client = await Client.findById(owner);
+        if (client) {
+            client.rewardPoints -= rewardPoints;
+            client.rewardBalance -= rewardPoints;
+
+            await client.save();
+
+            const transaction = new Transaction({
+                user: client._id,
+                type: 'reduction',
+                points: rewardPoints,
+                resourceType: 'notes',
+                resourceId: note._id,
+            });
+
+            await transaction.save();
         }
     }
 
+    // Delete the note
     await Notes.deleteOne({ _id: id });
 
     res.json({ message: 'Note deleted successfully' });

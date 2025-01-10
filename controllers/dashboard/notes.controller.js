@@ -2,6 +2,7 @@ const Notes = require('../../models/Notes');
 const Colleges = require('../../models/Colleges');
 const Subject = require('../../models/Subjects');
 const Client = require('../../models/Client');
+const { Course, Branch } = require('../../models/CourseBranch');
 const Transaction = require('../../models/Transaction');
 
 module.exports = {
@@ -102,9 +103,21 @@ module.exports = {
         if (notes) {
             const subject = await Subject.findById(notes.subject);
 
-            if (subject) {
-                subject.totalNotes -= 1;
-                await subject.save();
+            const newSubject = await Subject.findByIdAndUpdate(
+                subject._id,
+                { $inc: { totalNotes: -1 } },
+                { new: true }
+            );
+
+            const branch = await Branch.findByIdAndUpdate(
+                newSubject.branch,
+                { $inc: { totalNotes: -1 } },
+                { new: true }
+            );
+            if (branch) {
+                await Course.findByIdAndUpdate(branch.course, {
+                    $inc: { totalNotes: -1 },
+                });
             }
 
             const client = await Client.findById(notes.owner);
