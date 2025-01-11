@@ -55,7 +55,7 @@ module.exports.fetchNotesByCollege = async (req, res) => {
         .populate('subject', 'subjectName subjectCode')
         .populate('owner', 'username profilePicture');
 
-    res.status(200).json(notes);
+    res.status(200).json({ notes, subjectName: subject.subjectName });
 };
 
 // Create a new Notes
