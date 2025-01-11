@@ -35,6 +35,7 @@ const courseRoutes = require('./routes/dashboard/branchcourse/course.route.js');
 const branchRoutes = require('./routes/dashboard/branchcourse/branch.route.js');
 const subjectRoutes = require('./routes/dashboard/subjects.route.js');
 const transactionRoutes = require('./routes/dashboard/transaction.route.js');
+const newPyqRoutes = require('./routes/dashboard/newPyq.route.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/college.api.js');
@@ -50,6 +51,7 @@ const apiOpportunityRouter = require('./routes/api/opportunity.api.js');
 const apiContactUsRouter = require('./routes/api/contactus.api.js');
 const resourceApiRoutes = require('./routes/api/resource.api.js');
 const s3PresignedRoutes = require('./routes/api/s3.presigned.api.js');
+const newPyqApiRoutes = require('./routes/api/newPyq.api.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -156,6 +158,7 @@ app.use('/courses', courseRoutes);
 app.use('/branches', branchRoutes);
 app.use('/subjects', subjectRoutes);
 app.use('/transactions', transactionRoutes);
+app.use('/newpyqs', newPyqRoutes);
 
 //frontend api routes
 app.use('/api/colleges', apicollegeRouter);
@@ -171,6 +174,7 @@ app.use('/api/opportunity', apiOpportunityRouter);
 app.use('/api/contactus', apiContactUsRouter);
 app.use('/api/resource', resourceApiRoutes);
 app.use('/api/generate', s3PresignedRoutes);
+app.use('/api/newpyq', newPyqApiRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

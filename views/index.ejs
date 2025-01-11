@@ -54,6 +54,27 @@
                     </a>
                 </div>
 
+                <div class="col-md-3 col-sm-4 col-6 mb-3">
+                    <a href="/newpyqs" class="text-decoration-none card-link">
+                        <div class="card bg-light border-0 shadow-sm hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">New Pyqs</h5>
+                                <h4 class="font-weight-bold text-dark">
+                                    <span class="card-text">
+                                        <%= totalNewPyqs %>
+                                    </span>
+                                    <span class="new-count d-none" data-key="totalNewPyqs"></span>
+                                    <span class="card-loader d-none">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </span>
+                                </h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
                 <!-- Card for Total Notes -->
                 <div class="col-md-3 col-sm-4 col-6 mb-3">
                     <a href="/notes" class="text-decoration-none card-link">
@@ -64,6 +85,7 @@
                                     <span class="card-text">
                                         <%= totalNotes %>
                                     </span>
+                                    <span class="new-count d-none" data-key="totalNotes"></span>
                                     <span class="card-loader d-none">
                                         <div class="spinner-border text-info" role="status">
                                             <span class="sr-only">Loading...</span>
@@ -616,7 +638,9 @@
                     totalClients: <%= JSON.stringify(totalClients) %>,
                     totalMessages: <%= JSON.stringify(totalMessages) %>,
                     totalPost: <%= JSON.stringify(totalPost) %>,
-                    totalRequestedPyqs: <%= JSON.stringify(totalRequestedPyqs) %>
+                    totalRequestedPyqs: <%= JSON.stringify(totalRequestedPyqs) %>,
+                    totalNotes: <%= JSON.stringify(totalNotes) %>,
+                    totalNewPyqs: <%= JSON.stringify(totalNewPyqs) %>
                     // Add other keys as required
                 };
 
