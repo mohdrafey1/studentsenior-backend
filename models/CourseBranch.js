@@ -23,7 +23,7 @@ const CourseSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
-        totalPyq: {
+        totalPyqs: {
             type: Number,
             default: 0,
         },
@@ -63,7 +63,7 @@ const BranchSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
-        totalPyq: {
+        totalPyqs: {
             type: Number,
             default: 0,
         },

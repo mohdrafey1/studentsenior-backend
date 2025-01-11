@@ -36,9 +36,11 @@ module.exports.fetchPyqsByCollege = async (req, res, next) => {
         subject: subject._id,
         college: collegeId,
         status: true,
-    }).populate('subject', 'subjectName subjectCode');
+    })
+        .populate('subject', 'subjectName subjectCode')
+        .sort({ clickCounts: -1 });
 
-    res.status(200).json(pyqs);
+    res.status(200).json({ pyqs, subjectName: subject.subjectName });
 };
 
 module.exports.createPyq = async (req, res, next) => {
@@ -90,9 +92,13 @@ module.exports.createPyq = async (req, res, next) => {
 
     await Subject.findByIdAndUpdate(subjectId, { $inc: { totalPyqs: 1 } });
 
-    await Branch.findByIdAndUpdate(branch._id, { $inc: { totalPyqs: 1 } });
+    const totalPyqsinbranch = await Branch.findByIdAndUpdate(branch._id, {
+        $inc: { totalPyqs: 1 },
+    });
 
-    await Course.findByIdAndUpdate(branch.course, { $inc: { totalPyqs: 1 } });
+    const totalPyqsincourse = await Course.findByIdAndUpdate(branch.course, {
+        $inc: { totalPyqs: 1 },
+    });
 
     await newPyq.save();
 
@@ -102,4 +108,18 @@ module.exports.createPyq = async (req, res, next) => {
     });
 };
 
-module.exports.getPyq = async (req, res, next) => {};
+module.exports.getPyq = async (req, res, next) => {
+    const pyq = await Newpyq.findOneAndUpdate(
+        { slug: req.params.slug, status: true },
+        { $inc: { clickCounts: 1 } },
+        { new: true }
+    )
+        .populate('subject', 'subjectName subjectCode')
+        .populate('owner', 'username profilePicture');
+
+    if (!pyq) {
+        return next(errorHandler(403, 'Pyq not found'));
+    }
+
+    res.json({ pyq });
+};

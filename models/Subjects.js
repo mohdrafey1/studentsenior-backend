@@ -23,7 +23,7 @@ const subjectSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
-        totalPyq: {
+        totalPyqs: {
             type: Number,
             default: 0,
         },
