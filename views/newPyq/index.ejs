@@ -1,0 +1,48 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center my-4">
+        <h1 class="h3 mb-3 mb-md-0">Pyqs Management</h1>
+        <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+    </div>
+
+    <!-- Responsive Table Container -->
+    <div class="table-responsive ">
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Subject Name</th>
+                    <th>College Name</th>
+                    <th>Added by</th>
+                    <th>Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pyqs.forEach(pyq=> { %>
+                    <tr>
+                        <td>
+                            <%= pyq.subject.subjectName %>
+                        </td>
+                        <td>
+                            <%= pyq.college.name %>
+                        </td>
+                        <td class="text-truncate" style="max-width: 150px">
+                            <%= pyq.owner.username %>
+                        </td>
+                        <td>
+                            <%= pyq.status ? 'Approved' : 'Pending' %>
+                        </td>
+                        <td class="text-center">
+                            <a target="_blank" href="<%= pyq.fileUrl %>" class="btn btn-success btn-sm mb-1">View</a>
+                            <a href="/newpyqs/<%= pyq._id %>/edit" class="btn btn-info btn-sm mb-1">Edit</a>
+                            <form action="/newpyqs/<%= pyq._id %>?_method=DELETE" method="POST" style="display: inline">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>

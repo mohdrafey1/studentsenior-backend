@@ -1,27 +1,19 @@
 const mongoose = require('mongoose');
 
-const NotesSchema = new mongoose.Schema(
+const NewPyqSchema = new mongoose.Schema(
     {
         subject: {
             type: mongoose.Schema.ObjectId,
             ref: 'Subject',
             required: true,
         },
-        slug: {
-            type: String,
-            unique: true,
-        },
-        title: {
-            type: String,
-            required: true,
-        },
+        slug: { type: String, unique: true, required: true },
         fileUrl: {
             type: String,
             required: true,
         },
-        description: {
-            type: String,
-        },
+        year: { type: String, required: true },
+        examType: { type: String, required: true },
         owner: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Client',
@@ -36,14 +28,9 @@ const NotesSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
-        likes: {
-            type: [mongoose.Schema.Types.ObjectId],
-            ref: 'Client',
-            default: [],
-        },
         rewardPoints: {
             type: Number,
-            default: 5,
+            default: 20,
             min: 0,
         },
         clickCounts: {
@@ -56,4 +43,4 @@ const NotesSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model('Notes', NotesSchema);
+module.exports = mongoose.model('Newpyq', NewPyqSchema);

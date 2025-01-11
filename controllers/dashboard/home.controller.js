@@ -10,6 +10,7 @@ const Post = require('../../models/Post.js');
 const { GetOpportunity, GiveOpportunity } = require('../../models/Opportunity');
 const ContactUs = require('../../models/ContactUs.js');
 const PyqRequest = require('../../models/PyqRequest.js');
+const NewPyqs = require('../../models/NewPyqs.js');
 
 module.exports.home = async (req, res) => {
     const totalUsers = await User.countDocuments();
@@ -25,6 +26,7 @@ module.exports.home = async (req, res) => {
     const totalGiveCommunity = await GiveOpportunity.countDocuments();
     const totalMessages = await ContactUs.countDocuments();
     const totalRequestedPyqs = await PyqRequest.countDocuments();
+    const totalNewPyqs = await NewPyqs.countDocuments();
 
     // Fetch recent 5 entries for each category
     const recentPYQs = await PYQ.find().sort({ createdAt: -1 }).limit(5);
@@ -57,6 +59,7 @@ module.exports.home = async (req, res) => {
         totalGiveCommunity,
         totalMessages,
         totalRequestedPyqs,
+        totalNewPyqs,
         recentPYQs,
         recentSeniors,
         recentProducts,
