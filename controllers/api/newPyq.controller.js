@@ -1,11 +1,6 @@
-const { PutObjectCommand } = require('@aws-sdk/client-s3');
-const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const Newpyq = require('../../models/NewPyqs.js');
 const { Course, Branch } = require('../../models/CourseBranch.js');
 const Subject = require('../../models/Subjects');
-const Client = require('../../models/Client.js');
-const Transaction = require('../../models/Transaction.js');
-const s3 = require('../../config/s3.js');
 const { errorHandler } = require('../../utils/error.js');
 
 module.exports.fetchPyqsByCollege = async (req, res, next) => {

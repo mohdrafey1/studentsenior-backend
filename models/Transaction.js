@@ -20,11 +20,9 @@ const transactionSchema = new Schema(
         resourceType: {
             type: String,
             enum: ['pyq', 'senior', 'notes'],
-            required: true,
         },
         resourceId: {
             type: String,
-            required: true,
         },
     },
     {

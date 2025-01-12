@@ -1,0 +1,71 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container my-5">
+        <!-- Header with Title and Actions -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-primary">Redemption Requests</h1>
+            <div class="d-flex gap-2">
+                <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th class=" text-left">User Name</th>
+                        <th class=" text-left">UPI ID</th>
+                        <th class=" text-left">Reward Balance</th>
+                        <th class=" text-left">Requested On</th>
+                        <th class="text-left">Status</th>
+                        <th class=" text-left">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <% allRedemptions.forEach((request)=> { %>
+                        <tr>
+                            <td>
+                                <%= request.owner.username %>
+                            </td>
+                            <td>
+                                <%= request.upiId %>
+                            </td>
+                            <td>
+                                ₹<%= request.rewardBalance %>
+                            </td>
+                            <td>
+                                <%= new Date(request.createdAt).toLocaleString() %>
+                            </td>
+
+                            <td>
+                                <%= request.status || 'Pending' %>
+                            </td>
+
+                            <td>
+                                <!-- Form to update redemption request status -->
+                                <form action="/transactions/redemption/update-status/<%= request._id %>" method="POST">
+                                    <div class="d-flex gap-2">
+                                        <select name="status" class="form-select">
+                                            <option value="Pending" <% if (request.status==='Pending' ) { %> selected <%
+                                                    } %>>Pending</option>
+                                            <option value="Approved" <% if (request.status==='Approved' ) { %> selected
+                                                <% } %>>Approved
+                                            </option>
+                                            <option value="Rejected" <% if (request.status==='Rejected' ) { %> selected
+                                                <% } %>>Rejected
+                                            </option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </td>
+
+                        </tr>
+                        <% }); %>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
