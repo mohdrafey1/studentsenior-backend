@@ -5,4 +5,14 @@ const wrapAsync = require('../../utils/wrapAsync.js');
 
 router.get('/', wrapAsync(transactionController.getAllTransactions));
 
+router.get(
+    '/redemptionrequests',
+    wrapAsync(transactionController.getAllRequestRedemption)
+);
+
+router.post(
+    '/redemption/update-status/:id',
+    wrapAsync(transactionController.updateRedemptionRequest)
+);
+
 module.exports = router;
