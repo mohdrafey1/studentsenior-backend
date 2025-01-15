@@ -29,7 +29,10 @@ module.exports.home = async (req, res) => {
     const totalNewPyqs = await NewPyqs.countDocuments();
 
     // Fetch recent 5 entries for each category
-    const recentPYQs = await PYQ.find().sort({ createdAt: -1 }).limit(5);
+    const recentPYQs = await NewPyqs.find({ status: false })
+        .populate('subject')
+        .sort({ createdAt: 1 })
+        .limit(5);
     const recentSeniors = await Senior.find().sort({ createdAt: -1 }).limit(5);
     const recentProducts = await Store.find().sort({ createdAt: -1 }).limit(5);
     const recentColleges = await Colleges.find()

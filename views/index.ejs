@@ -331,8 +331,10 @@
                             <ul class="list-group list-group-flush">
                                 <% recentPYQs.forEach(pyq=> { %>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <a href="/pyqs/<%= pyq._id %>" class="text-decoration-none hover-item">
-                                            <%= pyq.subjectName %> - <%= pyq.subjectCode %>
+                                        <a href=<%=pyq.fileUrl %> target="_blank" class="text-decoration-none
+                                            hover-item" >
+                                            <%= pyq.subject.subjectName %> - <%= pyq.subject.subjectCode %>-
+                                                    <%= pyq.subject.semester %>
                                         </a>
                                         <!-- Toggle Button -->
                                         <div class="form-check form-switch">
