@@ -7,9 +7,15 @@ const { verifyToken } = require('../../utils/verifyUser.js');
 const apiNewpyqController = require('../../controllers/api/newPyq.controller.js');
 
 router.get(
-    '/:branchCode/:subjectCode/:collegeId',
+    '/college/:collegeId',
     validateApiKey,
     wrapAsync(apiNewpyqController.fetchPyqsByCollege)
+);
+
+router.get(
+    '/:branchCode/:subjectCode/:collegeId',
+    validateApiKey,
+    wrapAsync(apiNewpyqController.fetchPyqsByCollegeBranch)
 );
 
 router.post('/', verifyToken, wrapAsync(apiNewpyqController.createPyq));

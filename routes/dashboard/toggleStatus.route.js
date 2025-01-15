@@ -4,7 +4,6 @@ const User = require('../../models/User');
 const Client = require('../../models/Client');
 const Senior = require('../../models/Senior.js');
 const Store = require('../../models/Store.js');
-const PYQ = require('../../models/PYQ');
 const Colleges = require('../../models/Colleges');
 const Groups = require('../../models/WhatsappGroup');
 const Notes = require('../../models/Notes');
@@ -15,6 +14,7 @@ const {
 const { isLoggedIn } = require('../../middleware.js');
 const authorizeRole = require('../../utils/rolePermission.js');
 const wrapAsync = require('../../utils/wrapAsync.js');
+const NewPyqs = require('../../models/NewPyqs.js');
 
 router.put(
     '/:type/:id',
@@ -25,7 +25,7 @@ router.put(
         const { status } = req.body;
 
         let model;
-        if (type === 'pyq') model = PYQ;
+        if (type === 'pyq') model = NewPyqs;
         else if (type === 'senior') model = Senior;
         else if (type === 'college') model = Colleges;
         else if (type === 'product') model = Store;

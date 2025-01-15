@@ -4,6 +4,30 @@ const Subject = require('../../models/Subjects');
 const { errorHandler } = require('../../utils/error.js');
 
 module.exports.fetchPyqsByCollege = async (req, res, next) => {
+    const { collegeId } = req.params;
+
+    const pyqs = await Newpyq.find({
+        college: collegeId,
+        status: true,
+    })
+        .populate({
+            path: 'subject',
+            select: 'subjectCode subjectName semester branch',
+            populate: {
+                path: 'branch',
+                select: 'branchName branchCode course',
+                populate: {
+                    path: 'course',
+                    select: 'courseCode courseName',
+                },
+            },
+        })
+        .sort({ clickCounts: -1 });
+
+    res.status(200).json(pyqs);
+};
+
+module.exports.fetchPyqsByCollegeBranch = async (req, res, next) => {
     const { subjectCode, branchCode, collegeId } = req.params;
 
     const branch = await Branch.findOne({
