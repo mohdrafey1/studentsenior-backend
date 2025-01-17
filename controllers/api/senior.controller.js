@@ -13,7 +13,7 @@ module.exports.fetchSeniorByCollege = async (req, res) => {
         college: collegeId,
     })
         .populate('owner', 'profilePicture')
-        .sort({ priority: 1 });
+        .sort({ clickCount: -1 });
     res.json(seniors);
 };
 
