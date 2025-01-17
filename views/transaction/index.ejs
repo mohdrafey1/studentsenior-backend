@@ -34,9 +34,11 @@
                                         <span class="badge bg-success">Earn</span>
                                         <% } else if (transaction.type==='redeem' ) { %>
                                             <span class="badge bg-warning">Redeem</span>
-                                            <% } else { %>
+                                            <% } else if (transaction.type==='reduction' ) { %>
                                                 <span class="badge bg-danger">Reduction</span>
-                                                <% } %>
+                                                <% } else { %>
+                                                    <span class="badge bg-info">Bonus</span>
+                                                    <% } %>
                                 </td>
                                 <td>
                                     <%= transaction.points %>
