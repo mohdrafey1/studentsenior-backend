@@ -1,0 +1,44 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">Bonus Points</h1>
+
+        <form action="/transactions/bonuspoints" method="POST">
+            <div class="mb-3">
+                <label for="client" class="form-label">Select Client:</label>
+                <select name="client" id="client" class="form-select" required>
+                    <option value="">-- Select a Client --</option>
+                    <% users.forEach(user=> { %>
+                        <option value="<%= user._id %>">
+                            <%= user.name %> (<%= user.email %>)
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="point" class="form-label">Enter Points:</label>
+                <input type="number" name="point" id="point" class="form-control" required min="1"
+                    placeholder="Enter points to award">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Bonus Points</button>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap and Select2 -->
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        // Initialize Select2 for the dropdown
+        $(document).ready(function () {
+            $('#client').select2({
+                placeholder: 'Search for a client',
+                allowClear: true,
+                width: '100%' // Ensures proper alignment with Bootstrap
+            });
+        });
+    </script>

@@ -15,4 +15,7 @@ router.post(
     wrapAsync(transactionController.updateRedemptionRequest)
 );
 
+router.get('/bonuspoints', wrapAsync(transactionController.bonusPointForm));
+
+router.post('/bonuspoints', wrapAsync(transactionController.bonusPoints));
 module.exports = router;
