@@ -11,7 +11,9 @@ exports.getAllTransactions = async (req, res) => {
 };
 
 exports.getAllRequestRedemption = async (req, res) => {
-    const allRedemptions = await RedemptionRequest.find({}).populate('owner');
+    const allRedemptions = await RedemptionRequest.find({})
+        .sort({ createdAt: -1 })
+        .populate('owner');
 
     res.render('transaction/redemptionRequest', { allRedemptions });
 };

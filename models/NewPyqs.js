@@ -30,7 +30,7 @@ const NewPyqSchema = new mongoose.Schema(
         },
         rewardPoints: {
             type: Number,
-            default: 20,
+            default: 10,
             min: 0,
         },
         clickCounts: {
