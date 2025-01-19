@@ -15,6 +15,8 @@ const generateUniqueUsername = async (baseUsername) => {
     return username;
 };
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports.signup = async (req, res, next) => {
     const { username, email, password, phone, college } = req.body;
     const existingUser = await Client.findOne({ email });
@@ -50,8 +52,9 @@ module.exports.signin = async (req, res, next) => {
     res.cookie('access_token', token, {
         httpOnly: true,
         expires: expiryDate,
-        secure: true,
-        sameSite: 'None',
+        secure: isProduction,
+        sameSite: isProduction ? 'None' : 'Lax',
+        domain: isProduction ? '.studentsenior.com' : undefined,
     })
         .status(200)
         .json(rest);
@@ -69,8 +72,9 @@ module.exports.google = async (req, res, next) => {
         res.cookie('access_token', token, {
             httpOnly: true,
             expires: expiryDate,
-            secure: true,
-            sameSite: 'None',
+            secure: isProduction,
+            sameSite: isProduction ? 'None' : 'Lax',
+            domain: isProduction ? '.studentsenior.com' : undefined,
         })
             .status(200)
             .json(rest);
@@ -96,8 +100,9 @@ module.exports.google = async (req, res, next) => {
         res.cookie('access_token', token, {
             httpOnly: true,
             expires: expiryDate,
-            secure: true,
-            sameSite: 'None',
+            secure: isProduction,
+            sameSite: isProduction ? 'None' : 'Lax',
+            domain: isProduction ? '.studentsenior.com' : undefined,
         })
             .status(200)
             .json(rest);

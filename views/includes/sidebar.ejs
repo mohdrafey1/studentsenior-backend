@@ -107,12 +107,12 @@
 
         <!-- User Login/Logout Section -->
         <% if (!currUser) { %>
-            <a class="nav-link text-white" href="/login">Login</a>
+            <a class="nav-link text-white" href="/user/login">Login</a>
             <% } else { %>
-                <a class="nav-link text-white" href="/profile">
+                <a class="nav-link text-white" href="/user/profile">
                     <i class="fa-solid fa-user"></i> &nbsp; <%= currUser.username %>
                 </a>
-                <a class="nav-link text-white" href="/logout">Logout</a>
+                <a class="nav-link text-white" href="/user/logout">Logout</a>
                 <% } %>
     </nav>
 

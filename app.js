@@ -1,3 +1,5 @@
+const isProduction = process.env.NODE_ENV === 'production';
+
 if (process.env.NODE_ENV != 'production') {
     require('dotenv').config();
 }
@@ -30,7 +32,7 @@ const communityRouter = require('./routes/dashboard/community.route.js');
 const opportunityRouter = require('./routes/dashboard/opportunity.route.js');
 const contactUsRouter = require('./routes/dashboard/contactus.route.js');
 const pyqRouter = require('./routes/dashboard/pyq.routes.js');
-const groupRouter = require('./routes/dashboard/group.route..js');
+const groupRouter = require('./routes/dashboard/group.route.js');
 const courseRoutes = require('./routes/dashboard/branchcourse/course.route.js');
 const branchRoutes = require('./routes/dashboard/branchcourse/branch.route.js');
 const subjectRoutes = require('./routes/dashboard/subjects.route.js');
@@ -52,6 +54,7 @@ const apiContactUsRouter = require('./routes/api/contactus.api.js');
 const resourceApiRoutes = require('./routes/api/resource.api.js');
 const s3PresignedRoutes = require('./routes/api/s3.presigned.api.js');
 const newPyqApiRoutes = require('./routes/api/newPyq.api.js');
+const { errorHandler } = require('./utils/error.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -99,6 +102,22 @@ app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, '/public')));
 
+//frontend api routes
+app.use('/api/colleges', apicollegeRouter);
+app.use('/api/pyqs', apiPyqRouter);
+app.use('/api/whatsappgroup', apiGroupRouter);
+app.use('/api/notes', notesApiRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/seniors', apiSeniorRouter);
+app.use('/api/store', apiStoreRouter);
+app.use('/api/community', apiCommunityRouter);
+app.use('/api/opportunity', apiOpportunityRouter);
+app.use('/api/contactus', apiContactUsRouter);
+app.use('/api/resource', resourceApiRoutes);
+app.use('/api/generate', s3PresignedRoutes);
+app.use('/api/newpyq', newPyqApiRoutes);
+
 const store = MongoStore.create({
     mongoUrl: DB_URL,
     crypto: {
@@ -120,6 +139,7 @@ const sessionOptions = {
         expires: Date.now() + 1 * 24 * 60 * 60 * 1000,
         maxAge: 1 * 24 * 60 * 60 * 1000,
         httpOnly: true,
+        domain: isProduction ? '.panel.studentsenior.com' : undefined,
     },
 };
 
@@ -140,10 +160,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/', home);
-
 //dashboard routes
-app.use('/', userRouter);
+app.use('/', home);
+app.use('/user', userRouter);
 app.use('/whatsappgroup', groupRouter);
 app.use('/colleges', collegeRoutes);
 app.use('/pyqs', pyqRouter);
@@ -159,22 +178,6 @@ app.use('/branches', branchRoutes);
 app.use('/subjects', subjectRoutes);
 app.use('/transactions', transactionRoutes);
 app.use('/newpyqs', newPyqRoutes);
-
-//frontend api routes
-app.use('/api/colleges', apicollegeRouter);
-app.use('/api/pyqs', apiPyqRouter);
-app.use('/api/whatsappgroup', apiGroupRouter);
-app.use('/api/notes', notesApiRoutes);
-app.use('/api/user', userRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/seniors', apiSeniorRouter);
-app.use('/api/store', apiStoreRouter);
-app.use('/api/community', apiCommunityRouter);
-app.use('/api/opportunity', apiOpportunityRouter);
-app.use('/api/contactus', apiContactUsRouter);
-app.use('/api/resource', resourceApiRoutes);
-app.use('/api/generate', s3PresignedRoutes);
-app.use('/api/newpyq', newPyqApiRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
