@@ -139,7 +139,6 @@ const sessionOptions = {
         expires: Date.now() + 1 * 24 * 60 * 60 * 1000,
         maxAge: 1 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        domain: isProduction ? '.panel.studentsenior.com' : undefined,
     },
 };
 
