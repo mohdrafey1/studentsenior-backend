@@ -7,11 +7,11 @@ const { saveRedirectUrl } = require('../../middleware.js');
 
 const userController = require('../../controllers/dashboard/user.controller.js');
 
-router.get('/secret/signup', wrapAsync(userController.signupForm));
+router.get('/secret/signup', userController.signupForm);
 
-router.post('/signup', wrapAsync(userController.signup));
+router.post('/secret/signup', userController.signup);
 
-router.get('/login', wrapAsync(userController.loginForm));
+router.get('/login', userController.loginForm);
 
 router.post(
     '/login',
@@ -20,11 +20,11 @@ router.post(
         failureRedirect: '/login',
         failureFlash: true,
     }),
-    wrapAsync(userController.login)
+    userController.login
 );
 
-router.get('/profile', wrapAsync(userController.profile));
+router.get('/profile', userController.profile);
 
-router.get('/logout', wrapAsync(userController.logout));
+router.get('/logout', userController.logout);
 
 module.exports = router;

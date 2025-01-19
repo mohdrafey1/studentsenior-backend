@@ -13,6 +13,6 @@ const router = express.Router();
 router.post('/signup', validateApiKey, wrapAsync(signup));
 router.post('/signin', validateApiKey, wrapAsync(signin));
 router.post('/google', validateApiKey, wrapAsync(google));
-router.get('/signout', wrapAsync(signout));
+router.get('/signout', signout);
 
 module.exports = router;
