@@ -26,6 +26,14 @@
                     <option value="false" <%=pyqs.status ? '' : 'selected' %>>False</option>
                 </select>
             </div>
+            <div class="mb-3 d-flex gap-2">
+
+                <input type="text" id="subject" name="subject" class="form-control"
+                    value="<%= pyqs.subject?.subjectName %>" readonly>
+                <input type="text" id="branch" name="branch" class="form-control"
+                    value="<%= pyqs.subject?.branch?.branchName %>" readonly>
+
+            </div>
 
             <div class="d-grid gap-2 d-md-block">
                 <button type="submit" class="btn btn-success">Update</button>

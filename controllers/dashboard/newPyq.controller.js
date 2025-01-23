@@ -19,7 +19,12 @@ module.exports = {
 
     editPyqsForm: async (req, res) => {
         const { id } = req.params;
-        const pyqs = await NewPyqs.findById(id);
+        const pyqs = await NewPyqs.findById(id).populate({
+            path: 'subject',
+            populate: {
+                path: 'branch',
+            },
+        });
         if (!pyqs) {
             req.flash('error', 'Pyq not found!');
             return res.redirect(`/newpyqs`);
