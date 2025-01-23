@@ -91,7 +91,7 @@ module.exports.createPyq = async (req, res, next) => {
 
     let owner = req.user.id;
 
-    let slug = `${subject.subjectName}-${examType}-${year}`;
+    let slug = `${subject.subjectName}-${examType}-${year}-${branchCode}`;
     slug = slug.toLowerCase().replace(/\s+/g, '-');
 
     const slugExists = await Newpyq.findOne({ slug });
