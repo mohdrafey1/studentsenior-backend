@@ -1,6 +1,32 @@
 const { GetOpportunity, GiveOpportunity } = require('../../models/Opportunity');
 const { errorHandler } = require('../../utils/error');
 
+const createSlug = (name) => {
+    return `${name}`
+        .toLowerCase()
+        .replace(/[^a-z0-9 -]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+};
+
+const createUniqueSlug = async (model, name) => {
+    let slug = createSlug(name);
+    let existingOpportunity = await model.findOne({
+        slug: { $regex: `^${slug}(-\\d+)?$`, $options: 'i' },
+    });
+    let counter = 1;
+
+    while (existingOpportunity) {
+        slug = `${createSlug(name)}-${counter}`;
+        existingOpportunity = await model.findOne({
+            slug: { $regex: `^${slug}$`, $options: 'i' },
+        });
+        counter++;
+    }
+
+    return slug;
+};
+
 module.exports = {
     getOpportunities: async (req, res) => {
         const allGetOpportunities = await GetOpportunity.find({
@@ -27,10 +53,31 @@ module.exports = {
         res.json(allGetOpportunities);
     },
 
+    getOpportunitiesBySlug: async (req, res, next) => {
+        const { slug } = req.params;
+        const getOpportunities = await GetOpportunity.find({
+            status: true,
+            isDeleted: false,
+            slug: slug,
+        })
+            .sort({ createdAt: -1 })
+            .populate('college', 'name')
+            .populate('owner', 'username');
+
+        if (!getOpportunities) {
+            return next(errorHandler(404, 'Not Found'));
+        }
+
+        res.json(getOpportunities);
+    },
+
     createGetOpportunities: async (req, res) => {
         const { name, description, college, whatsapp, email } = req.body;
 
         let owner = req.user.id;
+
+        const slug = await createUniqueSlug(GetOpportunity, name);
+
         const newGetOpportunity = new GetOpportunity({
             name,
             description,
@@ -38,6 +85,7 @@ module.exports = {
             whatsapp,
             email,
             owner,
+            slug,
         });
         await newGetOpportunity.save();
         res.status(201).json({
@@ -121,8 +169,30 @@ module.exports = {
         res.json(allGiveOpportunities);
     },
 
+    giveOpportunitiesBySlug: async (req, res, next) => {
+        const { slug } = req.params;
+        console.log(slug);
+
+        const giveOpportunities = await GiveOpportunity.find({
+            status: true,
+            isDeleted: false,
+            slug: slug,
+        })
+            .sort({ createdAt: -1 })
+            .populate('college', 'name')
+            .populate('owner', 'username');
+
+        if (!giveOpportunities) {
+            return next(errorHandler(404, 'Not Found'));
+        }
+
+        res.json(giveOpportunities);
+    },
+
     createGiveOpportunities: async (req, res) => {
         const { name, description, college, whatsapp, email } = req.body;
+
+        const slug = await createUniqueSlug(GiveOpportunity, name);
 
         let owner = req.user.id;
         const newGiveOpportunity = new GiveOpportunity({
@@ -132,6 +202,7 @@ module.exports = {
             whatsapp,
             email,
             owner,
+            slug,
         });
         await newGiveOpportunity.save();
         res.status(201).json({

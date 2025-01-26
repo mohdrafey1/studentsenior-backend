@@ -1,6 +1,32 @@
 const { GetOpportunity, GiveOpportunity } = require('../../models/Opportunity');
 const Colleges = require('../../models/Colleges');
 
+const createSlug = (name) => {
+    return `${name}`
+        .toLowerCase()
+        .replace(/[^a-z0-9 -]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+};
+
+const createUniqueSlug = async (model, name) => {
+    let slug = createSlug(name);
+    let existingOpportunity = await model.findOne({
+        slug: { $regex: `^${slug}(-\\d+)?$`, $options: 'i' },
+    });
+    let counter = 1;
+
+    while (existingOpportunity) {
+        slug = `${createSlug(name)}-${counter}`;
+        existingOpportunity = await model.findOne({
+            slug: { $regex: `^${slug}$`, $options: 'i' },
+        });
+        counter++;
+    }
+
+    return slug;
+};
+
 module.exports = {
     getOpportunities: async (req, res) => {
         const allGetOpportunities = await GetOpportunity.find({})
@@ -21,6 +47,8 @@ module.exports = {
         const { name, description, college, whatsapp, email, status } =
             req.body;
 
+        const slug = await createUniqueSlug(GetOpportunity, name);
+
         let owner = req.user.id;
         const newGetOpportunity = new GetOpportunity({
             name,
@@ -30,6 +58,7 @@ module.exports = {
             email,
             owner,
             status,
+            slug,
         });
         await newGetOpportunity.save();
         req.flash('success', 'Get Opportunity Created Successfully');
@@ -114,6 +143,8 @@ module.exports = {
         const { name, description, college, whatsapp, email, status } =
             req.body;
 
+        const slug = await createUniqueSlug(GetOpportunity, name);
+
         let owner = req.user.id;
         const newGiveOpportunity = new GiveOpportunity({
             name,
@@ -123,6 +154,7 @@ module.exports = {
             email,
             owner,
             status,
+            slug,
         });
         await newGiveOpportunity.save();
         req.flash('success', 'Get Opportunity Created Successfully');
