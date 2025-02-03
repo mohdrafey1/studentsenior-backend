@@ -7,7 +7,7 @@ const PyqRequest = require('../../models/PyqRequest');
 exports.index = async (req, res) => {
     const colleges = await Colleges.find();
 
-    const perPage = 10;
+    const perPage = 15;
     const page = parseInt(req.query.page) || 1;
 
     const { subjectName, college, year, course, semester, status, examType } =

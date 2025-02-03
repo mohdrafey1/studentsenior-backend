@@ -5,16 +5,57 @@ const Client = require('../../models/Client');
 const { Course, Branch } = require('../../models/CourseBranch');
 const Transaction = require('../../models/Transaction');
 const NewPyqs = require('../../models/NewPyqs');
+const Colleges = require('../../models/Colleges.js');
 
 module.exports = {
     index: async (req, res) => {
-        let pyqs = await NewPyqs.find({})
-            .populate('college', 'name')
-            .populate('owner', 'username')
-            .populate('subject', 'subjectName')
-            .sort({ createdAt: -1 });
+        try {
+            const colleges = await Colleges.find();
 
-        res.render('newPyq/index.ejs', { pyqs });
+            const perPage = 15;
+            const page = parseInt(req.query.page) || 1;
+
+            const {
+                subjectName,
+                college,
+                year,
+                course,
+                semester,
+                status,
+                examType,
+            } = req.query;
+
+            const query = {};
+
+            if (college) query.college = college;
+            if (subjectName)
+                query.subject = { $regex: subjectName, $options: 'i' };
+            if (year) query.year = year;
+            if (course) query.course = { $regex: course, $options: 'i' };
+            if (semester) query.semester = semester;
+            if (status) query.status = status === 'true';
+            if (examType) query.examType = { $regex: examType, $options: 'i' };
+
+            const totalPYQs = await NewPyqs.countDocuments(query);
+            const pyqs = await NewPyqs.find(query)
+                .populate('college', 'name')
+                .populate('owner', 'username')
+                .populate('subject', 'subjectName')
+                .sort({ createdAt: -1 })
+                .skip(perPage * (page - 1))
+                .limit(perPage);
+
+            res.render('newPyq/index', {
+                pyqs,
+                currentPage: page,
+                totalPages: Math.ceil(totalPYQs / perPage),
+                filters: req.query,
+                colleges,
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+        }
     },
 
     editPyqsForm: async (req, res) => {

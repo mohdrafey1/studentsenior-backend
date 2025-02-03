@@ -1,8 +1,21 @@
 const Post = require('../../models/Post');
 
 module.exports.fetchPost = async (req, res) => {
-    let allPost = await Post.find({}).populate('college').populate('author');
-    res.render('community/index', { allPost });
+    const perPage = 20;
+    const page = parseInt(req.query.page) || 1;
+    const totalPosts = await Post.countDocuments();
+
+    let allPost = await Post.find({})
+        .populate('college')
+        .populate('author')
+        .sort({ createdAt: -1 })
+        .skip(perPage * (page - 1))
+        .limit(perPage);
+    res.render('community/index', {
+        allPost,
+        currentPage: page,
+        totalPages: Math.ceil(totalPosts / perPage),
+    });
 };
 
 module.exports.showPost = async (req, res) => {
