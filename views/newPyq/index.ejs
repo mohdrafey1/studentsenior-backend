@@ -1,48 +1,145 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center my-4">
-        <h1 class="h3 mb-3 mb-md-0">Pyqs Management</h1>
-        <a href="javascript:history.back()" class="btn btn-warning">Back</a>
-    </div>
+    <div>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center my-4">
+            <h1 class="h3 mb-3 mb-md-0">Pyqs Management</h1>
+        </div>
 
-    <!-- Responsive Table Container -->
-    <div class="table-responsive ">
-        <table class="table table-hover table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Subject Name</th>
-                    <th>College Name</th>
-                    <th>Added by</th>
-                    <th>Status</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% pyqs.forEach(pyq=> { %>
+        <!-- Filter Form -->
+        <form method="GET" action="/newpyqs" class="mb-4">
+            <div class="d-flex flex-wrap gap-3 align-items-end">
+                <!-- <div class="form-group col-lg-2 col-md-3 col-sm-4 col-12">
+                    <label for="subjectName">Subject Name</label>
+                    <input type="text" id="subjectName" name="subjectName" class="form-control"
+                        placeholder="Search by subject" value="<%=filters.subjectName || '' %>">
+                </div> -->
+                <!-- College Dropdown -->
+                <div class="form-group col-lg-2 col-md-3 col-sm-4 col-12">
+                    <label for="college">Select College</label>
+                    <select id="college" name="college" class="form-control">
+                        <option value="">Select College</option>
+                        <% colleges.forEach(college=> { %>
+                            <option value="<%= college._id %>">
+                                <%= college.name %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <!-- Year Dropdown -->
+                <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <label for="year">Year</label>
+                    <select name="year" class="form-control">
+                        <option value="">Select Year</option>
+                        <option value="2020-21" <%=filters.year==='2020-21' ? 'selected' : '' %>>2020-21</option>
+                        <option value="2021-22" <%=filters.year==='2021-22' ? 'selected' : '' %>>2021-22</option>
+                        <option value="2022-23" <%=filters.year==='2022-23' ? 'selected' : '' %>>2022-23</option>
+                        <option value="2023-24" <%=filters.year==='2023-24' ? 'selected' : '' %>>2023-24</option>
+                        <option value="2024-25" <%=filters.year==='2024-25' ? 'selected' : '' %>>2024-25</option>
+                    </select>
+                </div>
+                <!-- Course Dropdown -->
+                <!-- <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <label for="course">Course</label>
+                    <select name="course" class="form-control">
+                        <option value="">Select Course</option>
+                        <option value="BTech" <%=filters.course==='BTech' ? 'selected' : '' %>>BTech</option>
+                        <option value="BCA" <%=filters.course==='BCA' ? 'selected' : '' %>>BCA</option>
+                        <option value="BBA" <%=filters.course==='BBA' ? 'selected' : '' %>>BBA</option>
+                        <option value="Other" <%=filters.course==='Other' ? 'selected' : '' %>>Other</option>
+                    </select>
+                </div> -->
+                <!-- Semester Dropdown -->
+                <!-- <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <label for="semester">Semester</label>
+                    <select name="semester" class="form-control">
+                        <option value="">Select Semester</option>
+                        <% for (let i=1; i <=7; i++) { %>
+                            <option value="<%= i %>" <%=filters.semester==i ? 'selected' : '' %>>Semester <%= i %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div> -->
+                <!-- Status Dropdown -->
+                <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <label for="status">Status</label>
+                    <select name="status" class="form-control">
+                        <option value="">Select Status</option>
+                        <option value="true" <%=filters.status==='true' ? 'selected' : '' %>>Approved</option>
+                        <option value="false" <%=filters.status==='false' ? 'selected' : '' %>>Pending</option>
+                    </select>
+                </div>
+                <!-- Exam Type Dropdown -->
+                <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <label for="examType">Exam Type</label>
+                    <select name="examType" class="form-control">
+                        <option value="">Select Exam Type</option>
+                        <option value="midsem1" <%=filters.examType==='midsem1' ? 'selected' : '' %>>Midsem 1</option>
+                        <option value="midsem2" <%=filters.examType==='midsem2' ? 'selected' : '' %>>Midsem 2</option>
+                        <option value="endsem" <%=filters.examType==='endsem' ? 'selected' : '' %>>Endsem</option>
+                        <option value="improvement" <%=filters.examType==='improvement' ? 'selected' : '' %>>Improvement
+                        </option>
+                    </select>
+                </div>
+                <!-- Filter Button -->
+                <div class="form-group col-lg-1 col-md-3 col-sm-4 col-12">
+                    <button type="submit" class="btn btn-primary btn-block">Filter</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Remove Filter Button -->
+        <div class="d-flex gap-2 mb-4">
+            <form method="GET" action="/newpyqs" class="mb-4">
+                <button type="submit" class="btn btn-secondary">Remove Filter</button>
+            </form>
+
+            <div>
+                <a href="javascript:history.back()" class="btn btn-warning">Back</a>
+            </div>
+        </div>
+
+        <!-- Responsive Table Container -->
+        <div class="table-responsive ">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-dark">
                     <tr>
-                        <td>
-                            <%= pyq.subject.subjectName %>
-                        </td>
-                        <td>
-                            <%= pyq.college.name %>
-                        </td>
-                        <td class="text-truncate" style="max-width: 150px">
-                            <%= pyq.owner.username %>
-                        </td>
-                        <td>
-                            <%= pyq.status ? 'Approved' : 'Pending' %>
-                        </td>
-                        <td class="text-center">
-                            <a target="_blank" href="<%= pyq.fileUrl %>" class="btn btn-success btn-sm mb-1">View</a>
-                            <a href="/newpyqs/<%= pyq._id %>/edit" class="btn btn-info btn-sm mb-1">Edit</a>
-                            <form action="/newpyqs/<%= pyq._id %>?_method=DELETE" method="POST" style="display: inline">
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>
+                        <th>Subject Name</th>
+                        <th>College Name</th>
+                        <th>Added by</th>
+                        <th>Status</th>
+                        <th class="text-center">Actions</th>
                     </tr>
-                    <% }) %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <% pyqs.forEach(pyq=> { %>
+                        <tr>
+                            <td>
+                                <%= pyq.subject.subjectName %>
+                            </td>
+                            <td>
+                                <%= pyq.college.name %>
+                            </td>
+                            <td class="text-truncate" style="max-width: 150px">
+                                <%= pyq.owner.username %>
+                            </td>
+                            <td>
+                                <%= pyq.status ? 'Approved' : 'Pending' %>
+                            </td>
+                            <td class="text-center">
+                                <a target="_blank" href="<%= pyq.fileUrl %>"
+                                    class="btn btn-success btn-sm mb-1">View</a>
+                                <a href="/newpyqs/<%= pyq._id %>/edit" class="btn btn-info btn-sm mb-1">Edit</a>
+                                <form action="/newpyqs/<%= pyq._id %>?_method=DELETE" method="POST"
+                                    style="display: inline">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <%- include('../includes/pagination', { paginationUrl: '/newpyqs' , currentPage, totalPages, limit: 15 }) %>
     </div>

@@ -18,6 +18,12 @@ router.get(
     wrapAsync(opportunityController.getOpportunitiesByCollege)
 );
 
+router.get(
+    '/getopportunities/:slug',
+    validateApiKey,
+    wrapAsync(opportunityController.getOpportunitiesBySlug)
+);
+
 router.post(
     '/getopportunities',
     verifyToken,
@@ -46,6 +52,12 @@ router.get(
     '/giveopportunities/college/:collegeId',
     validateApiKey,
     wrapAsync(opportunityController.giveOpportunities)
+);
+
+router.get(
+    '/giveopportunities/:slug',
+    validateApiKey,
+    wrapAsync(opportunityController.giveOpportunitiesBySlug)
 );
 
 router.post(

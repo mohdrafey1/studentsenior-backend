@@ -9,15 +9,26 @@ const s3 = require('../../config/s3.js');
 
 module.exports = {
     index: async (req, res) => {
+        const perPage = 15;
+        const page = parseInt(req.query.page) || 1;
+
+        const totalNotes = await Notes.countDocuments();
+
         let notes = await Notes.find({})
             .populate('college', 'name')
             .populate('owner', 'username')
             .populate('subject', 'subjectName')
-            .sort({ createdAt: -1 });
+            .sort({ createdAt: -1 })
+            .skip(perPage * (page - 1))
+            .limit(perPage);
 
         // console.log(notes);
 
-        res.render('notes/index.ejs', { notes });
+        res.render('notes/index.ejs', {
+            notes,
+            currentPage: page,
+            totalPages: Math.ceil(totalNotes / perPage),
+        });
     },
 
     // createNotesForm: async (req, res) => {

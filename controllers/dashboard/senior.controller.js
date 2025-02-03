@@ -3,8 +3,21 @@ const Colleges = require('../../models/Colleges');
 
 module.exports = {
     index: async (req, res) => {
-        let allSenior = await Seniors.find({}).populate('college');
-        res.render('seniors/index.ejs', { allSenior });
+        const perPage = 15;
+        const page = parseInt(req.query.page) || 1;
+
+        const totalSeniors = await Seniors.countDocuments();
+
+        let allSenior = await Seniors.find({})
+            .populate('college')
+            .sort({ createdAt: -1 })
+            .skip(perPage * (page - 1))
+            .limit(perPage);
+        res.render('seniors/index.ejs', {
+            allSenior,
+            currentPage: page,
+            totalPages: Math.ceil(totalSeniors / perPage),
+        });
     },
     createSeniorForm: async (req, res) => {
         const colleges = await Colleges.find({});

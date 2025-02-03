@@ -25,6 +25,7 @@ const getOpportunitySchema = new mongoose.Schema(
         },
         isDeleted: { type: Boolean, default: false },
         deletedAt: { type: Date },
+        slug: { type: String, unique: true, required: true },
     },
     { timestamps: true }
 );
@@ -53,6 +54,7 @@ const giveOpportunitySchema = new mongoose.Schema(
         },
         isDeleted: { type: Boolean, default: false },
         deletedAt: { type: Date },
+        slug: { type: String, unique: true, required: true },
     },
     { timestamps: true }
 );
