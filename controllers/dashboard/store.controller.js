@@ -5,8 +5,10 @@ const Colleges = require('../../models/Colleges.js');
 
 module.exports = {
     index: async (req, res) => {
-        let store = await Store.find({}).populate('college');
-        let affiliateProduct = await Affiliate.find({});
+        let store = await Store.find({})
+            .populate('college')
+            .sort({ createdAt: -1 });
+        let affiliateProduct = await Affiliate.find({}).sort({ createdAt: -1 });
         res.render('store/index.ejs', { store, affiliateProduct });
     },
 

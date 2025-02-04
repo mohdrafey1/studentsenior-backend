@@ -31,7 +31,8 @@ module.exports = {
     getOpportunities: async (req, res) => {
         const allGetOpportunities = await GetOpportunity.find({})
             .populate('college')
-            .populate('owner');
+            .populate('owner')
+            .sort({ createdAt: -1 });
 
         res.render('opportunity/getOpportunity/index.ejs', {
             allGetOpportunities,
@@ -127,7 +128,8 @@ module.exports = {
     giveOpportunities: async (req, res) => {
         const allGiveOpportunities = await GiveOpportunity.find({})
             .populate('college')
-            .populate('owner');
+            .populate('owner')
+            .sort({ createdAt: -1 });
 
         res.render('opportunity/giveOpportunity/index.ejs', {
             allGiveOpportunities,

@@ -1,10 +1,11 @@
-// whatsappGroup.js
 const WhatsappGroup = require('../../models/WhatsappGroup');
 const Colleges = require('../../models/Colleges');
 
 module.exports = {
     index: async (req, res) => {
-        let Groups = await WhatsappGroup.find({}).populate('college');
+        let Groups = await WhatsappGroup.find({})
+            .populate('college')
+            .sort({ createdAt: -1 });
         res.render('whatsappgroup/index.ejs', { Groups });
     },
     createGroupForm: async (req, res) => {
