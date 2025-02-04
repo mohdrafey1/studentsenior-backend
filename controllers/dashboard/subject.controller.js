@@ -5,6 +5,9 @@ const { errorHandler } = require('../../utils/error.js');
 module.exports.getSubjects = async (req, res) => {
     const { branch, search } = req.query;
 
+    const perPage = 30;
+    const page = parseInt(req.query.page) || 1;
+
     // Build the query dynamically
     const query = {};
     if (branch && branch.trim() !== '') {
@@ -14,9 +17,13 @@ module.exports.getSubjects = async (req, res) => {
         query.subjectName = { $regex: search, $options: 'i' };
     }
 
+    const totalSubjects = await Subject.countDocuments(query);
+
     const allSubjects = await Subject.find(query)
         .populate('branch')
-        .sort({ createdAt: -1 });
+        .sort({ createdAt: -1 })
+        .skip(perPage * (page - 1))
+        .limit(perPage);
 
     const branches = await Branch.find({});
 
@@ -25,6 +32,8 @@ module.exports.getSubjects = async (req, res) => {
         branches,
         selectedBranch: branch || '',
         search: search || '',
+        currentPage: page,
+        totalPages: Math.ceil(totalSubjects / perPage),
     });
 };
 
