@@ -9,9 +9,9 @@
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
                     <tr>
+                        <th>Description</th>
                         <th>Subject</th>
                         <th>Email</th>
-                        <th>Description</th>
                         <th class="text-center">Action</th>
                     </tr>
                 </thead>
@@ -19,10 +19,10 @@
                     <% messages.forEach(message=> { %>
                         <tr>
                             <td>
-                                <%= message.subject %>
+                                <%= message.description %>
                             </td>
                             <td>
-                                <%= message.description %>
+                                <%= message.subject %>
                             </td>
                             <td>
                                 <%= message.email %>
