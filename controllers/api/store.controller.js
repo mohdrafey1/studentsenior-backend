@@ -117,7 +117,7 @@ module.exports = {
 
         await newProduct.save();
         res.status(201).json({
-            description: 'Product Created Successfully',
+            message: 'Product Created Successfully, Available Once Approved',
         });
     },
 
@@ -178,7 +178,7 @@ module.exports = {
         const product = await Store.findById(req.params.id);
 
         if (!product) {
-            return res.status(404).json({ description: 'Product not found' });
+            return res.status(404).json({ message: 'Product not found' });
         }
 
         if (product && product.image && product.image.filename) {
@@ -188,7 +188,7 @@ module.exports = {
         await Store.findByIdAndDelete(req.params.id);
 
         res.status(200).json({
-            description: 'Product deleted successfully',
+            message: 'Product deleted successfully',
         });
     },
 
