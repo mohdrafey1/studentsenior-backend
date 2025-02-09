@@ -53,7 +53,7 @@ router
         isLoggedIn,
         authorizeRole('admin'),
         upload.single('image'),
-        validateStore,
+        // validateStore,
         wrapAsync(storeController.editProduct)
     )
     .delete(
