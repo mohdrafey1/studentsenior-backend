@@ -63,8 +63,15 @@ module.exports.fetchPyqsByCollegeBranch = async (req, res, next) => {
 };
 
 module.exports.createPyq = async (req, res, next) => {
-    const { year, examType, college, fileUrl, subjectCode, branchCode } =
-        req.body;
+    const {
+        year,
+        examType,
+        college,
+        fileUrl,
+        subjectCode,
+        branchCode,
+        solved,
+    } = req.body;
 
     if (!fileUrl) {
         return next(errorHandler(404, 'No file uploaded'));
@@ -94,6 +101,10 @@ module.exports.createPyq = async (req, res, next) => {
     let slug = `${subject.subjectName}-${examType}-${year}-${branchCode}`;
     slug = slug.toLowerCase().replace(/\s+/g, '-');
 
+    if (solved === true) {
+        slug = slug + '-solved';
+    }
+
     const slugExists = await Newpyq.findOne({ slug });
     if (slugExists) {
         return next(errorHandler(409, 'This Pyq Already exist please check'));
@@ -107,6 +118,7 @@ module.exports.createPyq = async (req, res, next) => {
         slug,
         fileUrl,
         college,
+        solved,
     });
 
     await Subject.findByIdAndUpdate(subjectId, { $inc: { totalPyqs: 1 } });
