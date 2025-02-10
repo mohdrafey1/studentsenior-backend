@@ -24,6 +24,7 @@ const NewPyqSchema = new mongoose.Schema(
         status: { type: Boolean, default: false },
         rewardPoints: { type: Number, default: 10, min: 0 },
         clickCounts: { type: Number, default: 0 },
+        solved: { type: Boolean, default: false },
     },
     {
         timestamps: true,
