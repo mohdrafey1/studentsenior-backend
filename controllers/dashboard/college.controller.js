@@ -24,16 +24,27 @@ module.exports.showCollege = async (req, res) => {
     res.render('colleges/show.ejs', { college });
 };
 
-module.exports.createCollege = async (req, res) => {
+module.exports.createCollege = async (req, res, next) => {
     // console.log(req.body);
 
     const { name, description, location, status } = req.body;
+
+    const slug = name.replace(/\s+/g, '-').toLowerCase();
+
+    const existingCollege = await Colleges.findOne({ slug });
+
+    if (existingCollege) {
+        return next(
+            errorHandler(400, 'College with this name already exists.')
+        );
+    }
 
     const newCollege = new Colleges({
         name,
         description,
         location,
         status,
+        slug,
     });
     newCollege.owner = req.user._id;
     await newCollege.save();
