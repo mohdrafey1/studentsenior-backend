@@ -62,17 +62,48 @@ module.exports.userResources = async (req, res, next) => {
     const transactions = await Transaction.find({ user: req.user.id }).sort({
         createdAt: -1,
     });
-    const productsAdded = await Store.find({ owner: req.user.id }).sort({
-        createdAt: -1,
-    });
-    const pyqAdded = await NewPyqs.find({ owner: req.user.id })
-        .populate('subject', 'subjectName')
+    const productsAdded = await Store.find({ owner: req.user.id })
+        .populate('college', 'slug')
         .sort({
             createdAt: -1,
         });
-    const notesAdded = await Notes.find({ owner: req.user.id }).sort({
-        createdAt: -1,
-    });
+
+    console.log(productsAdded);
+
+    const pyqAdded = await NewPyqs.find({ owner: req.user.id })
+        .populate({
+            path: 'subject',
+            select: 'subjectCode subjectName semester branch',
+            populate: {
+                path: 'branch',
+                select: 'branchName branchCode course',
+                populate: {
+                    path: 'course',
+                    select: 'courseCode courseName',
+                },
+            },
+        })
+        .populate('college', 'slug')
+        .sort({
+            createdAt: -1,
+        });
+    const notesAdded = await Notes.find({ owner: req.user.id })
+        .populate({
+            path: 'subject',
+            select: 'subjectCode subjectName semester branch',
+            populate: {
+                path: 'branch',
+                select: 'branchName branchCode course',
+                populate: {
+                    path: 'course',
+                    select: 'courseCode courseName',
+                },
+            },
+        })
+        .populate('college', 'slug')
+        .sort({
+            createdAt: -1,
+        });
 
     res.json({
         rewardPoints: user.rewardPoints,

@@ -88,7 +88,8 @@ module.exports.createSenior = async (req, res) => {
     await newSenior.save();
 
     res.json({
-        message: 'Senior submitted successfully and is pending approval.',
+        message:
+            "🎉 Your request for becoming a senior has been successfully submitted! 👍 It'll be available once approved. Thanks for your patience!",
     });
 };
 

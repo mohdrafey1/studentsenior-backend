@@ -15,6 +15,7 @@ const CollegeSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'Client',
         },
+        slug: { type: String, unique: true, required: true },
     },
     {
         timestamps: true,

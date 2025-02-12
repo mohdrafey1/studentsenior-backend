@@ -34,7 +34,7 @@ router.get(
 router.get(
     '/:slug',
     validateApiKey,
-    wrapAsync(apiStoreController.fetchPyqBySlug)
+    wrapAsync(apiStoreController.fetchProductBySlug)
 );
 
 router.get(

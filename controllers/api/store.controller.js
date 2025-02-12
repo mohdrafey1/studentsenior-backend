@@ -48,19 +48,37 @@ module.exports = {
     //
     // },
 
-    fetchPyqBySlug: async (req, res) => {
-        const { slug } = req.params;
+    fetchProductBySlug: async (req, res, next) => {
+        const token = req.cookies.access_token;
 
-        const product = await Store.findOneAndUpdate(
-            { slug: slug, status: true },
-            { $inc: { clickCount: 1 } },
-            { new: true }
-        );
-        if (!product) {
-            return next(errorHandler(404, 'Product not found or inactive'));
+        if (token) {
+            const user = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = user;
         }
 
-        res.status(200).json(product);
+        const { slug } = req.params;
+        const userId = req.user?.id;
+
+        const product = await Store.findOne({ slug });
+
+        if (!product) {
+            return next(errorHandler(404, 'Product not found'));
+        }
+
+        if (product.owner.toString() === userId) {
+            return res.status(200).json(product);
+        }
+
+        if (product.status) {
+            const updatedProduct = await Store.findOneAndUpdate(
+                { slug, status: true },
+                { $inc: { clickCount: 1 } },
+                { new: true }
+            );
+            return res.status(200).json(updatedProduct);
+        }
+
+        return next(errorHandler(404, 'Product not found or inactive'));
     },
 
     createProduct: async (req, res) => {
