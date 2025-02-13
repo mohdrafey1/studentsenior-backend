@@ -57,11 +57,11 @@ const newPyqApiRoutes = require('./routes/api/newPyq.api.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
+    'https://staging.studentsenior.com',
     'https://www.studentsenior.com',
     'https://studentsenior.com',
     'http://localhost:8080',
     'https://panel.studentsenior.com',
-    'https://staging.studentsenior.com',
 ];
 
 app.use(
