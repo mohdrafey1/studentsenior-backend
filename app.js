@@ -54,7 +54,6 @@ const apiContactUsRouter = require('./routes/api/contactus.api.js');
 const resourceApiRoutes = require('./routes/api/resource.api.js');
 const s3PresignedRoutes = require('./routes/api/s3.presigned.api.js');
 const newPyqApiRoutes = require('./routes/api/newPyq.api.js');
-const { errorHandler } = require('./utils/error.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -73,7 +72,7 @@ app.use(
                 return callback(null, true);
             } else {
                 console.error(`Blocked by CORS: ${origin}`);
-                return callback(null, false);
+                return callback(new Error('Not allowed by CORS'));
             }
         },
         credentials: true,
