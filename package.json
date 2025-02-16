@@ -13,6 +13,7 @@
     "description": "",
     "dependencies": {
         "@aws-sdk/client-s3": "^3.726.1",
+        "@aws-sdk/cloudfront-signer": "^3.734.0",
         "@aws-sdk/s3-request-presigner": "^3.726.1",
         "bcryptjs": "^2.4.3",
         "cloudinary": "^1.41.3",
