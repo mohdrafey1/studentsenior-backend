@@ -1,7 +1,8 @@
 const { getSignedUrl } = require('@aws-sdk/cloudfront-signer');
 
 // Decode base64 private key
-const privateKey = process.env.CLOUDFRONT_PRIVATE_KEY_BASE64;
+const privateKey = process.env.CLOUDFRONT_PRIVATE_KEY;
+const keyPairId = process.env.CLOUDFRONT_KEY_PAIR_ID;
 
 const fetchSignedUrl = (s3Url) => {
     const url = s3Url.replace(
@@ -14,7 +15,7 @@ const fetchSignedUrl = (s3Url) => {
     // Generate the signed URL using AWS SDK
     const signedUrl = getSignedUrl({
         url,
-        keyPairId: process.env.CLOUDFRONT,
+        keyPairId,
         privateKey,
         dateLessThan: new Date(expires * 1000).toISOString(),
     });
