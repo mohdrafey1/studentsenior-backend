@@ -1,7 +1,10 @@
 const { getSignedUrl } = require('@aws-sdk/cloudfront-signer');
 
 // Decode base64 private key
-const privateKey = process.env.CLOUDFRONT_PRIVATE_KEY;
+const privateKey = Buffer.from(
+    process.env.CLOUDFRONT_PRIVATE_KEY,
+    'base64'
+).toString('utf-8');
 const keyPairId = process.env.CLOUDFRONT_KEY_PAIR_ID;
 
 const fetchSignedUrl = (s3Url) => {
