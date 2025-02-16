@@ -62,6 +62,7 @@ const allowedOrigins = [
     'https://studentsenior.com',
     'http://localhost:8080',
     'https://panel.studentsenior.com',
+    'https://studentsenior-backend-git-main-mohdrafey1.vercel.app',
     'https://staging-student-senior.vercel.app',
 ];
 
