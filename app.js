@@ -53,6 +53,7 @@ const apiOpportunityRouter = require('./routes/api/opportunity.api.js');
 const apiContactUsRouter = require('./routes/api/contactus.api.js');
 const resourceApiRoutes = require('./routes/api/resource.api.js');
 const s3PresignedRoutes = require('./routes/api/s3.presigned.api.js');
+const cloudfrontsignurlRoutes = require('./routes/api/cloudfrontsignedurl.api.js');
 const newPyqApiRoutes = require('./routes/api/newPyq.api.js');
 
 const allowedOrigins = [
@@ -61,7 +62,8 @@ const allowedOrigins = [
     'https://studentsenior.com',
     'http://localhost:8080',
     'https://panel.studentsenior.com',
-    'https://staging-student-senior.vercel.app'
+    'https://studentsenior-backend-git-main-mohdrafey1.vercel.app',
+    'https://staging-student-senior.vercel.app',
 ];
 
 app.use(
@@ -116,6 +118,7 @@ app.use('/api/contactus', apiContactUsRouter);
 app.use('/api/resource', resourceApiRoutes);
 app.use('/api/generate', s3PresignedRoutes);
 app.use('/api/newpyq', newPyqApiRoutes);
+app.use('/api/get-signed-url', cloudfrontsignurlRoutes);
 
 const store = MongoStore.create({
     mongoUrl: DB_URL,
