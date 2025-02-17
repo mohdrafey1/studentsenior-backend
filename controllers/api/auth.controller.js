@@ -16,9 +16,6 @@ const generateUniqueUsername = async (baseUsername) => {
 };
 
 const isProduction = process.env.NODE_ENV === 'production';
-const domain =
-    process.env.COOKIE_DOMAIN ||
-    (isProduction ? '.studentsenior.com' : undefined);
 
 module.exports.signup = async (req, res, next) => {
     const { username, email, password, phone, college } = req.body;
@@ -78,7 +75,7 @@ module.exports.google = async (req, res, next) => {
             expires: expiryDate,
             secure: isProduction,
             sameSite: isProduction ? 'None' : 'Lax',
-            domain: domain,
+            domain: isProduction ? '.studentsenior.com' : undefined,
         })
             .status(200)
             .json(rest);
