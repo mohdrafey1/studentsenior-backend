@@ -76,7 +76,9 @@ module.exports.bonusPoints = async (req, res, next) => {
 };
 
 module.exports.addPointsRequests = async (req, res) => {
-    const requests = await AddPoint.find().populate('owner');
+    const requests = await AddPoint.find()
+        .populate('owner')
+        .sort({ createdAt: -1 });
     res.render('transaction/addPointsRequest', {
         title: 'Pending Points Requests',
         requests,
