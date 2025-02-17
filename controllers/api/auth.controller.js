@@ -15,7 +15,15 @@ const generateUniqueUsername = async (baseUsername) => {
     return username;
 };
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.ENVIRONMENT === 'production';
+const isStaging = process.env.ENVIRONMENT === 'staging';
+
+let domain;
+if (isProduction) {
+    domain = '.studentsenior.com'; // Production domain
+} else if (isStaging) {
+    domain = '.staging-student-senior.vercel.app'; // Staging domain
+}
 
 module.exports.signup = async (req, res, next) => {
     const { username, email, password, phone, college } = req.body;
@@ -53,9 +61,9 @@ module.exports.signin = async (req, res, next) => {
     res.cookie('access_token', token, {
         httpOnly: true,
         expires: expiryDate,
-        secure: isProduction,
-        sameSite: isProduction ? 'None' : 'Lax',
-        domain: isProduction ? '.studentsenior.com' : undefined,
+        secure: isProduction || isStaging, // Secure cookie for both staging and production
+        sameSite: isProduction || isStaging ? 'None' : 'Lax', // For cross-domain cookie sharing
+        domain: domain,
     })
         .status(200)
         .json(rest);
@@ -73,9 +81,9 @@ module.exports.google = async (req, res, next) => {
         res.cookie('access_token', token, {
             httpOnly: true,
             expires: expiryDate,
-            secure: isProduction,
-            sameSite: isProduction ? 'None' : 'Lax',
-            domain: isProduction ? '.studentsenior.com' : undefined,
+            secure: isProduction || isStaging, // Secure cookie for both staging and production
+            sameSite: isProduction || isStaging ? 'None' : 'Lax', // For cross-domain cookie sharing
+            domain: domain,
         })
             .status(200)
             .json(rest);
@@ -101,9 +109,9 @@ module.exports.google = async (req, res, next) => {
         res.cookie('access_token', token, {
             httpOnly: true,
             expires: expiryDate,
-            secure: isProduction,
-            sameSite: isProduction ? 'None' : 'Lax',
-            domain: isProduction ? '.studentsenior.com' : undefined,
+            secure: isProduction || isStaging, // Secure cookie for both staging and production
+            sameSite: isProduction || isStaging ? 'None' : 'Lax', // For cross-domain cookie sharing
+            domain: domain,
         })
             .status(200)
             .json(rest);
