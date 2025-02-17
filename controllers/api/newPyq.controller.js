@@ -1,6 +1,8 @@
 const Newpyq = require('../../models/NewPyqs.js');
 const { Course, Branch } = require('../../models/CourseBranch.js');
+const Transaction = require('../../models/Transaction.js');
 const Subject = require('../../models/Subjects');
+const Client = require('../../models/Client.js');
 const { errorHandler } = require('../../utils/error.js');
 
 module.exports.fetchPyqsByCollege = async (req, res, next) => {
@@ -71,10 +73,12 @@ module.exports.createPyq = async (req, res, next) => {
         subjectCode,
         branchCode,
         solved,
+        isPaid,
+        price,
     } = req.body;
 
     if (!fileUrl) {
-        return next(errorHandler(404, 'No file uploaded'));
+        return next(errorHandler(400, 'No file uploaded'));
     }
 
     const branch = await Branch.findOne({
@@ -105,6 +109,12 @@ module.exports.createPyq = async (req, res, next) => {
         slug = slug + '-solved';
     }
 
+    if (isPaid && (!price || price <= 0)) {
+        return res
+            .status(400)
+            .json({ message: 'Please provide a valid price for paid content' });
+    }
+
     const slugExists = await Newpyq.findOne({ slug });
     if (slugExists) {
         return next(errorHandler(409, 'This Pyq Already exist please check'));
@@ -119,6 +129,8 @@ module.exports.createPyq = async (req, res, next) => {
         fileUrl,
         college,
         solved,
+        isPaid,
+        price,
     });
 
     await Subject.findByIdAndUpdate(subjectId, { $inc: { totalPyqs: 1 } });
@@ -153,4 +165,56 @@ module.exports.getPyq = async (req, res, next) => {
     }
 
     res.json({ pyq });
+};
+
+module.exports.purchasePyq = async (req, res, next) => {
+    const pyqId = req.params.id;
+    const userId = req.user.id;
+
+    console.log(pyqId);
+
+    // Find the PYQ
+    const pyq = await Newpyq.findById(pyqId);
+    if (!pyq) {
+        return next(errorHandler(403, 'PYQ not found'));
+    }
+
+    console.log(pyq);
+
+    // Check if already purchased
+    if (pyq.purchasedBy.includes(userId)) {
+        return next(errorHandler(409, 'You have already purchased this PYQ'));
+    }
+
+    // Get user details
+    const user = await Client.findById(userId);
+    if (!user) {
+        return next(errorHandler(403, 'User not found'));
+    }
+
+    // Check if user has enough points
+    if (user.rewardBalance < pyq.price) {
+        return next(errorHandler(404, 'Insufficient points'));
+    }
+
+    // Deduct points
+    user.rewardBalance -= pyq.price;
+    await user.save();
+
+    // Record the purchase
+    pyq.purchasedBy.push(userId);
+    await pyq.save();
+
+    // Create a transaction
+    const transaction = new Transaction({
+        user: userId,
+        type: 'pyq-purchase',
+        points: pyq.price,
+        resourceType: 'pyq',
+        resourceId: pyq._id,
+    });
+
+    await transaction.save();
+
+    res.status(200).json({ success: true, message: 'Purchase successful' });
 };

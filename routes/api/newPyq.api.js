@@ -27,4 +27,10 @@ router.get(
     wrapAsync(apiNewpyqController.getPyq)
 );
 
+router.post(
+    '/purchase/:id',
+    verifyToken,
+    wrapAsync(apiNewpyqController.purchasePyq)
+);
+
 module.exports = router;

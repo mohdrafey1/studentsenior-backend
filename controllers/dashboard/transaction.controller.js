@@ -1,6 +1,7 @@
 const Transaction = require('../../models/Transaction.js');
 const RedemptionRequest = require('../../models/RedemptionRequest.js');
 const Client = require('../../models/Client.js');
+const AddPoint = require('../../models/AddPoint.js');
 
 exports.getAllTransactions = async (req, res) => {
     const transactions = await Transaction.find()
@@ -72,4 +73,51 @@ module.exports.bonusPoints = async (req, res, next) => {
 
     req.flash('success', 'Bonus Created Successfully');
     res.redirect('/transactions/bonuspoints');
+};
+
+module.exports.addPointsRequests = async (req, res) => {
+    const requests = await AddPoint.find().populate('owner');
+    res.render('transaction/addPointsRequest', {
+        title: 'Pending Points Requests',
+        requests,
+    });
+};
+
+module.exports.addPoints = async (req, res) => {
+    const { requestId } = req.body;
+
+    const request = await AddPoint.findById(requestId);
+    if (!request) {
+        return res.status(404).send('Request not found');
+    }
+
+    if (request.status === true) {
+        return res.status(400).send('Points already added for this request');
+    }
+
+    const user = await Client.findById(request.owner);
+    if (!user) {
+        return res.status(404).send('User not found');
+    }
+
+    // Add points to the user's reward balance
+    user.rewardBalance += request.pointsAdded;
+    await user.save();
+
+    // Update request status to 'processed'
+    request.status = true;
+    await request.save();
+
+    // Create a transaction record
+    const transaction = new Transaction({
+        user: request.owner,
+        type: 'add-point',
+        points: request.pointsAdded,
+    });
+
+    await transaction.save();
+
+    // Flash success message
+    req.flash('success', 'Points Added Successfully');
+    res.redirect('/transactions/add-points'); // Redirect after processing
 };
