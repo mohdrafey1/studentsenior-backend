@@ -4,6 +4,8 @@ const Transaction = require('../../models/Transaction.js');
 const Subject = require('../../models/Subjects');
 const Client = require('../../models/Client.js');
 const { errorHandler } = require('../../utils/error.js');
+const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const s3 = require('../../config/s3.js');
 
 module.exports.fetchPyqsByCollege = async (req, res, next) => {
     const { collegeId } = req.params;
@@ -59,6 +61,7 @@ module.exports.fetchPyqsByCollegeBranch = async (req, res, next) => {
         status: true,
     })
         .populate('subject', 'subjectName subjectCode')
+        .populate('owner', 'username profilePicture')
         .sort({ clickCounts: -1 });
 
     res.status(200).json({ pyqs, subjectName: subject.subjectName });
@@ -217,4 +220,79 @@ module.exports.purchasePyq = async (req, res, next) => {
     await transaction.save();
 
     res.status(200).json({ success: true, message: 'Purchase successful' });
+};
+
+module.exports.deletePyq = async (req, res, next) => {
+    const { id } = req.params;
+
+    const pyq = await Newpyq.findById(id);
+
+    if (!pyq) {
+        return next(errorHandler(404, 'Pyq not found'));
+    }
+
+    const { fileUrl, subject, owner, rewardPoints } = pyq;
+
+    const bucketName = process.env.S3_BUCKET_NAME;
+    const region = process.env.AWS_REGION;
+    const s3Key = fileUrl.replace(
+        `https://${bucketName}.s3.${region}.amazonaws.com/`,
+        ''
+    );
+
+    await s3.send(new DeleteObjectCommand({ Bucket: bucketName, Key: s3Key }));
+
+    const newSubject = await Subject.findByIdAndUpdate(
+        subject,
+        { $inc: { totalNotes: -1 } },
+        { new: true }
+    );
+
+    const branch = await Branch.findByIdAndUpdate(
+        newSubject.branch,
+        { $inc: { totalNotes: -1 } },
+        { new: true }
+    );
+    if (branch) {
+        await Course.findByIdAndUpdate(branch.course, {
+            $inc: { totalNotes: -1 },
+        });
+    }
+
+    if (owner && rewardPoints > 0) {
+        const client = await Client.findById(owner);
+        if (client) {
+            client.rewardPoints -= rewardPoints;
+            client.rewardBalance -= rewardPoints;
+
+            await client.save();
+
+            const transaction = new Transaction({
+                user: client._id,
+                type: 'reduction',
+                points: rewardPoints,
+                resourceType: 'pyq',
+                resourceId: pyq._id,
+            });
+
+            await transaction.save();
+        }
+    }
+
+    // Delete the note
+    await Newpyq.deleteOne({ _id: id });
+
+    res.json({ message: 'Pyq deleted successfully' });
+};
+
+module.exports.editPyq = async (req, res) => {
+    const updatedPyq = await Newpyq.findByIdAndUpdate(
+        req.params.id,
+        {
+            isPaid: req.body.isPaid,
+            price: req.body.isPaid ? req.body.price : 0,
+        },
+        { new: true }
+    );
+    res.json({ success: true, data: updatedPyq });
 };
