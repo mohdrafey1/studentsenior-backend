@@ -105,11 +105,13 @@ module.exports.createPyq = async (req, res, next) => {
 
     let owner = req.user.id;
 
+    const user = await Client.findById(owner);
+
     let slug = `${subject.subjectName}-${examType}-${year}-${branchCode}`;
     slug = slug.toLowerCase().replace(/\s+/g, '-');
 
     if (solved === true) {
-        slug = slug + '-solved';
+        slug = slug + '-solved-' + user.username;
     }
 
     if (isPaid && (!price || price <= 0)) {
