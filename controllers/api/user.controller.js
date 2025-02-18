@@ -156,7 +156,7 @@ module.exports.addPoints = async (req, res, next) => {
     const { points, rupees, transactionId } = req.body;
 
     // Check for missing fields
-    if (!points || !rupees || !transactionId) {
+    if (!points || !rupees) {
         next(errorHandler(400, 'All fields are required.'));
     }
 

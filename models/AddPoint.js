@@ -20,7 +20,7 @@ const pointSchema = new Schema(
         },
         transactionId: {
             type: String,
-            required: true,
+
             trim: true,
         },
         status: {

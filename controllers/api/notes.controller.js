@@ -118,11 +118,17 @@ module.exports.createNotes = async (req, res, next) => {
         price,
     });
 
-    await Subject.findByIdAndUpdate(subjectId, { $inc: { totalNotes: 1 } });
+    const incSubject = await Subject.findByIdAndUpdate(subjectId, {
+        $inc: { totalNotes: 1 },
+    });
 
-    await Branch.findByIdAndUpdate(branch._id, { $inc: { totalNotes: 1 } });
+    const incBranch = await Branch.findByIdAndUpdate(branch._id, {
+        $inc: { totalNotes: 1 },
+    });
 
-    await Course.findByIdAndUpdate(branch.course, { $inc: { totalNotes: 1 } });
+    const incCourse = await Course.findByIdAndUpdate(branch.course, {
+        $inc: { totalNotes: 1 },
+    });
 
     await newNotes.save();
 
@@ -274,6 +280,25 @@ module.exports.purchaseNote = async (req, res, next) => {
     // Record the purchase
     note.purchasedBy.push(userId);
     await note.save();
+
+    const ownerId = note.owner;
+    const owner = await Client.findById(ownerId);
+    if (owner) {
+        const creditAmount = Math.floor(note.price * 0.7); // 70% of the price
+        owner.rewardBalance += creditAmount;
+        owner.rewardPoints += creditAmount;
+        await owner.save();
+
+        // Create a transaction for the owner
+        const ownerTransaction = new Transaction({
+            user: ownerId,
+            type: 'note-sale',
+            points: creditAmount,
+            resourceType: 'notes',
+            resourceId: note._id,
+        });
+        await ownerTransaction.save();
+    }
 
     // Create a transaction
     const transaction = new Transaction({
