@@ -33,4 +33,8 @@ router.post(
     wrapAsync(apiNewpyqController.purchasePyq)
 );
 
+router.delete('/:id', verifyToken, wrapAsync(apiNewpyqController.deletePyq));
+
+router.put('/:id', verifyToken, wrapAsync(apiNewpyqController.editPyq));
+
 module.exports = router;
