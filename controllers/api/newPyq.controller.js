@@ -115,9 +115,9 @@ module.exports.createPyq = async (req, res, next) => {
     }
 
     if (isPaid && (!price || price <= 0)) {
-        return res
-            .status(400)
-            .json({ message: 'Please provide a valid price for paid content' });
+        return next(
+            errorHandler(400, 'Please provide a valid price for paid content')
+        );
     }
 
     const slugExists = await Newpyq.findOne({ slug });

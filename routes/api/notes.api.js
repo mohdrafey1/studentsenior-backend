@@ -41,4 +41,11 @@ router.get(
     wrapAsync(apiNotesController.getNote)
 );
 
+router.post(
+    '/purchase/:id',
+    verifyToken,
+    wrapAsync(apiNotesController.purchaseNote)
+);
+
+router.put('/:id', verifyToken, wrapAsync(apiNotesController.editNote));
 module.exports = router;

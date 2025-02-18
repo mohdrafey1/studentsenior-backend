@@ -61,11 +61,25 @@ module.exports.fetchNotesByCollege = async (req, res) => {
 
 // Create a new Notes
 module.exports.createNotes = async (req, res, next) => {
-    const { subjectCode, branchCode, description, title, college, fileUrl } =
-        req.body;
+    const {
+        subjectCode,
+        branchCode,
+        description,
+        title,
+        college,
+        fileUrl,
+        isPaid,
+        price,
+    } = req.body;
 
     if (!fileUrl) {
-        return next(errorHandler(404, 'No file uploaded'));
+        return next(errorHandler(400, 'No file uploaded'));
+    }
+
+    if (isPaid && (!price || price <= 0)) {
+        return next(
+            errorHandler(400, 'Please provide a valid price for paid content')
+        );
     }
 
     const branch = await Branch.findOne({
@@ -73,7 +87,7 @@ module.exports.createNotes = async (req, res, next) => {
     });
 
     if (!branch) {
-        return res.status(404).json({ message: 'Branch not found' });
+        return next(errorHandler(403, 'Branch not found'));
     }
 
     const subject = await Subject.findOne({
@@ -100,6 +114,8 @@ module.exports.createNotes = async (req, res, next) => {
         slug,
         fileUrl,
         college,
+        isPaid,
+        price,
     });
 
     await Subject.findByIdAndUpdate(subjectId, { $inc: { totalNotes: 1 } });
@@ -223,4 +239,64 @@ module.exports.getNote = async (req, res, next) => {
     }
 
     res.json({ note });
+};
+
+module.exports.purchaseNote = async (req, res, next) => {
+    const noteId = req.params.id;
+    const userId = req.user.id;
+
+    // Find the note
+    const note = await Notes.findById(noteId);
+    if (!note) {
+        return next(errorHandler(403, 'note not found'));
+    }
+
+    // Check if already purchased
+    if (note.purchasedBy.includes(userId)) {
+        return next(errorHandler(409, 'You have already purchased this note'));
+    }
+
+    // Get user details
+    const user = await Client.findById(userId);
+    if (!user) {
+        return next(errorHandler(403, 'User not found'));
+    }
+
+    // Check if user has enough points
+    if (user.rewardBalance < note.price) {
+        return next(errorHandler(404, 'Insufficient points'));
+    }
+
+    // Deduct points
+    user.rewardBalance -= note.price;
+    await user.save();
+
+    // Record the purchase
+    note.purchasedBy.push(userId);
+    await note.save();
+
+    // Create a transaction
+    const transaction = new Transaction({
+        user: userId,
+        type: 'note-purchase',
+        points: note.price,
+        resourceType: 'notes',
+        resourceId: note._id,
+    });
+
+    await transaction.save();
+
+    res.status(200).json({ success: true, message: 'Purchase successful' });
+};
+
+module.exports.editNote = async (req, res) => {
+    const updatedNotes = await Notes.findByIdAndUpdate(
+        req.params.id,
+        {
+            isPaid: req.body.isPaid,
+            price: req.body.isPaid ? req.body.price : 0,
+        },
+        { new: true }
+    );
+    res.json({ success: true, data: updatedNotes });
 };
