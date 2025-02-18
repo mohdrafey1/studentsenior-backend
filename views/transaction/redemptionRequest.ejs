@@ -16,7 +16,7 @@
                     <tr>
                         <th class=" text-left">User Name</th>
                         <th class=" text-left">UPI ID</th>
-                        <th class=" text-left">Reward Balance</th>
+                        <th class=" text-left">Amount</th>
                         <th class=" text-left">Requested On</th>
                         <th class="text-left">Status</th>
                         <th class=" text-left">Action</th>
@@ -33,7 +33,7 @@
                                 <%= request.upiId %>
                             </td>
                             <td>
-                                ₹<%= request.rewardBalance %>
+                                ₹<%= request.rewardBalance/5 %>
                             </td>
                             <td>
                                 <%= new Date(request.createdAt).toLocaleString() %>

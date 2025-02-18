@@ -18,6 +18,8 @@ const transactionSchema = new Schema(
                 'pyq-purchase',
                 'note-purchase',
                 'add-point',
+                'pyq-sale',
+                'note-sale',
             ],
             required: true,
         },

@@ -138,7 +138,9 @@ module.exports.createPyq = async (req, res, next) => {
         price,
     });
 
-    await Subject.findByIdAndUpdate(subjectId, { $inc: { totalPyqs: 1 } });
+    const totalPyqsinSubject = await Subject.findByIdAndUpdate(subjectId, {
+        $inc: { totalPyqs: 1 },
+    });
 
     const totalPyqsinbranch = await Branch.findByIdAndUpdate(branch._id, {
         $inc: { totalPyqs: 1 },
@@ -176,15 +178,11 @@ module.exports.purchasePyq = async (req, res, next) => {
     const pyqId = req.params.id;
     const userId = req.user.id;
 
-    console.log(pyqId);
-
     // Find the PYQ
     const pyq = await Newpyq.findById(pyqId);
     if (!pyq) {
         return next(errorHandler(403, 'PYQ not found'));
     }
-
-    console.log(pyq);
 
     // Check if already purchased
     if (pyq.purchasedBy.includes(userId)) {
@@ -202,7 +200,7 @@ module.exports.purchasePyq = async (req, res, next) => {
         return next(errorHandler(404, 'Insufficient points'));
     }
 
-    // Deduct points
+    // Deduct points from the purchaser
     user.rewardBalance -= pyq.price;
     await user.save();
 
@@ -210,7 +208,27 @@ module.exports.purchasePyq = async (req, res, next) => {
     pyq.purchasedBy.push(userId);
     await pyq.save();
 
-    // Create a transaction
+    // Credit 70% to the PYQ owner's account
+    const ownerId = pyq.owner;
+    const owner = await Client.findById(ownerId);
+    if (owner) {
+        const creditAmount = Math.floor(pyq.price * 0.7); // 70% of the price
+        owner.rewardBalance += creditAmount;
+        owner.rewardPoints += creditAmount;
+        await owner.save();
+
+        // Create a transaction for the owner
+        const ownerTransaction = new Transaction({
+            user: ownerId,
+            type: 'pyq-sale',
+            points: creditAmount,
+            resourceType: 'pyq',
+            resourceId: pyq._id,
+        });
+        await ownerTransaction.save();
+    }
+
+    // Create a transaction for the purchaser
     const transaction = new Transaction({
         user: userId,
         type: 'pyq-purchase',
@@ -218,7 +236,6 @@ module.exports.purchasePyq = async (req, res, next) => {
         resourceType: 'pyq',
         resourceId: pyq._id,
     });
-
     await transaction.save();
 
     res.status(200).json({ success: true, message: 'Purchase successful' });
