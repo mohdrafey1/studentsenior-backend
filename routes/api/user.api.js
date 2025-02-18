@@ -4,6 +4,7 @@ const {
     deleteUser,
     userResources,
     redeemPoints,
+    addPoints,
 } = require('../../controllers/api/user.controller.js');
 const { verifyToken } = require('../../utils/verifyUser.js');
 const { validateApiKey } = require('../../middleware.js');
@@ -21,6 +22,8 @@ router.post(
     validateApiKey,
     wrapAsync(redeemPoints)
 );
+
+router.post('/add-points', verifyToken, wrapAsync(addPoints));
 
 // router.delete('/delete/:id', verifyToken, wrapAsync(deleteUser));  //will implement later if needed
 

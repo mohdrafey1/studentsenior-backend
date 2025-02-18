@@ -25,6 +25,15 @@ const NewPyqSchema = new mongoose.Schema(
         rewardPoints: { type: Number, default: 10, min: 0 },
         clickCounts: { type: Number, default: 0 },
         solved: { type: Boolean, default: false },
+
+        isPaid: { type: Boolean, default: false },
+        price: { type: Number, default: 0, min: 0 },
+        purchasedBy: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Client',
+            },
+        ],
     },
     {
         timestamps: true,

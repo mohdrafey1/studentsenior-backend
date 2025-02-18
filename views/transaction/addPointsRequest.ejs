@@ -1,0 +1,55 @@
+<% layout("/layouts/boilerplate.ejs") %>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">
+            <%= title %>
+        </h1>
+
+        <% if (requests.length> 0) { %>
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>User</th>
+                        <th>Points Requested</th>
+                        <th>Transaction ID</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% requests.forEach(request=> { %>
+                        <tr>
+                            <td>
+                                <%= request.owner.email %>
+                            </td>
+                            <td>
+                                <%= request.pointsAdded %>
+                            </td>
+                            <td>
+                                <%= request.transactionId %>
+                            </td>
+                            <td>
+                                <span class="<%= request.status ? 'text-success' : 'text-warning' %>">
+                                    <%= request.status ? 'Processed' : 'Pending' %>
+                                </span>
+                            </td>
+                            <td>
+                                <% if (!request.status) { %>
+                                    <!-- Form to update status -->
+                                    <form action="/transactions/add-points" method="POST" class="d-inline-block">
+                                        <input type="hidden" name="requestId" value="<%= request._id %>">
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            Add Points
+                                        </button>
+                                    </form>
+                                    <% } else { %>
+                                        <span class="text-muted">Points Added</span>
+                                        <% } %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+            <% } else { %>
+                <p class="text-center">No pending requests</p>
+                <% } %>
+    </div>

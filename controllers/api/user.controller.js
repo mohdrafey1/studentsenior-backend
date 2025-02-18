@@ -4,6 +4,7 @@ const Notes = require('../../models/Notes.js');
 const RedemptionRequest = require('../../models/RedemptionRequest.js');
 const Store = require('../../models/Store.js');
 const Transaction = require('../../models/Transaction.js');
+const AddPoint = require('../../models/AddPoint.js');
 const { errorHandler } = require('../../utils/error.js');
 const bcryptjs = require('bcryptjs');
 
@@ -68,7 +69,7 @@ module.exports.userResources = async (req, res, next) => {
             createdAt: -1,
         });
 
-    console.log(productsAdded);
+    // console.log(productsAdded);
 
     const pyqAdded = await NewPyqs.find({ owner: req.user.id })
         .populate({
@@ -148,4 +149,28 @@ module.exports.redeemPoints = async (req, res, next) => {
     await transaction.save();
 
     res.status(200).json({ message: 'Redemption successful' });
+};
+
+module.exports.addPoints = async (req, res, next) => {
+    const owner = req.user.id;
+    const { points, rupees, transactionId } = req.body;
+
+    // Check for missing fields
+    if (!points || !rupees || !transactionId) {
+        next(errorHandler(400, 'All fields are required.'));
+    }
+
+    // Create new point entry
+    const newPoint = new AddPoint({
+        owner,
+        pointsAdded: points,
+        rupees,
+        transactionId,
+    });
+
+    await newPoint.save();
+    res.status(201).json({
+        message: 'Points added and will be reflected within 4 hours',
+        newPoint,
+    });
 };

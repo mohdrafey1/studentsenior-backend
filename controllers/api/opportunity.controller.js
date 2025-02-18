@@ -171,7 +171,7 @@ module.exports = {
 
     giveOpportunitiesBySlug: async (req, res, next) => {
         const { slug } = req.params;
-        console.log(slug);
+        // console.log(slug);
 
         const giveOpportunities = await GiveOpportunity.find({
             status: true,

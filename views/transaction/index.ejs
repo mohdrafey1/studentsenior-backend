@@ -30,15 +30,7 @@
                                     <%= transaction.user.username %>
                                 </td>
                                 <td>
-                                    <% if (transaction.type==='earn' ) { %>
-                                        <span class="badge bg-success">Earn</span>
-                                        <% } else if (transaction.type==='redeem' ) { %>
-                                            <span class="badge bg-warning">Redeem</span>
-                                            <% } else if (transaction.type==='reduction' ) { %>
-                                                <span class="badge bg-danger">Reduction</span>
-                                                <% } else { %>
-                                                    <span class="badge bg-info">Bonus</span>
-                                                    <% } %>
+                                    <%= transaction.type %>
                                 </td>
                                 <td>
                                     <%= transaction.points %>

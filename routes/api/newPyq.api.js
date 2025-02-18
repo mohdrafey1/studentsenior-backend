@@ -20,6 +20,17 @@ router.get(
 
 router.post('/', verifyToken, wrapAsync(apiNewpyqController.createPyq));
 
-router.get('/:slug', validateApiKey, wrapAsync(apiNewpyqController.getPyq));
+router.get(
+    '/:slug',
+    validateApiKey,
+    verifyToken,
+    wrapAsync(apiNewpyqController.getPyq)
+);
+
+router.post(
+    '/purchase/:id',
+    verifyToken,
+    wrapAsync(apiNewpyqController.purchasePyq)
+);
 
 module.exports = router;

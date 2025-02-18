@@ -18,4 +18,9 @@ router.post(
 router.get('/bonuspoints', wrapAsync(transactionController.bonusPointForm));
 
 router.post('/bonuspoints', wrapAsync(transactionController.bonusPoints));
+
+router.get('/add-points', wrapAsync(transactionController.addPointsRequests));
+
+router.post('/add-points', wrapAsync(transactionController.addPoints));
+
 module.exports = router;
