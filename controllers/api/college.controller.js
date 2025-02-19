@@ -2,20 +2,26 @@ const Colleges = require('../../models/Colleges');
 const { errorHandler } = require('../../utils/error');
 
 module.exports.fetchCollege = async (req, res, next) => {
-    const allColleges = await Colleges.find({ status: true });
+    const allColleges = await Colleges.find({ status: true }).sort({
+        clickCounts: -1,
+    });
     res.json(allColleges);
 };
 
 module.exports.fetchCollegeById = async (req, res, next) => {
     const { collegeId } = req.params;
+
     const college = await Colleges.findOne({
-        status: true,
         _id: collegeId,
+        status: true,
     });
 
     if (!college) {
-        return next(errorHandler(401, 'College not Found'));
+        return next(errorHandler(404, 'College not Found'));
     }
+
+    college.clickCounts += 1;
+    await college.save();
 
     res.status(200).json(college);
 };

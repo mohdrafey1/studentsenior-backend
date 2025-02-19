@@ -16,6 +16,7 @@ const CollegeSchema = new Schema(
             ref: 'Client',
         },
         slug: { type: String, unique: true, required: true },
+        clickCounts: { type: Number, default: 0 },
     },
     {
         timestamps: true,
