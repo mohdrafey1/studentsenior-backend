@@ -15,25 +15,26 @@ router.get(
 );
 
 router.get(
-    '/:collegeId/bundle',
-    validateApiKey,
-    wrapAsync(apiPyqController.fetchPyqBundle)
-);
-
-// router.get('/:id', validateApiKey, apiPyqController.fetchPyqById); // discard later
-router.get(
     '/:slug',
     validateApiKey,
     wrapAsync(apiPyqController.fetchPyqBySlug)
 );
 
-router.get(
-    '/:collegeId/:pyqId/related-pyqs',
-    validateApiKey,
-    wrapAsync(apiPyqController.fetchRelatedPapers)
-);
-
 router.post('/request-pyq', wrapAsync(apiPyqController.requestPyq));
+
+// router.get(
+//     '/:collegeId/bundle',
+//     validateApiKey,
+//     wrapAsync(apiPyqController.fetchPyqBundle)
+// );
+
+// router.get('/:id', validateApiKey, apiPyqController.fetchPyqById); // discard later
+
+// router.get(
+//     '/:collegeId/:pyqId/related-pyqs',
+//     validateApiKey,
+//     wrapAsync(apiPyqController.fetchRelatedPapers)
+// );
 
 // Create a new pyq
 // router.post('/', wrapAsync(apiPyqController.createPyq));

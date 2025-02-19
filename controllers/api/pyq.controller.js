@@ -17,22 +17,6 @@ module.exports.fetchPyqByCollege = async (req, res) => {
     return res.status(200).json(pyqs);
 };
 
-// module.exports.fetchPyqById = async (req, res) => {
-//     const { id } = req.params;
-//     try {
-//         const pyq = await PYQ.findOne({ _id: id, status: true });
-//         if (!pyq) {
-//             return res.status(404).json({ message: 'Pyq not found' });
-//         }
-//         await PYQ.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
-
-//         res.status(200).json(pyq);
-//     } catch (e) {
-//         console.error(e);
-//         res.status(500).json({ message: 'Some error occurred on the server' });
-//     }
-// };
-
 module.exports.fetchPyqBySlug = async (req, res) => {
     const { slug } = req.params;
 
@@ -47,54 +31,6 @@ module.exports.fetchPyqBySlug = async (req, res) => {
     }
 
     res.status(200).json(pyq);
-};
-
-//fetch related papers
-module.exports.fetchRelatedPapers = async (req, res) => {
-    const { collegeId, pyqId } = req.params;
-    const { year, semester, course, branch, examType } = req.query;
-
-    const query = { status: true, college: collegeId };
-
-    if (year) query.year = year;
-    if (semester) query.semester = semester;
-    if (course) query.course = course;
-    if (examType) query.examType = examType;
-
-    if (branch) {
-        const branches = branch.split(',').map((b) => b.trim());
-        query.branch = { $in: branches };
-    }
-
-    if (pyqId) {
-        query._id = { $ne: pyqId };
-    }
-
-    const relatedPapers = await PYQ.find(query).limit(6);
-    res.json(relatedPapers);
-};
-
-module.exports.fetchPyqBundle = async (req, res) => {
-    const { collegeId } = req.params;
-    const { year, semester, course, branch, examType } = req.query;
-
-    const query = {
-        status: true,
-        college: collegeId,
-    };
-
-    if (year) query.year = year;
-    if (semester) query.semester = semester;
-    if (course) query.course = course;
-    if (examType) query.examType = examType;
-
-    if (branch) {
-        const branches = branch.split(',').map((b) => b.trim());
-        query.branch = { $in: branches };
-    }
-
-    const bundlePyq = await PYQ.find(query);
-    res.json(bundlePyq);
 };
 
 module.exports.requestPyq = async (req, res) => {
@@ -126,34 +62,66 @@ module.exports.requestPyq = async (req, res) => {
     });
 };
 
-// Create a new PYQ
-// module.exports.createPyq = async (req, res) => {
-//     const {
-//         subjectName,
-//         subjectCode,
-//         semester,
-//         year,
-//         branch,
-//         course,
-//         examType,
-//         link,
-//         college,
-//     } = req.body;
+// module.exports.fetchPyqById = async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         const pyq = await PYQ.findOne({ _id: id, status: true });
+//         if (!pyq) {
+//             return res.status(404).json({ message: 'Pyq not found' });
+//         }
+//         await PYQ.findByIdAndUpdate(id, { $inc: { clickCount: 1 } });
 
-//         const newPYQ = new PYQ({
-//             subjectName,
-//             subjectCode,
-//             semester,
-//             year,
-//             branch,
-//             course,
-//             examType,
-//             link,
-//             college,
-//         });
+//         res.status(200).json(pyq);
+//     } catch (e) {
+//         console.error(e);
+//         res.status(500).json({ message: 'Some error occurred on the server' });
+//     }
+// };
 
-//         await newPYQ.save();
+//fetch related papers
+// module.exports.fetchRelatedPapers = async (req, res) => {
+//     const { collegeId, pyqId } = req.params;
+//     const { year, semester, course, branch, examType } = req.query;
 
-//         res.json({
-//             description: 'PYQ submitted successfully and is pending approval.',
-//         });
+//     const query = { status: true, college: collegeId };
+
+//     if (year) query.year = year;
+//     if (semester) query.semester = semester;
+//     if (course) query.course = course;
+//     if (examType) query.examType = examType;
+
+//     if (branch) {
+//         const branches = branch.split(',').map((b) => b.trim());
+//         query.branch = { $in: branches };
+//     }
+
+//     if (pyqId) {
+//         query._id = { $ne: pyqId };
+//     }
+
+//     const relatedPapers = await PYQ.find(query).limit(6);
+//     res.json(relatedPapers);
+// };
+
+// module.exports.fetchPyqBundle = async (req, res) => {
+//     const { collegeId } = req.params;
+//     const { year, semester, course, branch, examType } = req.query;
+
+//     const query = {
+//         status: true,
+//         college: collegeId,
+//     };
+
+//     if (year) query.year = year;
+//     if (semester) query.semester = semester;
+//     if (course) query.course = course;
+//     if (examType) query.examType = examType;
+
+//     if (branch) {
+//         const branches = branch.split(',').map((b) => b.trim());
+//         query.branch = { $in: branches };
+//     }
+
+//     const bundlePyq = await PYQ.find(query);
+//     res.json(bundlePyq);
+// };
