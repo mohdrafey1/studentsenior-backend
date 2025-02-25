@@ -263,18 +263,18 @@ module.exports.deletePyq = async (req, res, next) => {
 
     const newSubject = await Subject.findByIdAndUpdate(
         subject,
-        { $inc: { totalNotes: -1 } },
+        { $inc: { totalPyqs: -1 } },
         { new: true }
     );
 
     const branch = await Branch.findByIdAndUpdate(
         newSubject.branch,
-        { $inc: { totalNotes: -1 } },
+        { $inc: { totalPyqs: -1 } },
         { new: true }
     );
     if (branch) {
         await Course.findByIdAndUpdate(branch.course, {
-            $inc: { totalNotes: -1 },
+            $inc: { totalPyqs: -1 },
         });
     }
 
