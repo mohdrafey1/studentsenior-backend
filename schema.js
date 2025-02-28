@@ -75,3 +75,13 @@ module.exports.opportunitySchema = Joi.object({
     college: Joi.string().required(),
     status: Joi.boolean().default(false),
 });
+
+module.exports.lostFoundSchema = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    college: Joi.string().required(),
+    location: Joi.string().required(),
+    type: Joi.string().required(),
+    whatsapp: Joi.string().required(),
+    imageUrl: Joi.string().allow('', null),
+});

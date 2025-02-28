@@ -55,6 +55,7 @@ const resourceApiRoutes = require('./routes/api/resource.api.js');
 const s3PresignedRoutes = require('./routes/api/s3.presigned.api.js');
 const cloudfrontsignurlRoutes = require('./routes/api/cloudfrontsignedurl.api.js');
 const newPyqApiRoutes = require('./routes/api/newPyq.api.js');
+const lostFoundApi = require('./routes/api/lostFound.api.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -119,6 +120,7 @@ app.use('/api/resource', resourceApiRoutes);
 app.use('/api/generate', s3PresignedRoutes);
 app.use('/api/newpyq', newPyqApiRoutes);
 app.use('/api/get-signed-url', cloudfrontsignurlRoutes);
+app.use('/api/lostfound', lostFoundApi);
 
 const store = MongoStore.create({
     mongoUrl: DB_URL,
