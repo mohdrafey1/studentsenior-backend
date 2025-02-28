@@ -55,10 +55,10 @@ module.exports.createItem = async (req, res, next) => {
 // Get all Lost & Found items
 module.exports.getAllItems = async (req, res) => {
     try {
-        const items = await LostFound.find({ status: true }).populate(
-            'owner',
-            'username'
-        );
+        const { collegeId } = req.params;
+        const items = await LostFound.find({ college: collegeId, status: true })
+            .populate('owner', 'username')
+            .sort({ createdAt: -1 });
         res.status(200).json(items);
     } catch (error) {
         res.status(500).json({ error: error.message });
