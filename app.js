@@ -38,6 +38,7 @@ const branchRoutes = require('./routes/dashboard/branchcourse/branch.route.js');
 const subjectRoutes = require('./routes/dashboard/subjects.route.js');
 const transactionRoutes = require('./routes/dashboard/transaction.route.js');
 const newPyqRoutes = require('./routes/dashboard/newPyq.route.js');
+const lostFoundRoutes = require('./routes/dashboard/lostFound.route.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/college.api.js');
@@ -181,6 +182,7 @@ app.use('/branches', branchRoutes);
 app.use('/subjects', subjectRoutes);
 app.use('/transactions', transactionRoutes);
 app.use('/newpyqs', newPyqRoutes);
+app.use('/lostfound', lostFoundRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

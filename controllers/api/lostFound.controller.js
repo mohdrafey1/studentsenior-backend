@@ -15,7 +15,7 @@ module.exports.createItem = async (req, res, next) => {
             college,
         } = req.body;
 
-        console.log(req.body);
+        // console.log(req.body);
 
         let owner = req.user.id;
         const user = await Client.findById(owner);
