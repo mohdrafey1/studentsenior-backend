@@ -117,18 +117,3 @@ module.exports.deleteItem = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
-// Mark an item as claimed
-module.exports.claimItem = async (req, res) => {
-    try {
-        const item = await LostFound.findOne({ slug: req.params.slug });
-        if (!item) return res.status(404).json({ message: 'Item not found' });
-
-        item.status = 'claimed';
-        await item.save();
-
-        res.status(200).json({ message: 'Item marked as claimed', item });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};

@@ -19,12 +19,9 @@ router.get('/college/:collegeId', lostFoundController.getAllItems);
 router.get('/:slug', lostFoundController.getItemBySlug);
 
 // Update an item by slug
-router.put('/:slug', lostFoundController.updateItem);
+router.put('/:slug', verifyToken, lostFoundController.updateItem);
 
 // Delete an item by slug
-router.delete('/:slug', lostFoundController.deleteItem);
-
-// Mark an item as claimed
-router.patch('/:slug/claim', lostFoundController.claimItem);
+router.delete('/:slug', verifyToken, lostFoundController.deleteItem);
 
 module.exports = router;
