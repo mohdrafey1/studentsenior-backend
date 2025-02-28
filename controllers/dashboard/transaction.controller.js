@@ -123,3 +123,12 @@ module.exports.addPoints = async (req, res) => {
     req.flash('success', 'Points Added Successfully');
     res.redirect('/transactions/add-points'); // Redirect after processing
 };
+
+module.exports.deleteRequest = async (req, res) => {
+    const { id } = req.params;
+
+    await AddPoint.findByIdAndDelete(id);
+
+    req.flash('Request Deleted Successfully');
+    res.redirect('/transactions/add-points');
+};
