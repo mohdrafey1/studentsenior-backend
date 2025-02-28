@@ -23,6 +23,30 @@ const generateUniqueSlug = async (title, username) => {
     return uniqueSlug;
 };
 
+module.exports.fetchAllNotes = async (req, res, next) => {
+    const { collegeId } = req.params;
+
+    const pyqs = await Notes.find({
+        college: collegeId,
+        status: true,
+    })
+        .populate({
+            path: 'subject',
+            select: 'subjectCode subjectName semester branch',
+            populate: {
+                path: 'branch',
+                select: 'branchName branchCode course',
+                populate: {
+                    path: 'course',
+                    select: 'courseCode courseName',
+                },
+            },
+        })
+        .sort({ clickCounts: -1 });
+
+    res.status(200).json(pyqs);
+};
+
 module.exports.fetchNotesByCollege = async (req, res) => {
     const { subjectCode, branchCode, collegeId } = req.params;
 

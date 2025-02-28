@@ -7,6 +7,12 @@ const { verifyToken } = require('../../utils/verifyUser.js');
 const apiNotesController = require('../../controllers/api/notes.controller.js');
 
 router.get(
+    '/college/:collegeId',
+    validateApiKey,
+    wrapAsync(apiNotesController.fetchAllNotes)
+);
+
+router.get(
     '/:branchCode/:subjectCode/:collegeId',
     validateApiKey,
     wrapAsync(apiNotesController.fetchNotesByCollege)
