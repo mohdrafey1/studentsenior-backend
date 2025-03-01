@@ -10,7 +10,6 @@
                     <tr>
                         <th>User</th>
                         <th>Points Requested</th>
-                        <th>Transaction ID</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -24,26 +23,37 @@
                             <td>
                                 <%= request.pointsAdded %>
                             </td>
-                            <td>
-                                <%= request.transactionId %>
-                            </td>
+
                             <td>
                                 <span class="<%= request.status ? 'text-success' : 'text-warning' %>">
                                     <%= request.status ? 'Processed' : 'Pending' %>
                                 </span>
                             </td>
                             <td>
-                                <% if (!request.status) { %>
-                                    <!-- Form to update status -->
-                                    <form action="/transactions/add-points" method="POST" class="d-inline-block">
-                                        <input type="hidden" name="requestId" value="<%= request._id %>">
-                                        <button type="submit" class="btn btn-success btn-sm">
-                                            Add Points
+                                <div class="d-flex gap-2">
+                                    <div>
+
+                                        <% if (!request.status) { %>
+                                            <!-- Form to update status -->
+                                            <form action="/transactions/add-points" method="POST"
+                                                class="d-inline-block">
+                                                <input type="hidden" name="requestId" value="<%= request._id %>">
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    Add Points
+                                                </button>
+                                            </form>
+                                            <% } else { %>
+                                                <span class="text-muted">Points Added</span>
+                                                <% } %>
+                                    </div>
+
+                                    <form action="/transactions/add-points/<%= request._id %>?_method=DELETE"
+                                        method="POST" style="display: inline">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            Delete
                                         </button>
                                     </form>
-                                    <% } else { %>
-                                        <span class="text-muted">Points Added</span>
-                                        <% } %>
+                                </div>
                             </td>
                         </tr>
                         <% }) %>

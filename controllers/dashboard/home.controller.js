@@ -11,6 +11,8 @@ const { GetOpportunity, GiveOpportunity } = require('../../models/Opportunity');
 const ContactUs = require('../../models/ContactUs.js');
 const PyqRequest = require('../../models/PyqRequest.js');
 const NewPyqs = require('../../models/NewPyqs.js');
+const LostFound = require('../../models/LostFound.js');
+const AddPoint = require('../../models/AddPoint.js');
 
 module.exports.home = async (req, res) => {
     const totalUsers = await User.countDocuments();
@@ -27,6 +29,8 @@ module.exports.home = async (req, res) => {
     const totalMessages = await ContactUs.countDocuments();
     const totalRequestedPyqs = await PyqRequest.countDocuments();
     const totalNewPyqs = await NewPyqs.countDocuments();
+    const totalLostFound = await LostFound.countDocuments();
+    const totalAddPointsRequest = await AddPoint.countDocuments();
 
     // Fetch recent 5 entries for each category
     const recentPYQs = await NewPyqs.find({ status: false })
@@ -63,6 +67,8 @@ module.exports.home = async (req, res) => {
         totalMessages,
         totalRequestedPyqs,
         totalNewPyqs,
+        totalLostFound,
+        totalAddPointsRequest,
         recentPYQs,
         recentSeniors,
         recentProducts,

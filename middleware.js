@@ -9,6 +9,7 @@ const {
     storeSchema,
     postSchema,
     opportunitySchema,
+    lostFoundSchema,
 } = require('./schema.js');
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -118,6 +119,16 @@ module.exports.validatePost = (req, res, next) => {
 
 module.exports.validateOpportunity = (req, res, next) => {
     let { error } = opportunitySchema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(',');
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+};
+
+module.exports.validateLostFound = (req, res, next) => {
+    let { error } = lostFoundSchema.validate(req.body);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(',');
         throw new ExpressError(400, errMsg);

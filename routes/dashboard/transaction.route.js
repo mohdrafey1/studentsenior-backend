@@ -23,4 +23,9 @@ router.get('/add-points', wrapAsync(transactionController.addPointsRequests));
 
 router.post('/add-points', wrapAsync(transactionController.addPoints));
 
+router.delete(
+    '/add-points/:id',
+    wrapAsync(transactionController.deleteRequest)
+);
+
 module.exports = router;

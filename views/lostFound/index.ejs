@@ -1,0 +1,93 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center my-4">
+        <h1 class="h3 mb-3 mb-md-0">Lost & Found Management</h1>
+
+    </div>
+
+    <!-- Responsive Table Container -->
+    <div class="table-responsive d-none d-md-block">
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>College</th>
+                    <th>Owner</th>
+                    <th>Current Status</th>
+                    <th>Approval Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% items.forEach(item=> { %>
+                    <tr>
+                        <td>
+                            <%= item.name %>
+                        </td>
+                        <td>
+                            <%= item.type==='lost' ? 'Lost' : 'Found' %>
+                        </td>
+                        <td>
+                            <%= item.college.name %>
+                        </td>
+                        <td>
+                            <%= item.owner.username %>
+                        </td>
+                        <td>
+                            <%= item.currentStatus %>
+                        </td>
+                        <td>
+                            <%= item.status %>
+                        </td>
+                        <td class="text-center">
+                            <a href="/lostfound/<%= item._id %>/edit" class="btn btn-info btn-sm mb-1">Edit</a>
+                            <form action="/lostfound/<%= item._id %>?_method=DELETE" method="POST"
+                                style="display: inline">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile-friendly card display -->
+    <div class="d-block d-md-none">
+        <% items.forEach(item=> { %>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Name:</strong>
+                        <%= item.name %>
+                    </h5>
+                    <p class="card-text"><strong>Type:</strong>
+                        <%= item.type==='lost' ? 'Lost' : 'Found' %>
+                    </p>
+                    <p class="card-text"><strong>College:</strong>
+                        <%= item.college.name %>
+                    </p>
+                    <p class="card-text"><strong>Owner:</strong>
+                        <%= item.owner.username %>
+                    </p>
+                    <p class="card-text">
+                        <strong>Status:</strong>
+                        <span
+                            class="badge <%= item.currentStatus === 'pending' ? 'badge-warning' : item.currentStatus === 'claimed' ? 'badge-success' : 'badge-secondary' %>">
+                            <%= item.currentStatus.charAt(0).toUpperCase() + item.currentStatus.slice(1) %>
+                        </span>
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        <a href="/lostfound/<%= item._id %>/edit" class="btn btn-info btn-sm">Edit</a>
+                        <form action="/lostfound/<%= item._id %>?_method=DELETE" method="POST" style="display: inline">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+    </div>
+
+    <%- include('../includes/pagination', { paginationUrl: '/lostfound' , currentPage, totalPages, limit: 15 }) %>

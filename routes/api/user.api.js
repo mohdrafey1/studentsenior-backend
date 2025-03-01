@@ -5,6 +5,8 @@ const {
     userResources,
     redeemPoints,
     addPoints,
+
+    leaderboardPage,
 } = require('../../controllers/api/user.controller.js');
 const { verifyToken } = require('../../utils/verifyUser.js');
 const { validateApiKey } = require('../../middleware.js');
@@ -24,6 +26,8 @@ router.post(
 );
 
 router.post('/add-points', verifyToken, wrapAsync(addPoints));
+
+router.get('/leaderboard', wrapAsync(leaderboardPage));
 
 // router.delete('/delete/:id', verifyToken, wrapAsync(deleteUser));  //will implement later if needed
 

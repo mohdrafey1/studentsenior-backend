@@ -38,6 +38,7 @@ const branchRoutes = require('./routes/dashboard/branchcourse/branch.route.js');
 const subjectRoutes = require('./routes/dashboard/subjects.route.js');
 const transactionRoutes = require('./routes/dashboard/transaction.route.js');
 const newPyqRoutes = require('./routes/dashboard/newPyq.route.js');
+const lostFoundRoutes = require('./routes/dashboard/lostFound.route.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/college.api.js');
@@ -55,6 +56,7 @@ const resourceApiRoutes = require('./routes/api/resource.api.js');
 const s3PresignedRoutes = require('./routes/api/s3.presigned.api.js');
 const cloudfrontsignurlRoutes = require('./routes/api/cloudfrontsignedurl.api.js');
 const newPyqApiRoutes = require('./routes/api/newPyq.api.js');
+const lostFoundApi = require('./routes/api/lostFound.api.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -119,6 +121,7 @@ app.use('/api/resource', resourceApiRoutes);
 app.use('/api/generate', s3PresignedRoutes);
 app.use('/api/newpyq', newPyqApiRoutes);
 app.use('/api/get-signed-url', cloudfrontsignurlRoutes);
+app.use('/api/lostfound', lostFoundApi);
 
 const store = MongoStore.create({
     mongoUrl: DB_URL,
@@ -179,6 +182,7 @@ app.use('/branches', branchRoutes);
 app.use('/subjects', subjectRoutes);
 app.use('/transactions', transactionRoutes);
 app.use('/newpyqs', newPyqRoutes);
+app.use('/lostfound', lostFoundRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

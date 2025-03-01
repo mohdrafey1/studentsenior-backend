@@ -174,3 +174,86 @@ module.exports.addPoints = async (req, res, next) => {
         newPoint,
     });
 };
+
+module.exports.leaderboardPage = async (req, res) => {
+    const now = new Date();
+    const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const threeMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 3, 1);
+
+    // Get top users of the current month
+    const currentLeaderboard = await Transaction.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: currentMonthStart },
+                type: 'earn',
+            },
+        },
+        { $group: { _id: '$user', totalPoints: { $sum: '$points' } } },
+        { $sort: { totalPoints: -1 } },
+        { $limit: 10 },
+        {
+            $lookup: {
+                from: 'clients',
+                localField: '_id',
+                foreignField: '_id',
+                as: 'user',
+            },
+        },
+        { $unwind: '$user' },
+        {
+            $project: {
+                _id: 0,
+                userId: '$_id',
+                totalPoints: 1,
+                username: '$user.username',
+            },
+        },
+    ]);
+
+    // Get the winners of the last 3 months
+    const previousWinners = await Transaction.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: threeMonthsAgo, $lt: currentMonthStart },
+                type: 'earn',
+            },
+        },
+        {
+            $group: {
+                _id: { user: '$user', month: { $month: '$createdAt' } },
+                totalPoints: { $sum: '$points' },
+            },
+        },
+        { $sort: { '_id.month': -1, totalPoints: -1 } },
+        {
+            $group: {
+                _id: '$_id.month',
+                winner: { $first: '$_id.user' },
+                points: { $first: '$totalPoints' },
+            },
+        },
+        {
+            $lookup: {
+                from: 'clients',
+                localField: 'winner',
+                foreignField: '_id',
+                as: 'winnerDetails',
+            },
+        },
+        { $unwind: '$winnerDetails' },
+        { $sort: { _id: -1 } },
+        {
+            $project: {
+                _id: 0,
+                month: '$_id',
+                username: '$winnerDetails.username',
+                points: 1,
+            },
+        },
+    ]);
+
+    res.status(200).json({
+        leaderboard: currentLeaderboard,
+        previousWinners,
+    });
+};
