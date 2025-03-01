@@ -684,31 +684,31 @@
                     totalPost: <%= JSON.stringify(totalPost) %>,
                     totalRequestedPyqs: <%= JSON.stringify(totalRequestedPyqs) %>,
                     totalNotes: <%= JSON.stringify(totalNotes) %>,
-                    totalNewPyqs: <%= JSON.stringify(totalNewPyqs) %>
-                        totalLostFound: <%= JSON.stringify(totalLostFound) %>
-                            totalAddPointsRequest: <%= JSON.stringify(totalAddPointsRequest) %>
+                    totalNewPyqs: <%= JSON.stringify(totalNewPyqs) %>,
+                    totalLostFound: <%= JSON.stringify(totalLostFound) %>,
+                    totalAddPointsRequest: <%= JSON.stringify(totalAddPointsRequest) %>,
                     // Add other keys as required
                 };
 
-            const newCounts = {};
-            for (const key in currentCounts) {
-                const previous = previousCounts[key] || 0;
-                const current = currentCounts[key];
-                const diff = current - previous;
-                if (diff > 0) {
-                    newCounts[key] = diff;
+                const newCounts = {};
+                for (const key in currentCounts) {
+                    const previous = previousCounts[key] || 0;
+                    const current = currentCounts[key];
+                    const diff = current - previous;
+                    if (diff > 0) {
+                        newCounts[key] = diff;
+                    }
                 }
-            }
 
-            for (const key in newCounts) {
-                const newCountElement = document.querySelector(`.new-count[data-key="${key}"]`);
-                if (newCountElement) {
-                    newCountElement.textContent = `+${newCounts[key]}`;
-                    newCountElement.classList.remove("d-none");
+                for (const key in newCounts) {
+                    const newCountElement = document.querySelector(`.new-count[data-key="${key}"]`);
+                    if (newCountElement) {
+                        newCountElement.textContent = `+${newCounts[key]}`;
+                        newCountElement.classList.remove("d-none");
+                    }
                 }
-            }
 
-            localStorage.setItem("dashboardCounts", JSON.stringify(currentCounts));
+                localStorage.setItem("dashboardCounts", JSON.stringify(currentCounts));
             });
         </script>
     </body>
