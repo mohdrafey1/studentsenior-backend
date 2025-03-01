@@ -85,3 +85,11 @@ module.exports.lostFoundSchema = Joi.object({
     whatsapp: Joi.string().required(),
     imageUrl: Joi.string().allow('', null),
 });
+
+module.exports.dashBoardUserSchema = Joi.object({
+    name: Joi.string().required(),
+    college: Joi.string().required(),
+    email: Joi.string().required(),
+    secretCode: Joi.string().allow('', null),
+    password: Joi.string().required(),
+});

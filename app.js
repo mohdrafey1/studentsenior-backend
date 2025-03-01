@@ -40,6 +40,10 @@ const transactionRoutes = require('./routes/dashboard/transaction.route.js');
 const newPyqRoutes = require('./routes/dashboard/newPyq.route.js');
 const lostFoundRoutes = require('./routes/dashboard/lostFound.route.js');
 
+//new dashboard routes
+const dashboardAuthRoutes = require('./routes/dashboard/authRoutes/auth.js');
+const dashboardCollegeRoutes = require('./routes/dashboard/collegeRoutes/college.js');
+
 //api router
 const apicollegeRouter = require('./routes/api/college.api.js');
 const apiPyqRouter = require('./routes/api/pyq.api.js');
@@ -66,6 +70,7 @@ const allowedOrigins = [
     'https://panel.studentsenior.com',
     'https://staging-studentsenior-backend.vercel.app',
     'https://staging-student-senior.vercel.app',
+    'http://localhost:3000',
 ];
 
 app.use(
@@ -183,6 +188,10 @@ app.use('/subjects', subjectRoutes);
 app.use('/transactions', transactionRoutes);
 app.use('/newpyqs', newPyqRoutes);
 app.use('/lostfound', lostFoundRoutes);
+
+//new dashboard route
+app.use('/dashboard/auth', dashboardAuthRoutes);
+app.use('/dashboard/college', dashboardCollegeRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

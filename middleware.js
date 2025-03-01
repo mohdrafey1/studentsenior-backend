@@ -10,6 +10,7 @@ const {
     postSchema,
     opportunitySchema,
     lostFoundSchema,
+    dashBoardUserSchema,
 } = require('./schema.js');
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -129,6 +130,16 @@ module.exports.validateOpportunity = (req, res, next) => {
 
 module.exports.validateLostFound = (req, res, next) => {
     let { error } = lostFoundSchema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(',');
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+};
+
+module.exports.validateDashboardUser = (req, res, next) => {
+    let { error } = dashBoardUserSchema.validate(req.body);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(',');
         throw new ExpressError(400, errMsg);
