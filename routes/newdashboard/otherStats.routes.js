@@ -1,8 +1,8 @@
 const express = require('express');
 const {
     otherStats,
-} = require('../../../controllers/dashboard/otherStats/otherStats');
-const wrapAsync = require('../../../utils/wrapAsync');
+} = require('../../controllers/newdashboard/otherStats.controller');
+const wrapAsync = require('../../utils/wrapAsync');
 
 const router = express.Router();
 

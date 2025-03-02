@@ -1,5 +1,5 @@
-const Colleges = require('../../../models/Colleges');
-const { errorHandler } = require('../../../utils/error');
+const Colleges = require('../../models/Colleges');
+const { errorHandler } = require('../../utils/error');
 
 // Get all colleges
 module.exports.index = async (req, res) => {

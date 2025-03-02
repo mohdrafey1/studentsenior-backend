@@ -1,13 +1,13 @@
-const Senior = require('../../../models/Senior.js');
-const Store = require('../../../models/Store.js');
-const Groups = require('../../../models/WhatsappGroup');
-const Notes = require('../../../models/Notes');
-const Post = require('../../../models/Post.js');
-const { GiveOpportunity } = require('../../../models/Opportunity');
-const PyqRequest = require('../../../models/PyqRequest.js');
-const NewPyqs = require('../../../models/NewPyqs.js');
-const LostFound = require('../../../models/LostFound.js');
-const Colleges = require('../../../models/Colleges.js');
+const Senior = require('../../models/Senior.js');
+const Store = require('../../models/Store.js');
+const Groups = require('../../models/WhatsappGroup');
+const Notes = require('../../models/Notes');
+const Post = require('../../models/Post.js');
+const { GiveOpportunity } = require('../../models/Opportunity');
+const PyqRequest = require('../../models/PyqRequest.js');
+const NewPyqs = require('../../models/NewPyqs.js');
+const LostFound = require('../../models/LostFound.js');
+const Colleges = require('../../models/Colleges.js');
 
 module.exports.collegeData = async (req, res) => {
     const { slug } = req.params;

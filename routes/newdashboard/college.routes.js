@@ -1,11 +1,11 @@
 const express = require('express');
-const collegesController = require('../../../controllers/dashboard/collegeController/college');
-const collegeDataController = require('../../../controllers/dashboard/collegeController/collegesData');
+const collegesController = require('../../controllers/newdashboard/college.controller');
+const collegeDataController = require('../../controllers/newdashboard/collegesData.controller');
 const {
     verifyDashboardUser,
     requireRole,
-} = require('../../../utils/verifyDashboardUser');
-const wrapAsync = require('../../../utils/wrapAsync');
+} = require('../../utils/verifyDashboardUser');
+const wrapAsync = require('../../utils/wrapAsync');
 
 const router = express.Router();
 

@@ -1,10 +1,10 @@
 const express = require('express');
-const { validateDashboardUser } = require('../../../middleware');
+const { validateDashboardUser } = require('../../middleware');
 const {
     signUp,
     signIn,
-} = require('../../../controllers/dashboard/authController/auth');
-const wrapAsync = require('../../../utils/wrapAsync');
+} = require('../../controllers/newdashboard/auth.controller');
+const wrapAsync = require('../../utils/wrapAsync');
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const DashboardUser = require('../../../models/DashboardUser');
-const { errorHandler } = require('../../../utils/error');
+const DashboardUser = require('../../models/DashboardUser');
+const { errorHandler } = require('../../utils/error');
 
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'admin123';
 const MODERATOR_SECRET = process.env.MODERATOR_SECRET || 'mod123';
