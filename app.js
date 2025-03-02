@@ -45,6 +45,7 @@ const dashboardAuthRoutes = require('./routes/newdashboard/auth.routes.js');
 const dashboardCollegeRoutes = require('./routes/newdashboard/college.routes.js');
 const dashboardOtherStatsRoutes = require('./routes/newdashboard/otherStats.routes.js');
 const dashboardUserRoutes = require('./routes/newdashboard/user.routes.js');
+const dashboardResourceRoutes = require('./routes/newdashboard/resource.routes.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/college.api.js');
@@ -197,6 +198,7 @@ app.use('/dashboard/auth', dashboardAuthRoutes);
 app.use('/dashboard/college', dashboardCollegeRoutes);
 app.use('/dashboard/stats', dashboardOtherStatsRoutes);
 app.use('/dashboard/user', dashboardUserRoutes);
+app.use('/dashboard/resource', dashboardResourceRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
