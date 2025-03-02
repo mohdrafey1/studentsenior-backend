@@ -75,6 +75,7 @@ const allowedOrigins = [
     'https://staging-student-senior.vercel.app',
     'http://localhost:3000',
     'https://studentsenior-dashboard.vercel.app',
+    'https://dashboard.studentsenior.com',
 ];
 
 app.use(
