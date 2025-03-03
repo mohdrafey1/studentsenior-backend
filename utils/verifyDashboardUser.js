@@ -25,8 +25,7 @@ module.exports.requireRole = (roles) => {
     return (req, res, next) => {
         if (!req.user || !roles.includes(req.user.role)) {
             return res.status(403).json({
-                message:
-                    'Access denied: Only Admin or Moderator can access this',
+                message: 'Access denied: Only Admin can access this',
             });
         }
         next();

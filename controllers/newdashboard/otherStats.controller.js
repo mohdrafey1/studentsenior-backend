@@ -47,3 +47,9 @@ module.exports.otherStats = async (req, res) => {
         totalAffiliateProduct,
     });
 };
+
+module.exports.allContactUs = async (req, res) => {
+    const contactus = await ContactUs.find({}).sort({ createdAt: -1 });
+
+    res.status(200).json(contactus);
+};
