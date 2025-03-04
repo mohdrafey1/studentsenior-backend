@@ -50,6 +50,11 @@ const dashboardTransactionRoutes = require('./routes/newdashboard/transaction.ro
 const dashboardStoreRoutes = require('./routes/newdashboard/store.routes.js');
 const dashboardPyqRoutes = require('./routes/newdashboard/pyq.routes.js');
 const dashboardNotesRoutes = require('./routes/newdashboard/notes.routes.js');
+const dashboardSeniorRoutes = require('./routes/newdashboard/senior.route.js');
+const dashboardCommunityRoutes = require('./routes/newdashboard/community.routes.js');
+const dashboardLostFoundRoutes = require('./routes/newdashboard/lostfound.routes.js');
+const dashboardGroupsRoutes = require('./routes/newdashboard/group.routes.js');
+const dashboardOpportunitiesRoutes = require('./routes/newdashboard/opportunity.routes.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/college.api.js');
@@ -207,6 +212,11 @@ app.use('/dashboard/transactions', dashboardTransactionRoutes);
 app.use('/dashboard/store', dashboardStoreRoutes);
 app.use('/dashboard/pyqs', dashboardPyqRoutes);
 app.use('/dashboard/notes', dashboardNotesRoutes);
+app.use('/dashboard/seniors', dashboardSeniorRoutes);
+app.use('/dashboard/community', dashboardCommunityRoutes);
+app.use('/dashboard/lostfound', dashboardLostFoundRoutes);
+app.use('/dashboard/groups', dashboardGroupsRoutes);
+app.use('/dashboard/opportunity', dashboardOpportunitiesRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
