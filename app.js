@@ -47,6 +47,7 @@ const dashboardOtherStatsRoutes = require('./routes/newdashboard/otherStats.rout
 const dashboardUserRoutes = require('./routes/newdashboard/user.routes.js');
 const dashboardResourceRoutes = require('./routes/newdashboard/resource.routes.js');
 const dashboardTransactionRoutes = require('./routes/newdashboard/transaction.routes.js');
+const dashboardStoreRoutes = require('./routes/newdashboard/store.routes.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/college.api.js');
@@ -75,7 +76,6 @@ const allowedOrigins = [
     'https://staging-studentsenior-backend.vercel.app',
     'https://staging-student-senior.vercel.app',
     'http://localhost:3000',
-    'https://studentsenior-dashboard.vercel.app',
     'https://dashboard.studentsenior.com',
 ];
 
@@ -202,6 +202,7 @@ app.use('/dashboard/stats', dashboardOtherStatsRoutes);
 app.use('/dashboard/user', dashboardUserRoutes);
 app.use('/dashboard/resource', dashboardResourceRoutes);
 app.use('/dashboard/transactions', dashboardTransactionRoutes);
+app.use('/dashboard/store', dashboardStoreRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
