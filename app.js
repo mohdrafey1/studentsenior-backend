@@ -48,6 +48,8 @@ const dashboardUserRoutes = require('./routes/newdashboard/user.routes.js');
 const dashboardResourceRoutes = require('./routes/newdashboard/resource.routes.js');
 const dashboardTransactionRoutes = require('./routes/newdashboard/transaction.routes.js');
 const dashboardStoreRoutes = require('./routes/newdashboard/store.routes.js');
+const dashboardPyqRoutes = require('./routes/newdashboard/pyq.routes.js');
+const dashboardNotesRoutes = require('./routes/newdashboard/notes.routes.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/college.api.js');
@@ -203,6 +205,8 @@ app.use('/dashboard/user', dashboardUserRoutes);
 app.use('/dashboard/resource', dashboardResourceRoutes);
 app.use('/dashboard/transactions', dashboardTransactionRoutes);
 app.use('/dashboard/store', dashboardStoreRoutes);
+app.use('/dashboard/pyqs', dashboardPyqRoutes);
+app.use('/dashboard/notes', dashboardNotesRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
