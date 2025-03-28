@@ -78,6 +78,7 @@ const phonePeApiRoutes = require('./routes/api/payment.route.js');
 
 //course
 const courseApiRoutes = require('./routes/course/course.routes.js');
+const courseAuthRoutes = require('./routes/course/auth.routes.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -89,6 +90,8 @@ const allowedOrigins = [
     'https://staging-student-senior.vercel.app',
     'http://localhost:3000',
     'https://dashboard.studentsenior.com',
+    'https://stagingcourse.studentsenior.com',
+    'https://course.studentsenior.com',
 ];
 
 app.use(
@@ -227,6 +230,7 @@ app.use('/dashboard/course', dashboardCourseRoutes);
 
 //course
 app.use('/courseapi/course', courseApiRoutes);
+app.use('/courseapi/auth', courseAuthRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));

@@ -88,8 +88,6 @@ module.exports.editLostFoundItem = async (req, res) => {
         res.redirect('/lostfound');
     } catch (error) {
         req.flash('error', 'Error updating item');
-        console.log(error);
-
         res.redirect('/lostfound');
     }
 };
