@@ -12,7 +12,7 @@ const generateChecksum = (base64Payload, endpoint) => {
 };
 
 const createPaymentPayload = (amount, merchantTransactionId, userId) => ({
-    merchantId: 'UATSB123',
+    merchantId: `${phonepeConfig.merchantId}`,
     merchantTransactionId: merchantTransactionId,
     merchantUserId: userId,
     amount: amount * 100,
