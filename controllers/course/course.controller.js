@@ -27,10 +27,6 @@ module.exports.showCourse = async (req, res) => {
             student.userId && student.userId.toString() === userId.toString()
     );
 
-    console.log(course.enrolledStudents);
-    console.log(isEnrolled);
-    console.log(userId);
-
     // If the user is NOT enrolled, do not send course content
     const responseData = {
         _id: course._id,
@@ -59,7 +55,7 @@ module.exports.enrollCourse = async (req, res, next) => {
         return next(errorHandler(404, 'Course not found'));
     }
 
-    console.log(req.user.id);
+    // console.log(req.user.id);
 
     if (
         course.enrolledStudents?.some(
