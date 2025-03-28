@@ -40,6 +40,23 @@ const transactionRoutes = require('./routes/dashboard/transaction.route.js');
 const newPyqRoutes = require('./routes/dashboard/newPyq.route.js');
 const lostFoundRoutes = require('./routes/dashboard/lostFound.route.js');
 
+//new dashboard routes
+const dashboardAuthRoutes = require('./routes/newdashboard/auth.routes.js');
+const dashboardCollegeRoutes = require('./routes/newdashboard/college.routes.js');
+const dashboardOtherStatsRoutes = require('./routes/newdashboard/otherStats.routes.js');
+const dashboardUserRoutes = require('./routes/newdashboard/user.routes.js');
+const dashboardResourceRoutes = require('./routes/newdashboard/resource.routes.js');
+const dashboardTransactionRoutes = require('./routes/newdashboard/transaction.routes.js');
+const dashboardStoreRoutes = require('./routes/newdashboard/store.routes.js');
+const dashboardPyqRoutes = require('./routes/newdashboard/pyq.routes.js');
+const dashboardNotesRoutes = require('./routes/newdashboard/notes.routes.js');
+const dashboardSeniorRoutes = require('./routes/newdashboard/senior.route.js');
+const dashboardCommunityRoutes = require('./routes/newdashboard/community.routes.js');
+const dashboardLostFoundRoutes = require('./routes/newdashboard/lostfound.routes.js');
+const dashboardGroupsRoutes = require('./routes/newdashboard/group.routes.js');
+const dashboardOpportunitiesRoutes = require('./routes/newdashboard/opportunity.routes.js');
+const dashboardCourseRoutes = require('./routes/newdashboard/course.routes.js');
+
 //api router
 const apicollegeRouter = require('./routes/api/college.api.js');
 const apiPyqRouter = require('./routes/api/pyq.api.js');
@@ -57,6 +74,10 @@ const s3PresignedRoutes = require('./routes/api/s3.presigned.api.js');
 const cloudfrontsignurlRoutes = require('./routes/api/cloudfrontsignedurl.api.js');
 const newPyqApiRoutes = require('./routes/api/newPyq.api.js');
 const lostFoundApi = require('./routes/api/lostFound.api.js');
+const phonePeApiRoutes = require('./routes/api/payment.route.js');
+
+//course
+const courseApiRoutes = require('./routes/course/course.routes.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -66,6 +87,8 @@ const allowedOrigins = [
     'https://panel.studentsenior.com',
     'https://staging-studentsenior-backend.vercel.app',
     'https://staging-student-senior.vercel.app',
+    'http://localhost:3000',
+    'https://dashboard.studentsenior.com',
 ];
 
 app.use(
@@ -122,6 +145,7 @@ app.use('/api/generate', s3PresignedRoutes);
 app.use('/api/newpyq', newPyqApiRoutes);
 app.use('/api/get-signed-url', cloudfrontsignurlRoutes);
 app.use('/api/lostfound', lostFoundApi);
+app.use('/api/phonepe', phonePeApiRoutes);
 
 const store = MongoStore.create({
     mongoUrl: DB_URL,
@@ -183,6 +207,26 @@ app.use('/subjects', subjectRoutes);
 app.use('/transactions', transactionRoutes);
 app.use('/newpyqs', newPyqRoutes);
 app.use('/lostfound', lostFoundRoutes);
+
+//new dashboard route
+app.use('/dashboard/auth', dashboardAuthRoutes);
+app.use('/dashboard/college', dashboardCollegeRoutes);
+app.use('/dashboard/stats', dashboardOtherStatsRoutes);
+app.use('/dashboard/user', dashboardUserRoutes);
+app.use('/dashboard/resource', dashboardResourceRoutes);
+app.use('/dashboard/transactions', dashboardTransactionRoutes);
+app.use('/dashboard/store', dashboardStoreRoutes);
+app.use('/dashboard/pyqs', dashboardPyqRoutes);
+app.use('/dashboard/notes', dashboardNotesRoutes);
+app.use('/dashboard/seniors', dashboardSeniorRoutes);
+app.use('/dashboard/community', dashboardCommunityRoutes);
+app.use('/dashboard/lostfound', dashboardLostFoundRoutes);
+app.use('/dashboard/groups', dashboardGroupsRoutes);
+app.use('/dashboard/opportunity', dashboardOpportunitiesRoutes);
+app.use('/dashboard/course', dashboardCourseRoutes);
+
+//course
+app.use('/courseapi/course', courseApiRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
