@@ -55,6 +55,7 @@ const dashboardCommunityRoutes = require('./routes/newdashboard/community.routes
 const dashboardLostFoundRoutes = require('./routes/newdashboard/lostfound.routes.js');
 const dashboardGroupsRoutes = require('./routes/newdashboard/group.routes.js');
 const dashboardOpportunitiesRoutes = require('./routes/newdashboard/opportunity.routes.js');
+const dashboardCourseRoutes = require('./routes/newdashboard/course.routes.js');
 
 //api router
 const apicollegeRouter = require('./routes/api/college.api.js');
@@ -73,6 +74,10 @@ const s3PresignedRoutes = require('./routes/api/s3.presigned.api.js');
 const cloudfrontsignurlRoutes = require('./routes/api/cloudfrontsignedurl.api.js');
 const newPyqApiRoutes = require('./routes/api/newPyq.api.js');
 const lostFoundApi = require('./routes/api/lostFound.api.js');
+const phonePeApiRoutes = require('./routes/api/payment.route.js');
+
+//course
+const courseApiRoutes = require('./routes/course/course.routes.js');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -140,6 +145,7 @@ app.use('/api/generate', s3PresignedRoutes);
 app.use('/api/newpyq', newPyqApiRoutes);
 app.use('/api/get-signed-url', cloudfrontsignurlRoutes);
 app.use('/api/lostfound', lostFoundApi);
+app.use('/api/phonepe', phonePeApiRoutes);
 
 const store = MongoStore.create({
     mongoUrl: DB_URL,
@@ -217,6 +223,10 @@ app.use('/dashboard/community', dashboardCommunityRoutes);
 app.use('/dashboard/lostfound', dashboardLostFoundRoutes);
 app.use('/dashboard/groups', dashboardGroupsRoutes);
 app.use('/dashboard/opportunity', dashboardOpportunitiesRoutes);
+app.use('/dashboard/course', dashboardCourseRoutes);
+
+//course
+app.use('/courseapi/course', courseApiRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found'));
