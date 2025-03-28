@@ -7,6 +7,9 @@ const privateKey = Buffer.from(
 ).toString('utf-8');
 const keyPairId = process.env.CLOUDFRONT_KEY_PAIR_ID;
 
+console.log(privateKey);
+console.log(keyPairId);
+
 const fetchSignedUrl = (s3Url) => {
     const url = s3Url.replace(
         'https://studentsenior.s3.ap-south-1.amazonaws.com/',
