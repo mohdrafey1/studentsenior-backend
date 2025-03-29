@@ -37,9 +37,12 @@ module.exports.initiatePayment = async (req, res) => {
 
         // Validate purchase type
         if (
-            !['course_purchase', 'note_purchase', 'pyq_purchase'].includes(
-                typeOfPurchase
-            )
+            ![
+                'course_purchase',
+                'note_purchase',
+                'pyq_purchase',
+                'add_points',
+            ].includes(typeOfPurchase)
         ) {
             return res.status(400).json({
                 success: false,

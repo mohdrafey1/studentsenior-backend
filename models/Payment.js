@@ -9,7 +9,12 @@ const PaymentSchema = new mongoose.Schema(
         },
         typeOfPurchase: {
             type: String,
-            enum: ['course_purchase', 'note_purchase', 'pyq_purchase'],
+            enum: [
+                'course_purchase',
+                'note_purchase',
+                'pyq_purchase',
+                'add_points',
+            ],
             required: true,
         },
         purchaseItemId: {
