@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const paymentSchema = new mongoose.Schema(
+const PaymentSchema = new mongoose.Schema(
     {
         user: {
             type: mongoose.Schema.Types.ObjectId,
@@ -9,27 +9,41 @@ const paymentSchema = new mongoose.Schema(
         },
         typeOfPurchase: {
             type: String,
-            enum: ['Pyq purchase', 'note purchase', 'course purchase'],
+            enum: ['course_purchase', 'note_purchase', 'pyq_purchase'],
             required: true,
         },
         purchaseItemId: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            refPath: 'purchaseItemType',
         },
-
-        paymentId: { type: String, required: true, unique: true },
+        merchantOrderId: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        phonePeOrderId: String,
+        amount: {
+            type: Number,
+            required: true,
+        },
         status: {
             type: String,
-            enum: ['pending', 'success', 'failed'],
+            enum: ['pending', 'paid', 'failed'],
             default: 'pending',
         },
-        amount: { type: Number, required: true },
-        provider: { type: String, required: true },
-        paymentLink: { type: String },
-        failureReason: { type: String, default: null },
+        currency: {
+            type: String,
+            default: 'INR',
+        },
+        provider: {
+            type: String,
+            default: 'PhonePe',
+        },
+        paymentLink: String,
+
+        paymentResponse: Object,
     },
     { timestamps: true }
 );
 
-module.exports = mongoose.model('Payment', paymentSchema);
+module.exports = mongoose.model('Payment', PaymentSchema);
