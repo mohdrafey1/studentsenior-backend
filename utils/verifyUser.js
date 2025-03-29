@@ -13,3 +13,21 @@ module.exports.verifyToken = (req, res, next) => {
         next();
     });
 };
+
+module.exports.userDetail = (req, res, next) => {
+    const token = req.cookies.access_token;
+
+    if (!token) {
+        req.user = null;
+        return next();
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+            req.user = null;
+        } else {
+            req.user = user;
+        }
+        next();
+    });
+};

@@ -42,6 +42,7 @@ const PaymentSchema = new mongoose.Schema(
         paymentLink: String,
 
         paymentResponse: Object,
+        redirectBackUrl: String,
     },
     { timestamps: true }
 );
