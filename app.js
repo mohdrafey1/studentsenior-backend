@@ -20,6 +20,8 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/User.js');
 const cookieParser = require('cookie-parser');
 
+const { swaggerUi, swaggerSpec } = require('./swagger');
+
 //dashboard router
 const home = require('./routes/dashboard/home.route.js');
 const toggleStatus = require('./routes/dashboard/toggleStatus.route.js');
@@ -190,6 +192,8 @@ app.use((req, res, next) => {
     res.locals.currUser = req.user;
     next();
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //dashboard routes
 app.use('/', home);
