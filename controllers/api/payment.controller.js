@@ -1,40 +1,58 @@
 const axios = require('axios');
-const phonepeConfig = require('../../config/phonepe');
-const {
-    generateBase64Payload,
-    generateChecksum,
-    createPaymentPayload,
-} = require('../../utils/phonepe');
+const qs = require('qs');
 const Payment = require('../../models/Payment');
 const PaidCourse = require('../../models/courses/PaidCourse');
+const phonepeConfig = require('../../config/phonepe');
 
-//  Handle Payment Initiation (User purchases a course, note, or PYQ)
+// Environment configuration
+const PHONEPE_ENV = process.env.NODE_ENV === 'production' ? 'PROD' : 'UAT';
 
-exports.handlePaymentInitiation = async (req, res) => {
+// Helper function to get auth token
+async function getPhonePeAuthToken() {
+    const response = await axios.post(
+        phonepeConfig.endpoints[PHONEPE_ENV].auth,
+        qs.stringify({
+            client_id: phonepeConfig.credentials.clientId,
+            client_version: phonepeConfig.credentials.clientVersion,
+            client_secret: phonepeConfig.credentials.clientSecret,
+            grant_type: 'client_credentials',
+        }),
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        }
+    );
+    return response.data.access_token;
+}
+
+// 1. Handle Payment Initiation
+module.exports.initiatePayment = async (req, res) => {
     try {
         const { amount, purchaseItemId, typeOfPurchase } = req.body;
         const userId = req.user.id;
 
         // Validate purchase type
         if (
-            !['Pyq purchase', 'note purchase', 'course purchase'].includes(
+            !['course_purchase', 'note_purchase', 'pyq_purchase'].includes(
                 typeOfPurchase
             )
         ) {
-            return res
-                .status(400)
-                .json({ success: false, message: 'Invalid purchase type' });
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid purchase type',
+            });
         }
 
-        // Generate a unique transaction ID
-        const merchantTransactionId = `TXN_${Date.now()}`;
+        // Generate unique transaction ID
+        const merchantOrderId = `TXN_${Date.now()}`;
 
-        // Store initial payment record in DB
+        // Create payment record
         const payment = new Payment({
             user: userId,
             typeOfPurchase,
             purchaseItemId,
-            paymentId: merchantTransactionId,
+            merchantOrderId,
             amount,
             status: 'pending',
             currency: 'INR',
@@ -43,98 +61,126 @@ exports.handlePaymentInitiation = async (req, res) => {
 
         await payment.save();
 
-        // Prepare PhonePe payment payload
-        const payload = createPaymentPayload(
-            amount,
-            merchantTransactionId,
-            userId
-        );
-        const base64Payload = generateBase64Payload(payload);
+        // Get auth token
+        const accessToken = await getPhonePeAuthToken();
 
-        const xVerify = generateChecksum(base64Payload, '/pg/v1/pay');
-
-        // Send request to PhonePe API
-        const response = await axios.post(
-            `${phonepeConfig.baseUrl}/pg/v1/pay`,
-            { request: base64Payload },
+        // Create payment request
+        const paymentResponse = await axios.post(
+            phonepeConfig.endpoints[PHONEPE_ENV].payment,
+            {
+                merchantOrderId,
+                amount: amount * 100, // Convert to paisa
+                expireAfter: 1200, // 20 minutes
+                metaInfo: {
+                    udf1: userId,
+                    udf2: typeOfPurchase,
+                    udf3: purchaseItemId.toString(),
+                },
+                paymentFlow: {
+                    type: 'PG_CHECKOUT',
+                    merchantUrls: {
+                        redirectUrl: `${phonepeConfig.urls.backend}/api/phonepe/verify/${merchantOrderId}`,
+                    },
+                },
+            },
             {
                 headers: {
-                    'X-VERIFY': xVerify,
                     'Content-Type': 'application/json',
+                    Authorization: `O-Bearer ${accessToken}`,
                 },
             }
         );
 
-        const redirectUrl =
-            response.data.data.instrumentResponse.redirectInfo.url;
+        // Update payment with PhonePe response
+        payment.phonePeOrderId = paymentResponse.data.orderId;
+        payment.paymentLink = paymentResponse.data.redirectUrl;
+        payment.paymentResponse = paymentResponse.data;
 
-        // Update payment record with link
-        await Payment.findOneAndUpdate(
-            { paymentId: merchantTransactionId },
-            { paymentLink: redirectUrl }
-        );
+        await payment.save();
 
-        res.status(200).json({ success: true, redirectUrl });
+        res.status(200).json({
+            success: true,
+            redirectUrl: paymentResponse.data.redirectUrl,
+        });
     } catch (error) {
         console.error('Payment initiation failed:', error);
         res.status(500).json({
             success: false,
             message: 'Payment initiation failed',
-            error: error.message,
+            error: error.response?.data || error.message,
         });
     }
 };
 
-//  Handle Payment Validation (After user completes payment)
-
-exports.handlePaymentValidation = async (req, res) => {
+// 2. Handle Payment Verification (Callback)
+module.exports.verifyPayment = async (req, res) => {
     try {
-        const { merchantTransactionId } = req.params;
+        const { merchantOrderId } = req.params;
 
-        const statusEndpoint = `/pg/v1/status/${phonepeConfig.merchantId}/${merchantTransactionId}`;
-        const xVerify = generateChecksum('', statusEndpoint);
+        // Get auth token
+        const accessToken = await getPhonePeAuthToken();
 
-        const response = await axios.get(
-            `${phonepeConfig.baseUrl}${statusEndpoint}`,
+        // Check payment status with PhonePe
+        const statusResponse = await axios.get(
+            `${phonepeConfig.endpoints[PHONEPE_ENV].status}/${merchantOrderId}/status`,
             {
                 headers: {
-                    'X-VERIFY': xVerify,
-                    'X-MERCHANT-ID': phonepeConfig.merchantId,
-                    'Content-Type': 'application/json',
+                    Authorization: `O-Bearer ${accessToken}`,
                 },
             }
         );
 
-        // Determine final payment status
-        const paymentStatus =
-            response.data.code === 'PAYMENT_SUCCESS' ? 'paid' : 'failed';
+        const phonePeStatus = statusResponse.data.state;
+        const paymentStatus = phonePeStatus === 'COMPLETED' ? 'paid' : 'failed';
 
-        // Update the payment record in DB
-        await Payment.findOneAndUpdate(
-            { paymentId: merchantTransactionId },
-            { status: paymentStatus }
-        );
-
-        // Get updated payment details
-        const payment = await Payment.findOne({
-            paymentId: merchantTransactionId,
-        })
-            .populate('user', 'name email')
+        // Update payment record
+        const payment = await Payment.findOneAndUpdate(
+            { merchantOrderId },
+            {
+                status: paymentStatus,
+                paymentResponse: statusResponse.data,
+            },
+            { new: true }
+        )
+            .populate('user')
             .populate('purchaseItemId');
 
+        if (!payment) {
+            return res.status(404).json({
+                success: false,
+                message: 'Payment not found',
+            });
+        }
+
+        // Handle successful payment
         if (paymentStatus === 'paid') {
-            console.log('Payment successful:', payment);
+            // console.log('Payment successful:', payment);
             const user = payment.user;
             const purchasedItem = payment.purchaseItemId;
             const purchaseType = payment.typeOfPurchase;
 
-            if (purchaseType === 'course purchase') {
+            if (purchaseType === 'course_purchase') {
                 const course = await PaidCourse.findById(purchasedItem._id);
 
                 if (!course) {
                     return res
                         .status(404)
                         .json({ success: false, message: 'Course not found' });
+                }
+
+                if (
+                    course.enrolledStudents?.some(
+                        (student) =>
+                            student.userId &&
+                            student.userId.toString() === userId.toString()
+                    )
+                ) {
+                    return next(
+                        errorHandler(
+                            400,
+                            'You are already enrolled in this course.'
+                        )
+                    );
                 }
 
                 // 🔹 Enroll user in course
@@ -157,81 +203,46 @@ exports.handlePaymentValidation = async (req, res) => {
             }
         }
 
-        const redirectUrl = `${process.env.FRONTEND_BASE_URL}/payment-complete?transactionId=${merchantTransactionId}&status=${paymentStatus}`;
-
-        res.redirect(redirectUrl);
+        // Redirect to frontend with status
+        const frontendUrl = `${phonepeConfig.urls.frontend}/payment-complete?status=${paymentStatus}&transactionId=${merchantOrderId}`;
+        res.redirect(frontendUrl);
     } catch (error) {
-        console.error('Payment validation failed:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Payment validation failed',
-            error: error.message,
+        console.error('Payment verification failed:', {
+            message: error.message,
+            response: error.response?.data,
+            merchantOrderId: req.params?.merchantOrderId,
         });
+
+        const frontendUrl = `${
+            phonepeConfig.urls.frontend
+        }/payment-complete?status=failed&transactionId=${
+            req.params.merchantOrderId || 'unknown'
+        }`;
+        res.redirect(frontendUrl);
     }
 };
 
-//   3️⃣ Get All Payments (Admin Access)
-exports.getAllPayments = async (req, res) => {
-    try {
-        const payments = await Payment.find()
-            .sort({ createdAt: -1 })
-            .populate('client', 'username email');
-
-        res.status(200).json({
-            success: true,
-            count: payments.length,
-            data: payments,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching payments',
-            error: error.message,
-        });
-    }
-};
-
-// Get Payment by Transaction ID
-
-exports.getPaymentById = async (req, res) => {
+module.exports.getPaymentById = async (req, res) => {
     try {
         const payment = await Payment.findOne({
-            paymentId: req.params.id,
+            merchantOrderId: req.params.id,
         }).populate('user', 'name email');
 
         if (!payment) {
-            return res
-                .status(404)
-                .json({ success: false, message: 'Payment not found' });
+            return res.status(404).json({
+                success: false,
+                message: 'Payment not found',
+            });
         }
 
-        res.status(200).json({ success: true, data: payment });
+        res.status(200).json({
+            success: true,
+            data: payment,
+        });
     } catch (error) {
         res.status(500).json({
             success: false,
             message: 'Error fetching payment',
-            error: error.message,
-        });
-    }
-};
-
-// Get User's Own Purchases
-
-exports.getMyPayments = async (req, res) => {
-    try {
-        const payments = await Payment.find({ user: req.user.id }).sort({
-            createdAt: -1,
-        });
-
-        res.status(200).json({
-            success: true,
-            count: payments.length,
-            data: payments,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching user payments',
             error: error.message,
         });
     }
