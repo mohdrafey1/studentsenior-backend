@@ -60,7 +60,7 @@ module.exports.fetchPyqsByCollegeBranch = async (req, res, next) => {
         college: collegeId,
         status: true,
     })
-        .populate('subject', 'subjectName subjectCode')
+        .populate('subject', 'subjectName subjectCode semester')
         .populate('owner', 'username profilePicture')
         .sort({ clickCounts: -1 });
 

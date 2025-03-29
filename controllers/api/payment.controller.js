@@ -3,6 +3,8 @@ const qs = require('qs');
 const Payment = require('../../models/Payment');
 const PaidCourse = require('../../models/courses/PaidCourse');
 const phonepeConfig = require('../../config/phonepe');
+const Client = require('../../models/Client');
+const Transaction = require('../../models/Transaction');
 
 // Environment configuration
 const PHONEPE_ENV = process.env.NODE_ENV === 'production' ? 'PROD' : 'UAT';
@@ -29,7 +31,8 @@ async function getPhonePeAuthToken() {
 // 1. Handle Payment Initiation
 module.exports.initiatePayment = async (req, res) => {
     try {
-        const { amount, purchaseItemId, typeOfPurchase } = req.body;
+        const { amount, purchaseItemId, typeOfPurchase, redirectBackUrl } =
+            req.body;
         const userId = req.user.id;
 
         // Validate purchase type
@@ -54,6 +57,7 @@ module.exports.initiatePayment = async (req, res) => {
             purchaseItemId,
             merchantOrderId,
             amount,
+            redirectBackUrl,
             status: 'pending',
             currency: 'INR',
             provider: 'PhonePe',
@@ -158,6 +162,7 @@ module.exports.verifyPayment = async (req, res) => {
             const user = payment.user;
             const purchasedItem = payment.purchaseItemId;
             const purchaseType = payment.typeOfPurchase;
+            const amount = payment.amount;
 
             if (purchaseType === 'course_purchase') {
                 const course = await PaidCourse.findById(purchasedItem._id);
@@ -171,8 +176,8 @@ module.exports.verifyPayment = async (req, res) => {
                 if (
                     course.enrolledStudents?.some(
                         (student) =>
-                            student.userId &&
-                            student.userId.toString() === userId.toString()
+                            student.user &&
+                            student.user.toString() === user._id.toString()
                     )
                 ) {
                     return next(
@@ -200,6 +205,23 @@ module.exports.verifyPayment = async (req, res) => {
 
                 // 🔹 Save updates
                 await course.save();
+            } else {
+                const userDetail = await Client.findById(user._id);
+                if (!userDetail) {
+                    return next(errorHandler(403, 'User not found'));
+                }
+
+                // Deduct points
+                user.rewardBalance += amount * 5;
+                await user.save();
+
+                const transaction = new Transaction({
+                    user: user._id,
+                    type: 'add-point',
+                    points: amount * 5,
+                });
+
+                await transaction.save();
             }
         }
 
@@ -222,11 +244,18 @@ module.exports.verifyPayment = async (req, res) => {
     }
 };
 
+const MODEL_MAP = {
+    note_purchase: 'Notes',
+    pyq_purchase: 'NewPyq',
+    course_purchase: 'PaidCourse',
+};
+
 module.exports.getPaymentById = async (req, res) => {
     try {
+        // First find the payment by merchantOrderId
         const payment = await Payment.findOne({
             merchantOrderId: req.params.id,
-        }).populate('user', 'name email');
+        });
 
         if (!payment) {
             return res.status(404).json({
@@ -235,9 +264,22 @@ module.exports.getPaymentById = async (req, res) => {
             });
         }
 
+        // Populate based on payment type
+        const populatedPayment = await Payment.populate(payment, {
+            path: 'purchaseItemId',
+            model: MODEL_MAP[payment.typeOfPurchase],
+            select: '-__v', // Exclude version key if needed
+        });
+
+        // Additional population if needed (e.g., user details)
+        await Payment.populate(populatedPayment, {
+            path: 'user',
+            select: 'username email', // Only include necessary fields
+        });
+
         res.status(200).json({
             success: true,
-            data: payment,
+            data: populatedPayment,
         });
     } catch (error) {
         res.status(500).json({

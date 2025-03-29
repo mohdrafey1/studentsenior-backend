@@ -1,7 +1,7 @@
 const express = require('express');
 const courseController = require('../../controllers/course/course.controller');
 const wrapAsync = require('../../utils/wrapAsync');
-const { verifyToken } = require('../../utils/verifyUser');
+const { verifyToken, userDetail } = require('../../utils/verifyUser');
 
 const router = express.Router();
 
@@ -12,6 +12,6 @@ router.get('/', wrapAsync(courseController.index));
 router.post('/enroll', verifyToken, wrapAsync(courseController.enrollCourse));
 
 // View a specific course (Everyone)
-router.get('/:slug', verifyToken, wrapAsync(courseController.showCourse));
+router.get('/:slug', userDetail, wrapAsync(courseController.showCourse));
 
 module.exports = router;

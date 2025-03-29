@@ -13,7 +13,7 @@ module.exports.index = async (req, res) => {
 // Get a single course by slug
 module.exports.showCourse = async (req, res) => {
     const { slug } = req.params;
-    const userId = req.user.id;
+    const userId = req.user?.id;
 
     const course = await Course.findOne({ slug: slug });
 
@@ -21,11 +21,15 @@ module.exports.showCourse = async (req, res) => {
         return res.status(404).json({ error: 'Course not found' });
     }
 
+    let isEnrolled = false;
     // Check if the user is enrolled in this course
-    const isEnrolled = course.enrolledStudents?.some(
-        (student) =>
-            student.userId && student.userId.toString() === userId.toString()
-    );
+    if (userId) {
+        isEnrolled = course.enrolledStudents?.some(
+            (student) =>
+                student.userId &&
+                student.userId.toString() === userId.toString()
+        );
+    }
 
     // If the user is NOT enrolled, do not send course content
     const responseData = {
