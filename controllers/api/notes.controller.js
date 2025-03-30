@@ -42,7 +42,7 @@ module.exports.fetchAllNotes = async (req, res, next) => {
                 },
             },
         })
-        .sort({ clickCounts: -1 });
+        .sort({ createdAt: -1 });
 
     res.status(200).json(pyqs);
 };
