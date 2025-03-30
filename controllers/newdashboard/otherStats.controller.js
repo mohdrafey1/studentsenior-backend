@@ -57,3 +57,11 @@ module.exports.allContactUs = async (req, res) => {
 
     res.status(200).json(contactus);
 };
+
+module.exports.deleteContactUs = async (req, res) => {
+    await ContactUs.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+        message: 'Contact Us Request Deleted Successfully',
+    });
+};

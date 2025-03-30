@@ -21,6 +21,29 @@ module.exports.getAllRedemptionRequests = async (req, res) => {
     res.status(200).json(allRedemptionRequests);
 };
 
+exports.updateRedemptionRequest = async (req, res) => {
+    const redemptionRequestId = req.params.id;
+    const newStatus = req.body.status;
+
+    if (!newStatus) {
+        return res.status(400).json({ message: 'Status is required' });
+    }
+
+    const redemptionRequest = await RedemptionRequest.findByIdAndUpdate(
+        redemptionRequestId,
+        { status: newStatus },
+        { new: true }
+    );
+
+    if (!redemptionRequest) {
+        return res
+            .status(404)
+            .json({ message: 'Redemption request not found' });
+    }
+
+    res.status(200).json({ message: 'Request Updated Successfully' });
+};
+
 module.exports.getAllAddPointRequests = async (req, res) => {
     const allAddPointRequests = await AddPoint.find({}).populate('owner').sort({
         createdAt: -1,

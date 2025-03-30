@@ -10,6 +10,7 @@ const {
     getAllAddPointRequests,
     getAllOnlinePayments,
     getPaymentById,
+    updateRedemptionRequest,
 } = require('../../controllers/newdashboard/transactions.controller');
 const router = express.Router();
 
@@ -25,6 +26,13 @@ router.get(
     verifyDashboardUser,
     requireRole(['Admin', 'Moderator']),
     wrapAsync(getAllRedemptionRequests)
+);
+
+router.put(
+    '/redemption/:id',
+    verifyDashboardUser,
+    requireRole(['Admin', 'Moderator']),
+    wrapAsync(updateRedemptionRequest)
 );
 
 router.get(
