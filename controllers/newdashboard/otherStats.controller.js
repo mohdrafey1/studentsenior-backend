@@ -7,6 +7,7 @@ const Subjects = require('../../models/Subjects.js');
 const Transaction = require('../../models/Transaction.js');
 const AffiliateProduct = require('../../models/AffiliateProduct.js');
 const RedemptionRequest = require('../../models/RedemptionRequest.js');
+const Payment = require('../../models/Payment.js');
 
 module.exports.otherStats = async (req, res) => {
     // Run all queries in parallel for better performance
@@ -21,6 +22,7 @@ module.exports.otherStats = async (req, res) => {
         totalTransactions,
         totalRedemptionRequest,
         totalAffiliateProduct,
+        totalPayments,
     ] = await Promise.all([
         Client.countDocuments(),
         ContactUs.countDocuments(),
@@ -32,6 +34,7 @@ module.exports.otherStats = async (req, res) => {
         Transaction.countDocuments(),
         RedemptionRequest.countDocuments(),
         AffiliateProduct.countDocuments(),
+        Payment.countDocuments(),
     ]);
 
     res.status(200).json({
@@ -45,6 +48,7 @@ module.exports.otherStats = async (req, res) => {
         totalTransactions,
         totalRedemptionRequest,
         totalAffiliateProduct,
+        totalPayments,
     });
 };
 
@@ -52,4 +56,12 @@ module.exports.allContactUs = async (req, res) => {
     const contactus = await ContactUs.find({}).sort({ createdAt: -1 });
 
     res.status(200).json(contactus);
+};
+
+module.exports.deleteContactUs = async (req, res) => {
+    await ContactUs.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+        message: 'Contact Us Request Deleted Successfully',
+    });
 };

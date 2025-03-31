@@ -40,6 +40,24 @@ const clientSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        savedPYQs: [
+            {
+                pyqId: { type: mongoose.Schema.Types.ObjectId, ref: 'NewPyqs' },
+                savedAt: { type: Date, default: Date.now },
+            },
+        ],
+        savedNotes: [
+            {
+                noteId: { type: mongoose.Schema.Types.ObjectId, ref: 'Notes' },
+                savedAt: { type: Date, default: Date.now },
+            },
+        ],
+        purchasedPYQs: [
+            { type: mongoose.Schema.Types.ObjectId, ref: 'NewPyqs' },
+        ],
+        purchasedNotes: [
+            { type: mongoose.Schema.Types.ObjectId, ref: 'Notes' },
+        ],
     },
     { timestamps: true }
 );

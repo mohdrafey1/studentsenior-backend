@@ -42,7 +42,7 @@ module.exports.fetchAllNotes = async (req, res, next) => {
                 },
             },
         })
-        .sort({ clickCounts: -1 });
+        .sort({ createdAt: -1 });
 
     res.status(200).json(pyqs);
 };
@@ -299,6 +299,7 @@ module.exports.purchaseNote = async (req, res, next) => {
 
     // Deduct points
     user.rewardBalance -= note.price;
+    user.purchasedNotes.push(noteId);
     await user.save();
 
     // Record the purchase
