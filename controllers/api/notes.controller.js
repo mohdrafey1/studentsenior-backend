@@ -299,6 +299,7 @@ module.exports.purchaseNote = async (req, res, next) => {
 
     // Deduct points
     user.rewardBalance -= note.price;
+    user.purchasedNotes.push(noteId);
     await user.save();
 
     // Record the purchase
