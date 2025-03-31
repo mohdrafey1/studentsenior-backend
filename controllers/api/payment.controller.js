@@ -267,6 +267,10 @@ module.exports.getPaymentById = async (req, res) => {
             });
         }
 
+        if (payment.user.toString() !== req.user.id) {
+            throw new Error('This transaction does not belong to your account');
+        }
+
         // Populate based on payment type
         const populatedPayment = await Payment.populate(payment, {
             path: 'purchaseItemId',
