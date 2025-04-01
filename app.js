@@ -87,6 +87,7 @@ const allowedOrigins = [
   'http://localhost:8080',
   'https://panel.studentsenior.com',
   'https://staging-studentsenior-backend.vercel.app',
+  'https://staging.studentsenior.com',
   'https://staging-student-senior.vercel.app',
   'http://localhost:3000',
   'https://dashboard.studentsenior.com',
