@@ -1,7 +1,7 @@
 const isProduction = process.env.NODE_ENV === 'production';
 
 if (process.env.NODE_ENV != 'production') {
-    require('dotenv').config();
+  require('dotenv').config();
 }
 
 const express = require('express');
@@ -19,8 +19,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/User.js');
 const cookieParser = require('cookie-parser');
-
-const { swaggerUi, swaggerSpec } = require('./swagger');
 
 //dashboard router
 const home = require('./routes/dashboard/home.route.js');
@@ -83,44 +81,45 @@ const courseApiRoutes = require('./routes/course/course.routes.js');
 const courseAuthRoutes = require('./routes/course/auth.routes.js');
 
 const allowedOrigins = [
-    'http://localhost:5173',
-    'https://www.studentsenior.com',
-    'https://studentsenior.com',
-    'http://localhost:8080',
-    'https://panel.studentsenior.com',
-    'https://staging-studentsenior-backend.vercel.app',
-    'https://staging-student-senior.vercel.app',
-    'http://localhost:3000',
-    'https://dashboard.studentsenior.com',
-    'https://stagingcourse.studentsenior.com',
-    'https://course.studentsenior.com',
+  'http://localhost:5173',
+  'https://www.studentsenior.com',
+  'https://studentsenior.com',
+  'http://localhost:8080',
+  'https://panel.studentsenior.com',
+  'https://staging-studentsenior-backend.vercel.app',
+  'https://staging.studentsenior.com',
+  'https://staging-student-senior.vercel.app',
+  'http://localhost:3000',
+  'https://dashboard.studentsenior.com',
+  'https://stagingcourse.studentsenior.com',
+  'https://course.studentsenior.com',
 ];
 
 app.use(
-    cors({
-        origin: (origin, callback) => {
-            if (!origin) return callback(null, true);
-            if (allowedOrigins.includes(origin)) {
-                return callback(null, true);
-            } else {
-                console.error(`Blocked by CORS: ${origin}`);
-                return callback(new Error('Not allowed by CORS'));
-            }
-        },
-        credentials: true,
-    })
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        console.error(`Blocked by CORS: ${origin}`);
+        return callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
 );
 
 // const DB_URL = 'mongodb://127.0.0.1:27017/CollegeResources';
 const DB_URL = process.env.ATLAS_URL;
 
 async function main() {
-    try {
-        await mongoose.connect(DB_URL);
-        console.log('Connected to DB');
-    } catch (err) {
-        console.error('Failed to connect to DB', err);
-    }
+  try {
+    await mongoose.connect(DB_URL);
+    console.log('Connected to DB');
+  } catch (err) {
+    console.error('Failed to connect to DB', err);
+  }
 }
 main();
 
@@ -153,27 +152,27 @@ app.use('/api/lostfound', lostFoundApi);
 app.use('/api/phonepe', phonePeApiRoutes);
 
 const store = MongoStore.create({
-    mongoUrl: DB_URL,
-    crypto: {
-        secret: process.env.SECRET,
-    },
-    touchAfter: 24 * 3600,
+  mongoUrl: DB_URL,
+  crypto: {
+    secret: process.env.SECRET,
+  },
+  touchAfter: 24 * 3600,
 });
 
 store.on('error', () => {
-    console.log('error on mongo store ');
+  console.log('error on mongo store ');
 });
 
 const sessionOptions = {
-    store,
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        expires: Date.now() + 1 * 24 * 60 * 60 * 1000,
-        maxAge: 1 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-    },
+  store,
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    expires: Date.now() + 1 * 24 * 60 * 60 * 1000,
+    maxAge: 1 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+  },
 };
 
 app.use(session(sessionOptions));
@@ -187,10 +186,10 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    res.locals.currUser = req.user;
-    next();
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  res.locals.currUser = req.user;
+  next();
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -237,20 +236,20 @@ app.use('/courseapi/course', courseApiRoutes);
 app.use('/courseapi/auth', courseAuthRoutes);
 
 app.all('*', (req, res, next) => {
-    next(new ExpressError(404, 'Page Not Found'));
+  next(new ExpressError(404, 'Page Not Found'));
 });
 
 app.use((err, req, res, next) => {
-    // console.log(err);
-    const statusCode = err.statusCode || 500;
-    const message = err.message || 'Internal Server Error';
-    res.status(statusCode).json({
-        success: false,
-        message,
-        statusCode,
-    });
+  // console.log(err);
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal Server Error';
+  res.status(statusCode).json({
+    success: false,
+    message,
+    statusCode,
+  });
 });
 
 app.listen(8080, () => {
-    console.log('App is listening on port 8080');
+  console.log('App is listening on port 8080');
 });
