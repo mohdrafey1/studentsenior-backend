@@ -192,8 +192,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 //dashboard routes
 app.use('/', home);
 app.use('/user', userRouter);
