@@ -82,14 +82,14 @@ const courseAuthRoutes = require('./routes/course/auth.routes.js');
 
 const allowedOrigins = [
   'http://localhost:5173',
+  'http://localhost:8080',
+  'http://localhost:3009',
+  'http://localhost:3008',
   'https://www.studentsenior.com',
   'https://studentsenior.com',
-  'http://localhost:8080',
   'https://panel.studentsenior.com',
-  'https://staging-studentsenior-backend.vercel.app',
   'https://staging.studentsenior.com',
-  'https://staging-student-senior.vercel.app',
-  'http://localhost:3000',
+  'https://stagingapi.studentsenior.com',
   'https://dashboard.studentsenior.com',
   'https://stagingcourse.studentsenior.com',
   'https://course.studentsenior.com',
