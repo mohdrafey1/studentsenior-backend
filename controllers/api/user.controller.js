@@ -261,11 +261,37 @@ module.exports.leaderboardPage = async (req, res) => {
 };
 
 exports.getUserSavedAndPurchasedItems = async (req, res, next) => {
+    // Reusable deep populate object for subject → branch → course
+    const deepSubjectPopulate = {
+        path: 'subject',
+        select: 'subjectCode subjectName semester branch',
+        populate: {
+            path: 'branch',
+            select: 'branchName branchCode course',
+            populate: {
+                path: 'course',
+                select: 'courseCode courseName',
+            },
+        },
+    };
+
     const client = await Client.findById(req.user.id)
-        .populate('savedPYQs.pyqId')
-        .populate('savedNotes.noteId')
-        .populate('purchasedPYQs')
-        .populate('purchasedNotes');
+        .populate({
+            path: 'savedPYQs.pyqId',
+            populate: deepSubjectPopulate,
+        })
+        .populate({
+            path: 'purchasedPYQs',
+            populate: deepSubjectPopulate,
+        })
+        .populate({
+            path: 'savedNotes.noteId',
+            populate: deepSubjectPopulate,
+        })
+        .populate({
+            path: 'purchasedNotes',
+            populate: deepSubjectPopulate,
+        });
 
     if (!client) return next(errorHandler(404, 'User not found'));
 
