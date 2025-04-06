@@ -202,7 +202,7 @@ module.exports.purchasePyq = async (req, res, next) => {
 
     // Deduct points from the purchaser
     user.rewardBalance -= pyq.price;
-    user.purchasedNotes.push(pyqId);
+    user.purchasedPYQs.push(pyqId);
     await user.save();
 
     // Record the purchase
