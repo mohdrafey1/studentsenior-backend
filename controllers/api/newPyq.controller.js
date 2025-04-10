@@ -7,6 +7,9 @@ const { errorHandler } = require('../../utils/error.js');
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const s3 = require('../../config/s3.js');
 
+const bucketName = process.env.S3_BUCKET_NAME;
+const region = process.env.AWS_REGION;
+
 module.exports.fetchPyqsByCollege = async (req, res, next) => {
     const { collegeId } = req.params;
 
@@ -80,82 +83,115 @@ module.exports.createPyq = async (req, res, next) => {
         price,
     } = req.body;
 
-    if (!fileUrl) {
-        return next(errorHandler(400, 'No file uploaded'));
-    }
+    const deleteFileFromS3 = async () => {
+        if (fileUrl) {
+            const s3Key = fileUrl.replace(
+                `https://${bucketName}.s3.${region}.amazonaws.com/`,
+                ''
+            );
+            try {
+                await s3.send(
+                    new DeleteObjectCommand({ Bucket: bucketName, Key: s3Key })
+                );
+            } catch (err) {
+                console.error('Error deleting file from S3:', err);
+            }
+        }
+    };
 
-    const branch = await Branch.findOne({
-        branchCode: { $regex: new RegExp(`^${branchCode}$`, 'i') },
-    });
+    try {
+        if (!fileUrl) {
+            return next(errorHandler(400, 'No file uploaded'));
+        }
 
-    if (!branch) {
-        return res.status(404).json({ message: 'Branch not found' });
-    }
+        const branch = await Branch.findOne({
+            branchCode: { $regex: new RegExp(`^${branchCode}$`, 'i') },
+        });
 
-    const subject = await Subject.findOne({
-        subjectCode: { $regex: new RegExp(`^${subjectCode}$`, 'i') },
-        branch: branch._id,
-    });
+        if (!branch) {
+            await deleteFileFromS3();
+            return res.status(404).json({ message: 'Branch not found' });
+        }
 
-    if (!subject) {
-        return next(errorHandler(403, 'Subject not found'));
-    }
+        const subject = await Subject.findOne({
+            subjectCode: { $regex: new RegExp(`^${subjectCode}$`, 'i') },
+            branch: branch._id,
+        });
 
-    let subjectId = subject._id;
+        if (!subject) {
+            await deleteFileFromS3();
+            return next(errorHandler(403, 'Subject not found'));
+        }
 
-    let owner = req.user.id;
+        let subjectId = subject._id;
 
-    const user = await Client.findById(owner);
+        let owner = req.user.id;
 
-    let slug = `${subject.subjectName}-${examType}-${year}-${branchCode}`;
-    slug = slug.toLowerCase().replace(/\s+/g, '-');
+        const user = await Client.findById(owner);
 
-    if (solved === true) {
-        slug = slug + '-solved-' + user.username;
-    }
+        let slug = `${subject.subjectName}-${examType}-${year}-${branchCode}`;
+        slug = slug.toLowerCase().replace(/\s+/g, '-');
 
-    if (isPaid && (!price || price <= 0)) {
-        return next(
-            errorHandler(400, 'Please provide a valid price for paid content')
+        if (solved === true) {
+            slug = slug + '-solved-' + user.username;
+        }
+
+        if (isPaid && (!price || price <= 0)) {
+            await deleteFileFromS3();
+            return next(
+                errorHandler(
+                    400,
+                    'Please provide a valid price for paid content'
+                )
+            );
+        }
+
+        const slugExists = await Newpyq.findOne({ slug });
+        if (slugExists) {
+            await deleteFileFromS3();
+            return next(
+                errorHandler(409, 'This Pyq Already exist please check')
+            );
+        }
+
+        const newPyq = new Newpyq({
+            subject: subjectId,
+            year,
+            examType,
+            owner,
+            slug,
+            fileUrl,
+            college,
+            solved,
+            isPaid,
+            price,
+        });
+
+        const totalPyqsinSubject = await Subject.findByIdAndUpdate(subjectId, {
+            $inc: { totalPyqs: 1 },
+        });
+
+        const totalPyqsinbranch = await Branch.findByIdAndUpdate(branch._id, {
+            $inc: { totalPyqs: 1 },
+        });
+
+        const totalPyqsincourse = await Course.findByIdAndUpdate(
+            branch.course,
+            {
+                $inc: { totalPyqs: 1 },
+            }
         );
+
+        await newPyq.save();
+
+        res.json({
+            message:
+                'Pyq submitted successfully and is pending approval , Once Approved you will get your reward.',
+        });
+    } catch (error) {
+        await deleteFileFromS3();
+        next(error);
     }
-
-    const slugExists = await Newpyq.findOne({ slug });
-    if (slugExists) {
-        return next(errorHandler(409, 'This Pyq Already exist please check'));
-    }
-
-    const newPyq = new Newpyq({
-        subject: subjectId,
-        year,
-        examType,
-        owner,
-        slug,
-        fileUrl,
-        college,
-        solved,
-        isPaid,
-        price,
-    });
-
-    const totalPyqsinSubject = await Subject.findByIdAndUpdate(subjectId, {
-        $inc: { totalPyqs: 1 },
-    });
-
-    const totalPyqsinbranch = await Branch.findByIdAndUpdate(branch._id, {
-        $inc: { totalPyqs: 1 },
-    });
-
-    const totalPyqsincourse = await Course.findByIdAndUpdate(branch.course, {
-        $inc: { totalPyqs: 1 },
-    });
-
-    await newPyq.save();
-
-    res.json({
-        message:
-            'Pyq submitted successfully and is pending approval , Once Approved you will get your reward.',
-    });
 };
 
 module.exports.getPyq = async (req, res, next) => {
@@ -253,8 +289,6 @@ module.exports.deletePyq = async (req, res, next) => {
 
     const { fileUrl, subject, owner, rewardPoints } = pyq;
 
-    const bucketName = process.env.S3_BUCKET_NAME;
-    const region = process.env.AWS_REGION;
     const s3Key = fileUrl.replace(
         `https://${bucketName}.s3.${region}.amazonaws.com/`,
         ''
