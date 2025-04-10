@@ -44,10 +44,13 @@ module.exports.editPyqs = async (req, res, next) => {
         { new: true }
     );
 
-    if (!updatedPyq) return res.status(404).json({ message: 'PYQ not found' });
+    if (!updatedPyq) {
+        return res.status(404).json({ message: 'PYQ not found' });
+    }
 
     if (updatedPyq.status === true) {
         const client = await Client.findById(updatedPyq.owner);
+
         if (client) {
             const existingTransaction = await Transaction.findOne({
                 user: client._id,
@@ -57,14 +60,25 @@ module.exports.editPyqs = async (req, res, next) => {
             });
 
             if (!existingTransaction) {
-                client.rewardPoints += updatedPyq.rewardPoints;
-                client.rewardBalance += updatedPyq.rewardPoints;
+                let rewardPoints = updatedPyq.rewardPoints;
+
+                const maxOfferUses = 5;
+                if (!client.examOfferUploadCountPyqs)
+                    client.examOfferUploadCountPyqs = 0;
+
+                if (client.examOfferUploadCountPyqs < maxOfferUses) {
+                    rewardPoints = rewardPoints * 5;
+                    client.examOfferUploadCountPyqs += 1;
+                }
+
+                client.rewardPoints += rewardPoints;
+                client.rewardBalance += rewardPoints;
                 await client.save();
 
                 await Transaction.create({
                     user: client._id,
                     type: 'earn',
-                    points: updatedPyq.rewardPoints,
+                    points: rewardPoints,
                     resourceType: 'pyq',
                     resourceId: updatedPyq._id,
                 });
