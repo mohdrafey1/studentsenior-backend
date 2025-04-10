@@ -18,7 +18,7 @@ router.get(
     wrapAsync(apiNewpyqController.fetchPyqsByCollegeBranch)
 );
 
-router.post('/', verifyToken, wrapAsync(apiNewpyqController.createPyq));
+router.post('/', verifyToken, apiNewpyqController.createPyq);
 
 router.get(
     '/:slug',
