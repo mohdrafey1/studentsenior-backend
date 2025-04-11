@@ -6,6 +6,7 @@ const Client = require('../../models/Client.js');
 const { errorHandler } = require('../../utils/error.js');
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const s3 = require('../../config/s3.js');
+const Colleges = require('../../models/Colleges.js');
 
 const bucketName = process.env.S3_BUCKET_NAME;
 const region = process.env.AWS_REGION;
@@ -129,11 +130,28 @@ module.exports.createPyq = async (req, res, next) => {
 
         const user = await Client.findById(owner);
 
-        let slug = `${subject.subjectName}-${examType}-${year}-${branchCode}`;
-        slug = slug.toLowerCase().replace(/\s+/g, '-');
+        const sanitize = (text) =>
+            text
+                .toString()
+                .toLowerCase()
+                .trim()
+                .replace(/\s+/g, '-')
+                .replace(/[^a-z0-9\-]/g, '');
+
+        const defaultCollege = '66cb9952a9c088fc11800714';
+
+        let slug = `${sanitize(subject.subjectName)}-${sanitize(
+            examType
+        )}-${year}-${sanitize(branchCode)}`;
+
+        if (college.toString() !== defaultCollege.toString()) {
+            const collegeDoc = await Colleges.findById(college);
+            const takeCollegeFirst3Char = sanitize(collegeDoc.name).slice(0, 4);
+            slug += `-${takeCollegeFirst3Char}`;
+        }
 
         if (solved === true) {
-            slug = slug + '-solved-' + user.username;
+            slug += `-solved-${sanitize(user.username)}`;
         }
 
         if (isPaid && (!price || price <= 0)) {
