@@ -1,6 +1,6 @@
 const isProduction = process.env.NODE_ENV === 'production';
 
-if (process.env.NODE_ENV != 'production') {
+if (!isProduction) {
     require('dotenv').config();
 }
 
@@ -19,6 +19,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/User.js');
 const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit');
 
 //dashboard router
 const home = require('./routes/dashboard/home.route.js');
@@ -132,6 +133,16 @@ app.use(cookieParser());
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, '/public')));
+
+const limiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: { error: 'Too many requests, please try again later.' },
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+app.use(limiter);
 
 //frontend api routes
 app.use('/api/colleges', apicollegeRouter);
